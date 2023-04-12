@@ -4,9 +4,20 @@
 
 <mapper namespace="cn.edu.xmut.learningplatform.mapper.userMapper">
 
-    <select id="queryUserList" resultType="user">
-        select id,username,password from user;
+    <select id="login" resultType="user">
+        select * from user where `username` = #{username} and `password` = #{password};
     </select>
 
+    <select id="getUserInfoByUserName" resultType="user">
+        SELECT id,username , name ,email,studentID created_time,update_time FROM `user`  where `username` = #{username};
+    </select>
 
+    <select id="getUserInfoByUserNameAndStuID" resultType="user">
+        SELECT id,username , name ,email,studentId created_time,update_time FROM `user`  where `username` = #{username} and `studentId` = #{studentId};
+    </select>
+
+    <insert id="register" useGeneratedKeys="true" keyProperty="id" parameterType="user">
+        insert into `user`(username, password, studentId, name,created_time,email)
+        values (#{username}, #{password}, #{studentId}, #{name},#{createdTime},#{email})
+    </insert>
 </mapper>

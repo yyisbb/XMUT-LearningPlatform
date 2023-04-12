@@ -9,54 +9,34 @@ import java.util.Date;
 
 
 /**
+ * @description user_department
  * @author zwj
- * @description user
  * @date 2023-04-11
  */
-@AllArgsConstructor
 @Data
 @NoArgsConstructor
-public class user implements Serializable {
+@AllArgsConstructor
+public class department implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 用户id
+     * 部门id
      */
     private Integer id;
 
     /**
-     * 账号
-     */
-    private String username;
-
-    /**
-     * 密码
-     */
-    private String password;
-
-    /**
-     * 用户姓名
+     * 部门名称
      */
     private String name;
 
     /**
-     * 邮箱
+     * 部门创建时间
      */
-    private String email;
+    private Date createTime;
 
     /**
-     * 学生学号
-     */
-    private String studentId;
-
-    /**
-     * 创建时间
-     */
-    private Date createdTime;
-
-    /**
-     * 修改时间
+     * 部门修改时间
      */
     private Date updateTime;
 

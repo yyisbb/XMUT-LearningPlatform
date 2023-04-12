@@ -7,57 +7,46 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.util.Date;
 
-
 /**
+ * @description permission
  * @author zwj
- * @description user
  * @date 2023-04-11
  */
-@AllArgsConstructor
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
-public class user implements Serializable {
+public class permission implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 用户id
+     * 权限id
      */
     private Integer id;
 
     /**
-     * 账号
-     */
-    private String username;
-
-    /**
-     * 密码
-     */
-    private String password;
-
-    /**
-     * 用户姓名
+     * 权限名
      */
     private String name;
 
     /**
-     * 邮箱
+     * api地址
      */
-    private String email;
+    private String url;
 
     /**
-     * 学生学号
+     * 权限创建时间
      */
-    private String studentId;
+    private Date createTime;
 
     /**
-     * 创建时间
-     */
-    private Date createdTime;
-
-    /**
-     * 修改时间
+     * 权限修改时间
      */
     private Date updateTime;
+
+    /**
+     * 请求方法/get/post
+     */
+    private String method;
 
 }
