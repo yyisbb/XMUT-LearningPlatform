@@ -9,15 +9,21 @@
     </select>
 
     <select id="getUserInfoByUserName" resultType="user">
-        SELECT id,username , name ,email,studentID created_time,update_time FROM `user`  where `username` = #{username};
+        SELECT id,username , name ,email,studentID ,createTime,updateTime FROM `user`  where `username` = #{username};
     </select>
 
     <select id="getUserInfoByUserNameAndStuID" resultType="user">
-        SELECT id,username , name ,email,studentId created_time,update_time FROM `user`  where `username` = #{username} and `studentId` = #{studentId};
+        SELECT id,username , name ,email,studentId ,createTime,updateTime FROM `user`  where `username` = #{username} and `studentId` = #{studentId};
     </select>
 
     <insert id="register" useGeneratedKeys="true" keyProperty="id" parameterType="user">
-        insert into `user`(username, password, studentId, name,created_time,email)
-        values (#{username}, #{password}, #{studentId}, #{name},#{createdTime},#{email})
+        insert into `user`(username, password, studentId, name,createTime,email)
+        values (#{username}, #{password}, #{studentId}, #{name},#{createTime},#{email})
     </insert>
+
+
+
+    <select id="getUserRole" resultType="userRole">
+        SELECT  role.id as roleId, role.`name` as roleName , role.sn as roleSn FROM user_role,`user`,role WHERE  user_role.role_id = role.id and user_role.user_id = `user`.id AND `user`.id = #{userId}
+    </select>
 </mapper>

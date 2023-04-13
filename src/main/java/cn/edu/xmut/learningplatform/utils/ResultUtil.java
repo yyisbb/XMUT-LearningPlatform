@@ -21,7 +21,8 @@ public class ResultUtil<T> {
 
     public static <T> ResultUtil<T> success() {
         ResultUtil<T> resultUtil = new ResultUtil<>();
-        resultUtil.setData(null);
+        resultUtil.setMsg("成功");
+        resultUtil.setData((T) "成功");
         return resultUtil;
     }
 

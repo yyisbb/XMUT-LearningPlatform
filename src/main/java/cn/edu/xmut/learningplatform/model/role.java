@@ -1,6 +1,7 @@
 package cn.edu.xmut.learningplatform.model;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,13 +32,20 @@ public class role implements Serializable {
     private String name;
 
     /**
+     * 角色标识
+     */
+    private String sn;
+
+    /**
      * 角色创建时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     /**
      * 角色修改时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
 }

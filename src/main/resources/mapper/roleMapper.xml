@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.edu.xmut.learningplatform.mapper.roleMapper">
+    <select id="getRoleList" resultType="role">
+        select * from role ;
+    </select>
+
+
+    <select id="getRolePermissionList" resultType="rolePermission">
+        SELECT
+            role.`name` as roleName ,
+            role.sn as roleSn,
+            permission.method as requestMethod,
+            permission.`name` as permissionName,
+            permission.url AS requestUrl
+        FROM role,role_permission,permission
+        WHERE role.id = role_permission.role_id AND permission.id = role_permission.permission_id
+          AND role.id = #{roleId}
+    </select>
+</mapper>

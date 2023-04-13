@@ -20,13 +20,18 @@ public class userRole implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * user_id
-     */
-    private Integer userId;
-
-    /**
-     * role_id
+     * 角色名
      */
     private Integer roleId;
+
+    /**
+     * 角色名
+     */
+    private String roleName;
+
+    /**
+     * 角色标识
+     */
+    private String roleSn;
 
 }

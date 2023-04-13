@@ -2,11 +2,14 @@ package cn.edu.xmut.learningplatform.controller;
 
 import cn.edu.xmut.learningplatform.annotation.AuthPass;
 import cn.edu.xmut.learningplatform.model.user;
+import cn.edu.xmut.learningplatform.model.userRole;
 import cn.edu.xmut.learningplatform.service.userService;
 import cn.edu.xmut.learningplatform.utils.ResultUtil;
 import cn.edu.xmut.learningplatform.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -32,5 +35,10 @@ public class userController {
     @PostMapping("/getUserInfo")
     public ResultUtil<user> getUserInfo() {
         return ResultUtil.success(UserUtil.getLoginUser());
+    }
+
+    @PostMapping("/getUserRole")
+    public ResultUtil<List<userRole>> getUserRole() {
+        return ResultUtil.success(userService.getUserRole(UserUtil.getLoginUser().getId()));
     }
 }

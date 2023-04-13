@@ -19,13 +19,27 @@ public class rolePermission implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * role_id
+     * 角色名
      */
-    private Integer roleId;
+    private String roleName;
 
     /**
-     * permission_id
+     * 角色标识
      */
-    private Integer permissionId;
+    private String  roleSn;
+
+    /**
+     * 请求路由方法
+     */
+    private String  requestMethod;
+    /**
+     * 请求路由路径
+     */
+    private String  requestUrl;
+
+    /**
+     * 权限名
+     */
+    private String  permissionName;
 
 }

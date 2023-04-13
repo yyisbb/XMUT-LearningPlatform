@@ -10,6 +10,7 @@ public enum ErrorCode {
     USERNAME_OR_PASSWORD_ERROR( "用户名或密码错误"),
     USERNAME_OR_PASSWORD_EMPTY_ERROR("用户名或密码为空"),
     TOKEN_USER_NOT_FOUND_ERROR( "TOKEN校验失败,用户不存在"),
+    PERMISSION_DENIED( "权限不足,拒绝访问"),
     TOKEN_NULL_ERROR("TOKEN校验失败,Token为空或不存在"),
     PASSWORD_FORMAT_ERROR( "密码格式错误，密码必须是包含大写字母、小写字母、数字、特殊符号（不是字母，数字，下划线，汉字的字符）的6位以上组合。"),
     EMAIL_FORMAT_ERROR( "邮箱格式错误"),
