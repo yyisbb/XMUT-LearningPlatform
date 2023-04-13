@@ -4,6 +4,7 @@ package cn.edu.xmut.learningplatform.interceptor;
 import cn.edu.xmut.learningplatform.annotation.AuthPass;
 import cn.edu.xmut.learningplatform.constant.ErrorCode;
 import cn.edu.xmut.learningplatform.exception.AuthException;
+import cn.edu.xmut.learningplatform.exception.TokenException;
 import cn.edu.xmut.learningplatform.model.*;
 import cn.edu.xmut.learningplatform.utils.JwtUtils;
 import cn.edu.xmut.learningplatform.utils.PropertiesUtil;
@@ -55,7 +56,7 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
             if (StringUtils.isEmpty(token)) {
                 //TOKEN为空
                 //响应输出对象
-                throw new AuthException(ErrorCode.TOKEN_NULL_ERROR);
+                throw new TokenException(ErrorCode.TOKEN_NULL_ERROR);
             }
 
             //校验是否是正确的用户 非伪造的
@@ -70,7 +71,7 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
             user user = userService.getUserByUserName(SecuritySM4.DecryptStr(encryptionUsername, PropertiesUtil.getSm4Secret()));
             if (user == null || user.getId() == 0) {
                 //用户不存在
-                throw new AuthException(ErrorCode.TOKEN_USER_NOT_FOUND_ERROR);
+                throw new TokenException(ErrorCode.TOKEN_USER_NOT_FOUND_ERROR);
             }
 
             //验证成功

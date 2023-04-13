@@ -26,15 +26,29 @@ public class CustomExceptionHandler<E> {
 
 
     /**
-     * 授权异常都返回401状态码
+     * Token异常都返回401状态码
+     *
+     * @param req
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(value = TokenException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResultUtil<String> tokenHandler(HttpServletRequest req, TokenException e) {
+        return ResultUtil.fail(e.getMessage());
+    }
+
+    /**
+     * 权限不足返回403状态码
      *
      * @param req
      * @param e
      * @return
      */
     @ExceptionHandler(value = AuthException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ResultUtil<String> authHandler(HttpServletRequest req, AuthException e) {
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResultUtil<String> authHandler(HttpServletRequest req, TokenException e) {
         return ResultUtil.fail(e.getMessage());
     }
+
 }

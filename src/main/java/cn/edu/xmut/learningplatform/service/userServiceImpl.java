@@ -42,7 +42,11 @@ public class userServiceImpl implements userService {
 
     @Override
     public user getUserByUserName(String username) {
-        return userMapper.getUserInfoByUserName(username);
+        user user = userMapper.getUserInfoByUserName(username);
+        //查询角色
+        List<userRole> role = userMapper.getUserRole(user.getId());
+        user.setAccess(role);
+        return user;
     }
 
     @Override

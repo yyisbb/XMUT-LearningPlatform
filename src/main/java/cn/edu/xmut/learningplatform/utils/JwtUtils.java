@@ -1,8 +1,7 @@
 package cn.edu.xmut.learningplatform.utils;
 
 import cn.edu.xmut.learningplatform.constant.ErrorCode;
-import cn.edu.xmut.learningplatform.exception.AuthException;
-import cn.edu.xmut.learningplatform.exception.GlobalException;
+import cn.edu.xmut.learningplatform.exception.TokenException;
 import cn.edu.xmut.learningplatform.model.user;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -52,7 +51,7 @@ public class JwtUtils {
             jwt = verifier.verify(token);
         } catch (Exception e) {
             //效验失败
-            throw new AuthException(ErrorCode.TOKEN_USER_NOT_FOUND_ERROR);
+            throw new TokenException(ErrorCode.TOKEN_USER_NOT_FOUND_ERROR);
         }
     }
 
@@ -65,7 +64,7 @@ public class JwtUtils {
             audience = JWT.decode(token).getAudience().get(0);
         } catch (JWTDecodeException j) {
             //这里是token解析失败
-            throw new AuthException(ErrorCode.TOKEN_USER_NOT_FOUND_ERROR);
+            throw new TokenException(ErrorCode.TOKEN_USER_NOT_FOUND_ERROR);
         }
         return audience;
     }
