@@ -4,7 +4,18 @@
 
 <mapper namespace="cn.edu.xmut.learningplatform.mapper.roleMapper">
     <select id="getRoleList" resultType="role">
-        select * from role ;
+        SELECT id, name, sn, createTime, updateTime
+        FROM role
+        WHERE 1=1
+        <if test="id != null">
+            AND id LIKE CONCAT('%', #{id}, '%')
+        </if>
+        <if test="name != null">
+            AND name LIKE CONCAT('%', #{name}, '%')
+        </if>
+        <if test="sn != null">
+            AND lower(sn) LIKE CONCAT('%', #{sn}, '%')
+        </if>
     </select>
 
 

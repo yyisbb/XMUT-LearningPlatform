@@ -6,10 +6,9 @@ import cn.edu.xmut.learningplatform.model.userRole;
 import cn.edu.xmut.learningplatform.service.userService;
 import cn.edu.xmut.learningplatform.utils.ResultUtil;
 import cn.edu.xmut.learningplatform.utils.UserUtil;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 @RestController
@@ -37,8 +36,14 @@ public class userController {
         return ResultUtil.success(UserUtil.getLoginUser());
     }
 
+
+    @PostMapping("/getAllUser")
+    ResultUtil<PageInfo<user>> getAllUser(@RequestBody user user) {
+        return ResultUtil.success(userService.getAllUser(user));
+    }
+
     @PostMapping("/getUserRole")
-    public ResultUtil<List<userRole>> getUserRole() {
+    public ResultUtil<userRole> getUserRole() {
         return ResultUtil.success(userService.getUserRole(UserUtil.getLoginUser().getId()));
     }
 }

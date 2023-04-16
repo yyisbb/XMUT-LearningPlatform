@@ -21,9 +21,31 @@
         values (#{username}, #{password}, #{studentId}, #{name},#{createTime},#{email})
     </insert>
 
-
-
     <select id="getUserRole" resultType="userRole">
         SELECT  role.id as roleId, role.`name` as roleName , role.sn as roleSn FROM user_role,`user`,role WHERE  user_role.role_id = role.id and user_role.user_id = `user`.id AND `user`.id = #{userId}
     </select>
+
+
+    <select id="getAllUser" resultType="user">
+        SELECT id, username, name, email, createTime, updateTime
+        FROM user
+        WHERE 1=1
+        <if test="id != null">
+            AND id LIKE CONCAT('%', #{id}, '%')
+        </if>
+        <if test="username != null">
+            AND username LIKE CONCAT('%', #{username}, '%')
+        </if>
+        <if test="name != null">
+            AND name LIKE CONCAT('%', #{name}, '%')
+        </if>
+        <if test="email != null">
+            AND email LIKE CONCAT('%', #{email}, '%')
+        </if>
+    </select>
+
+
+    <insert id="createUserRole">
+        INSERT INTO user_role(user_id, role_id) VALUES (#{userId}, #{roleId})
+    </insert>
 </mapper>

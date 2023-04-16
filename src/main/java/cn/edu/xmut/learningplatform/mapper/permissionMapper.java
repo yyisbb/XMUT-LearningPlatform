@@ -11,5 +11,5 @@ public interface permissionMapper {
      * 获取所有权限
      * @return
      */
-    List<permission> getPermissionList();
+    List<permission> getPermissionList(permission permission);
 }

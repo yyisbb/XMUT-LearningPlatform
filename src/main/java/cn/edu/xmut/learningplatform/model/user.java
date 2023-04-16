@@ -3,6 +3,7 @@ package cn.edu.xmut.learningplatform.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
@@ -67,5 +68,16 @@ public class user implements Serializable {
     /**
      * 角色
      */
-    private List<userRole> access;
+    private userRole access;
+
+    /**
+     * 状态
+     */
+    private int status;
+
+    public int current;
+    public int pageSize;
+    public String authCode;
+
+
 }

@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.List;
 
 public class JwtAuthenticationInterceptor implements HandlerInterceptor {
     @Autowired
@@ -79,22 +78,18 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
 
 
             //2.开始鉴权RBAC
-            //(1) 查询该用户的角色列表
-            List<userRole> roleList = userService.getUserRole(user.getId());
+            //(1) 查询该用户的角色
+            userRole userRole = userService.getUserRole(user.getId());
 
             //管理员跳过
-            for (userRole userRole : roleList) {
-                if ("admin".equals(userRole.getRoleSn())){
-                    return true;
-                }
+            if ("admin".equals(userRole.getRoleSn())){
+                return true;
             }
 
             //TODO 这里要做Redis缓存所有的角色对应的权限 后面写....
             //(2) 查询该角色列表对应的权限集合
             ArrayList<rolePermission> allowPermissionList = new ArrayList<>();
-            for (userRole role : roleList) {
-                allowPermissionList.addAll(roleService.getRolePermissionList(role.getRoleId()));
-            }
+            allowPermissionList.addAll(roleService.getRolePermissionList(userRole.getRoleId()));
 
             //如果权限为空或者没有存在该请求的path和method就拒绝执行 抛出异常
             if (allowPermissionList.size()==0){

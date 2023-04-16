@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.edu.xmut.learningplatform.mapper.authCodeMapper">
+    <select id="getAllAuthCode" resultType="authCode">
+        SELECT id, code, school
+        FROM auth_code
+    </select>
+
+    <select id="getAuthCodeByCode" resultType="authCode">
+        SELECT id, code, school
+        FROM auth_code where code = #{code}
+    </select>
+
+</mapper>

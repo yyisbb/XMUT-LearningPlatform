@@ -1,6 +1,5 @@
 package cn.edu.xmut.learningplatform.mapper;
 
-import cn.edu.xmut.learningplatform.model.role;
 import cn.edu.xmut.learningplatform.model.user;
 import cn.edu.xmut.learningplatform.model.userRole;
 import org.apache.ibatis.annotations.Mapper;
@@ -22,5 +21,13 @@ public interface userMapper {
 
     List<user> getUserInfoByUserNameAndStuID(String username, String studentId);
 
-    List<userRole> getUserRole(int userId);
+    userRole getUserRole(int userId);
+
+    List<user> getAllUser(user user);
+
+    /**
+     * 新增用户和角色的实体关系
+     */
+    void createUserRole(int userId, int roleId);
+
 }

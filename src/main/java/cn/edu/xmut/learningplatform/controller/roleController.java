@@ -2,13 +2,12 @@ package cn.edu.xmut.learningplatform.controller;
 
 import cn.edu.xmut.learningplatform.model.role;
 import cn.edu.xmut.learningplatform.model.rolePermission;
+import cn.edu.xmut.learningplatform.model.user;
 import cn.edu.xmut.learningplatform.utils.ResultUtil;
 import cn.edu.xmut.learningplatform.service.roleService;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,8 +22,8 @@ public class roleController {
      * @return
      */
     @PostMapping("/getRoleList")
-    public ResultUtil<List<role>> getRoleList() {
-        return ResultUtil.success(roleService.getRoleList());
+    public ResultUtil<PageInfo<role>> getRoleList(@RequestBody role role) {
+        return ResultUtil.success(roleService.getRoleList(role));
     }
 
     /**

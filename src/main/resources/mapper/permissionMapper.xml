@@ -4,6 +4,20 @@
 
 <mapper namespace="cn.edu.xmut.learningplatform.mapper.permissionMapper">
     <select id="getPermissionList" resultType="permission">
-        select * from permission ;
+        SELECT id, name, url, createTime, updateTime,method
+        FROM permission
+        WHERE 1=1
+        <if test="id != null">
+            AND id LIKE CONCAT('%', #{id}, '%')
+        </if>
+        <if test="name != null">
+            AND name LIKE CONCAT('%', #{name}, '%')
+        </if>
+        <if test="url != null">
+            AND url LIKE CONCAT('%', #{url}, '%')
+        </if>
+        <if test="method != null">
+            AND UPPER(method) LIKE CONCAT('%', #{method}, '%')
+        </if>
     </select>
 </mapper>

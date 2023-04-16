@@ -1,7 +1,7 @@
 package cn.edu.xmut.learningplatform.service;
 
 import cn.edu.xmut.learningplatform.model.permission;
-import cn.edu.xmut.learningplatform.model.role;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,5 +12,5 @@ public interface permissionService {
      * 获取所有权限
      * @return
      */
-    List<permission> getPermissionList();
+    PageInfo<permission> getPermissionList(permission permission);
 }

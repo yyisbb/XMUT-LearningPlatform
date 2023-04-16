@@ -1,8 +1,8 @@
 package cn.edu.xmut.learningplatform.service;
 
-import cn.edu.xmut.learningplatform.model.role;
 import cn.edu.xmut.learningplatform.model.user;
 import cn.edu.xmut.learningplatform.model.userRole;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,5 +15,7 @@ public interface userService {
 
     void register(user user);
 
-    List<userRole> getUserRole(int userId);
+    userRole getUserRole(int userId);
+
+    PageInfo<user> getAllUser(user user);
 }
