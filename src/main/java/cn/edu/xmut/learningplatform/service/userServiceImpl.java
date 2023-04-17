@@ -3,11 +3,11 @@ package cn.edu.xmut.learningplatform.service;
 import cn.edu.xmut.learningplatform.constant.Check;
 import cn.edu.xmut.learningplatform.constant.ErrorCode;
 import cn.edu.xmut.learningplatform.constant.RoleType;
+import cn.edu.xmut.learningplatform.constant.Status;
 import cn.edu.xmut.learningplatform.exception.GlobalException;
 import cn.edu.xmut.learningplatform.model.authCode;
 import cn.edu.xmut.learningplatform.model.user;
 import cn.edu.xmut.learningplatform.mapper.userMapper;
-import cn.edu.xmut.learningplatform.mapper.authCodeMapper;
 import cn.edu.xmut.learningplatform.model.userRole;
 import cn.edu.xmut.learningplatform.utils.JwtUtils;
 import cn.edu.xmut.learningplatform.utils.PropertiesUtil;
@@ -21,13 +21,14 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class userServiceImpl implements userService {
     @Autowired
     private userMapper userMapper;
     @Autowired
-    private authCodeMapper  authCodeMapper;
+    private authCodeService  authCodeService;
 
 
     /**
@@ -48,6 +49,11 @@ public class userServiceImpl implements userService {
         user sqlUser = userMapper.login(user);
         if (sqlUser == null) {
             throw new GlobalException(ErrorCode.USERNAME_OR_PASSWORD_ERROR);
+        }
+
+        //账户禁用
+        if (sqlUser.getStatus()==Status.DISABLE.getStatus()){
+            throw new GlobalException(ErrorCode.ACCOUNT_STATUS_ERROR);
         }
 
         return JwtUtils.createToken(user);
@@ -103,7 +109,7 @@ public class userServiceImpl implements userService {
         user.setCreateTime(new Date());
 
         //查重
-        List<user> dbUser = userMapper.getUserInfoByUserNameAndStuID(user.getUsername(), user.getStudentId());
+        List<user> dbUser = userMapper.getUserInfoByUserNameOrStuID(user.getUsername(), user.getStudentId());
         if (dbUser != null && dbUser.size()!=0) {
             throw new GlobalException(ErrorCode.USER_EXIST_ERROR);
         }
@@ -112,27 +118,35 @@ public class userServiceImpl implements userService {
         //开事务
         transactionTemplate.execute(status -> {
             try {
+                //先注册
                 userMapper.register(user);
                 if (user.getId() == 0) {
                     throw new GlobalException(ErrorCode.REGISTER_ERROR);
                 }
 
+
                 //如果授权码并且存在 就是老师
                 String authCode = user.getAuthCode();
                 if (!StringUtils.isEmpty(authCode)){
-                    authCode code = authCodeMapper.getAuthCodeByCode(authCode);
-                    if (code==null){
+                    authCode code = authCodeService.getAuthCodeByCode(authCode);
+                    //授权码为空或被使用了
+                    if (code == null ||code.getStatus()== Status.ENABLE.getStatus()) {
                         throw new GlobalException(ErrorCode.AUTH_CODE_ERROR);
                     }
                     //授权码不空且存在
                     userMapper.createUserRole(user.getId(), RoleType.TEACHER.getType());
+                    //老师设置院校
+                    user.setSchool(code.getSchool());
+                    //设置老师状态
+                    user.setStatus(Status.ENABLE.getStatus());
+                    userMapper.updateUser(user);
                 }else {
                     //授权码为空是学生
                     userMapper.createUserRole(user.getId(), RoleType.STUDENT.getType());
                 }
 
-                //TODO 用完删除授权码
-
+                //用完禁用授权码
+                authCodeService.updateAuthCode(authCode);
 
 
             } catch (Exception e) {
@@ -154,17 +168,15 @@ public class userServiceImpl implements userService {
         PageHelper.startPage(user.getCurrent(), user.getPageSize());
         List<user> allUser = userMapper.getAllUser(user);
 
-        for (int i = 0; i < allUser.size(); i++) {
-            userRole userRole = getUserRole(allUser.get(i).getId());
-            allUser.get(i).setAccess(userRole);
+        for (user value : allUser) {
+            userRole userRole = getUserRole(value.getId());
+            value.setAccess(userRole);
         }
 
 
         // 封装分页之后的数据  返回给客户端展示  PageInfo做了一些封装 作为一个类
-        PageInfo<user> pageInfo= new PageInfo<user>(allUser);
 
-
-        return pageInfo;
+        return new PageInfo<user>(allUser);
     }
 
 }

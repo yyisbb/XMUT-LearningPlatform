@@ -20,4 +20,8 @@ public interface authCodeService {
      * @return
      */
     authCode getAuthCodeByCode(String code);
+
+    void updateAuthCode(String code);
+
+    void generateAuthCode(authCode authCode);
 }

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/authCode")
 public class authCodeController {
@@ -34,5 +36,28 @@ public class authCodeController {
     @PostMapping("/getAuthCode")
     public ResultUtil<authCode> getAuthCode(@RequestBody authCode authCode){
         return  ResultUtil.success(authCodeService.getAuthCodeByCode(authCode.getCode()));
+    }
+
+    /**
+     * 授权码修改状态
+     * @param authCode
+     * @return
+     */
+    @PostMapping("/updateAuthCode")
+    public ResultUtil<String> updateAuthCode(@RequestBody authCode authCode){
+        authCodeService.updateAuthCode(authCode.getCode());
+        return  ResultUtil.success();
+    }
+
+
+    /**
+     * 生成授权码
+     * @param String
+     * @return
+     */
+    @PostMapping("/generateAuthCode")
+    public ResultUtil<String> generateAuthCode(@RequestBody authCode authCode){
+        authCodeService.generateAuthCode(authCode);
+        return  ResultUtil.success();
     }
 }

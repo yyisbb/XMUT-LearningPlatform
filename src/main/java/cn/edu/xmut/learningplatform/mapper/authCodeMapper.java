@@ -11,11 +11,15 @@ public interface authCodeMapper {
      * 获取所有授权码
      * @return
      */
-    List<authCode> getAllAuthCode();
+    List<authCode> getAllAuthCode(authCode authCode);
 
     /**
      * 获取指定授权码
      * @return
      */
     authCode getAuthCodeByCode(String code);
+
+    int updateAuthCode(authCode authCode);
+
+    void generateAuthCode(List<authCode> authCodeList);
 }

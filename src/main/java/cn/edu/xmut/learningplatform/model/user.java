@@ -76,6 +76,7 @@ public class user implements Serializable {
     private int status;
 
     public int current;
+    public String school;
     public int pageSize;
     public String authCode;
 

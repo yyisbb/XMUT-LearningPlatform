@@ -77,7 +77,10 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
             UserUtil.setLoginUser(user);
 
 
-            //2.开始鉴权RBAC
+            //TODO 暂时返回通过 后面整体做完再开权限
+            return true;
+
+            /*//2.开始鉴权RBAC
             //(1) 查询该用户的角色
             userRole userRole = userService.getUserRole(user.getId());
 
@@ -105,7 +108,7 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
                 }
             }
 
-            throw new AuthException(ErrorCode.PERMISSION_DENIED);
+            throw new AuthException(ErrorCode.PERMISSION_DENIED);*/
         }
 
         return true;

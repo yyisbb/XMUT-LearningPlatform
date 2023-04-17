@@ -19,7 +19,7 @@ public interface userMapper {
 
     void register(user user);
 
-    List<user> getUserInfoByUserNameAndStuID(String username, String studentId);
+    List<user> getUserInfoByUserNameOrStuID(String username, String studentId);
 
     userRole getUserRole(int userId);
 
@@ -29,5 +29,11 @@ public interface userMapper {
      * 新增用户和角色的实体关系
      */
     void createUserRole(int userId, int roleId);
+
+    /**
+     * 修改用户信息
+     * @param user
+     */
+    void updateUser(user user);
 
 }

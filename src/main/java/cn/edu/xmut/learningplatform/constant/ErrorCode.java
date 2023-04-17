@@ -8,6 +8,7 @@ public enum ErrorCode {
     SUCCESS( "成功"),
     //失败500开始
     USERNAME_OR_PASSWORD_ERROR( "用户名或密码错误"),
+    ACCOUNT_STATUS_ERROR( "账户已被禁用"),
     PARAMETER_EMPTY_ERROR("参数不能为空"),
     TOKEN_USER_NOT_FOUND_ERROR( "TOKEN校验失败,用户不存在"),
     PERMISSION_DENIED( "权限不足,拒绝访问"),
@@ -20,7 +21,10 @@ public enum ErrorCode {
     USER_EXIST_ERROR( "用户已存在,请更换学号或用户名"),
     REGISTER_ERROR("注册失败"),
     AUTH_CODE_EMPTY_ERROR("参数有误,授权码为空"),
-    AUTH_CODE_ERROR("授权码错误或不存在"),
+    AUTH_CODE_SCHOOL_COUNT_EMPTY_ERROR("参数有误,授权码院校名或数量有误"),
+    AUTH_CODE_ERROR("授权码不存在||错误||已使用"),
+    SCHOOL_FORMAT_ERROR( "院校名格式错误，院校名必须是纯中文。"),
+    SQL_ERROR("SQL有误"),
     ;
 
     private final String message;

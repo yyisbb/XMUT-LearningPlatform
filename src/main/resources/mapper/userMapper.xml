@@ -9,11 +9,11 @@
     </select>
 
     <select id="getUserInfoByUserName" resultType="user">
-        SELECT id,username , name ,email,studentID ,createTime,updateTime FROM `user`  where `username` = #{username};
+        SELECT id,username , name,school ,email,studentID ,createTime,updateTime FROM `user`  where `username` = #{username};
     </select>
 
-    <select id="getUserInfoByUserNameAndStuID" resultType="user">
-        SELECT id,username , name ,email,studentId ,createTime,updateTime FROM `user`  where `username` = #{username} and `studentId` = #{studentId};
+    <select id="getUserInfoByUserNameOrStuID" resultType="user">
+        SELECT id,username , name,school ,email,studentId ,createTime,updateTime FROM `user`  where `username` = #{username} or `studentId` = #{studentId};
     </select>
 
     <insert id="register" useGeneratedKeys="true" keyProperty="id" parameterType="user">
@@ -27,7 +27,7 @@
 
 
     <select id="getAllUser" resultType="user">
-        SELECT id, username, name, email, createTime, updateTime
+        SELECT id, username, name, email, createTime, updateTime,school,status
         FROM user
         WHERE 1=1
         <if test="id != null">
@@ -48,4 +48,20 @@
     <insert id="createUserRole">
         INSERT INTO user_role(user_id, role_id) VALUES (#{userId}, #{roleId})
     </insert>
+
+
+    <update id="updateUser" >
+        update `user`
+        <set>
+            <if test="username != null">`username` = #{username},</if>
+            <if test="password != null">`password` = #{password},</if>
+            <if test="name != null">`name` = #{name},</if>
+            <if test="school != null">`school` = #{school},</if>
+            <if test="email != null">`email` = #{email},</if>
+            <if test="studentId != null">`studentId` = #{studentId},</if>
+            <if test="updateTime != null">`updateTime` = #{updateTime},</if>
+            <if test="status != null">`status` = #{status},</if>
+        </set>
+        where `id` = #{id}
+    </update>
 </mapper>

@@ -4,13 +4,39 @@
 
 <mapper namespace="cn.edu.xmut.learningplatform.mapper.authCodeMapper">
     <select id="getAllAuthCode" resultType="authCode">
-        SELECT id, code, school
+        SELECT id, code, school,createTime,updateTime,status
         FROM auth_code
+        WHERE 1=1
+        <if test="id != null">
+            AND id LIKE CONCAT('%', #{id}, '%')
+        </if>
+        <if test="code != null">
+            AND code LIKE CONCAT('%', #{code}, '%')
+        </if>
+        <if test="school != null">
+            AND school LIKE CONCAT('%', #{school}, '%')
+        </if>
+        order by status asc
     </select>
 
     <select id="getAuthCodeByCode" resultType="authCode">
-        SELECT id, code, school
+        SELECT id, code, school,createTime,updateTime,status
         FROM auth_code where code = #{code}
     </select>
 
+
+    <update id="updateAuthCode">
+        update auth_code
+        set status = 1,updateTime=#{updateTime}
+        where code = #{code}
+    </update>
+
+
+    <insert id="generateAuthCode" parameterType="java.util.List">
+        insert into `auth_code`(code, school, createTime)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.code}, #{item.school}, #{item.createTime})
+        </foreach>
+    </insert>
 </mapper>
