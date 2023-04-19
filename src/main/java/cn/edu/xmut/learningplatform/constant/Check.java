@@ -6,4 +6,6 @@ public class Check {
     public static final String NAME_REGEX = "^[\\u4e00-\\u9fa5]{0,}$";
     public static final String USERNAME_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{6,16}$";
     public static final String STUDENT_ID__REGEX = "^\\d{10}$";
+    public static final String HTTP_METHOD_REGEX = "^(GET|POST|PUT|DELETE|HEAD|OPTIONS|PATCH)$";
+    public static final String URL_REGEX = "^(\\/\\S*)+$";
 }

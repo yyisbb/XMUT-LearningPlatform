@@ -46,4 +46,11 @@ public class userController {
     public ResultUtil<userRole> getUserRole() {
         return ResultUtil.success(userService.getUserRole(UserUtil.getLoginUser().getId()));
     }
+
+
+    @PostMapping("/updateStatus")
+    public ResultUtil<String> updateStatus(@RequestBody user user) {
+        userService.updateStatus(user.getUsername());
+        return ResultUtil.success();
+    }
 }

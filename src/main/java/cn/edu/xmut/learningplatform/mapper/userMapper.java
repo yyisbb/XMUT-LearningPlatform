@@ -1,5 +1,6 @@
 package cn.edu.xmut.learningplatform.mapper;
 
+import cn.edu.xmut.learningplatform.model.role;
 import cn.edu.xmut.learningplatform.model.user;
 import cn.edu.xmut.learningplatform.model.userRole;
 import org.apache.ibatis.annotations.Mapper;
@@ -36,4 +37,6 @@ public interface userMapper {
      */
     void updateUser(user user);
 
+
+    List<user> getUserListByRole(int roleId);
 }

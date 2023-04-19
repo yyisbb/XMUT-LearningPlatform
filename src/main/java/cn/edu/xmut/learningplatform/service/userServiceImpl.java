@@ -18,10 +18,10 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
+import org.springframework.util.ObjectUtils;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class userServiceImpl implements userService {
@@ -177,6 +177,22 @@ public class userServiceImpl implements userService {
         // 封装分页之后的数据  返回给客户端展示  PageInfo做了一些封装 作为一个类
 
         return new PageInfo<user>(allUser);
+    }
+
+    @Override
+    public void updateStatus(String username) {
+        user user = userMapper.getUserInfoByUserName(username);
+        if (ObjectUtils.isEmpty(user)){
+            throw new GlobalException(ErrorCode.USER_EMPTY_ERROR);
+        }
+
+        if (user.getStatus()==Status.ENABLE.getStatus()){
+            user.setStatus(Status.DISABLE.getStatus());
+        }else {
+            user.setStatus(Status.ENABLE.getStatus());
+        }
+
+        userMapper.updateUser(user);
     }
 
 }

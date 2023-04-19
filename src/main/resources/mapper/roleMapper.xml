@@ -18,6 +18,10 @@
         </if>
     </select>
 
+    <select id="getRoleBySn" resultType="role">
+        SELECT id, name, sn, createTime, updateTime
+        FROM role where sn=#{sn}
+    </select>
 
     <select id="getRolePermissionList" resultType="rolePermission">
         SELECT
@@ -29,5 +33,23 @@
         FROM role,role_permission,permission
         WHERE role.id = role_permission.role_id AND permission.id = role_permission.permission_id
           AND role.id = #{roleId}
+    </select>
+
+
+
+    <insert id="createRole" useGeneratedKeys="true" keyProperty="id" parameterType="role">
+        insert into `role`(name, sn, createTime)
+        values (#{name}, #{sn}, #{createTime})
+    </insert>
+
+    <delete id="deleteRole">
+        DELETE FROM `role` WHERE sn = #{sn}
+    </delete>
+
+
+    <select id="getRoleListByPermission" resultType="role">
+        SELECT role.* FROM role,permission,role_permission
+        WHERE role.id = role_permission.role_id AND permission.id = role_permission.permission_id
+          AND role_permission.permission_id = #{permissionId}
     </select>
 </mapper>

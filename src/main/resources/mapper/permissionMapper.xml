@@ -20,4 +20,27 @@
             AND UPPER(method) LIKE CONCAT('%', #{method}, '%')
         </if>
     </select>
+
+    <insert id="createPermission" useGeneratedKeys="true" keyProperty="id" parameterType="role">
+        insert into `permission`(name, url,method, createTime)
+        values (#{name}, #{url},#{method}, #{createTime})
+    </insert>
+
+    <select id="getPermission" resultType="permission">
+        SELECT id, name, url,method,createTime, updateTime
+        FROM permission
+        where url = #{url}
+          and method = #{method}
+    </select>
+
+
+    <select id="getPermissionByPermissionId" resultType="permission">
+        SELECT id, name, url,method,createTime, updateTime
+        FROM permission
+        where id = #{permissionId}
+    </select>
+
+    <delete id="deletePermission">
+        DELETE FROM `permission` WHERE id = #{permissionId}
+    </delete>
 </mapper>

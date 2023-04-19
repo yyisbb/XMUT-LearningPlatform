@@ -16,4 +16,8 @@ public interface roleService {
     PageInfo<role> getRoleList(role role);
 
     List<rolePermission> getRolePermissionList(int roleId);
+
+    void createRole(role role);
+
+    void deleteRole(role role);
 }

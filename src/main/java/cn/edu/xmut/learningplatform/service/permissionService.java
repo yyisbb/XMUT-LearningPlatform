@@ -13,4 +13,8 @@ public interface permissionService {
      * @return
      */
     PageInfo<permission> getPermissionList(permission permission);
+
+    void createPermission(permission permission);
+
+    void deletePermission(permission permission);
 }

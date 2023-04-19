@@ -34,4 +34,28 @@ public class roleController {
         return ResultUtil.success(roleService.getRolePermissionList(roleId));
     }
 
+
+    /**
+     * 新增角色
+     * @param role
+     * @return
+     */
+    @PostMapping("/createRole")
+    public ResultUtil<String> createRole(@RequestBody role role) {
+        roleService.createRole(role);
+        return ResultUtil.success();
+    }
+
+
+    /**
+     * 删除角色
+     * @param role
+     * @return
+     */
+    @PostMapping("/deleteRole")
+    public ResultUtil<String> deleteRole(@RequestBody role role) {
+        roleService.deleteRole(role);
+        return ResultUtil.success();
+    }
+
 }

@@ -5,24 +5,56 @@
 <mapper namespace="cn.edu.xmut.learningplatform.mapper.userMapper">
 
     <select id="login" resultType="user">
-        select * from user where `username` = #{username} and `password` = #{password};
+        select *
+        from user
+        where `username` = #{username}
+          and `password` = #{password};
     </select>
 
     <select id="getUserInfoByUserName" resultType="user">
-        SELECT id,username , name,school ,email,studentID ,createTime,updateTime FROM `user`  where `username` = #{username};
+        SELECT id,
+               username,
+               name,
+               school,
+               email,
+               studentID,
+               createTime,
+               updateTime,
+               school,
+               status
+        FROM `user`
+        where `username` = #{username};
     </select>
 
     <select id="getUserInfoByUserNameOrStuID" resultType="user">
-        SELECT id,username , name,school ,email,studentId ,createTime,updateTime FROM `user`  where `username` = #{username} or `studentId` = #{studentId};
+        SELECT id,
+               username,
+               name,
+               school,
+               email,
+               studentId,
+               createTime,
+               updateTime,
+               school,
+               status
+        FROM `user`
+        where `username` = #{username}
+           or `studentId` = #{studentId};
     </select>
 
     <insert id="register" useGeneratedKeys="true" keyProperty="id" parameterType="user">
-        insert into `user`(username, password, studentId, name,createTime,email)
-        values (#{username}, #{password}, #{studentId}, #{name},#{createTime},#{email})
+        insert into `user`(username, password, studentId, name, createTime, email)
+        values (#{username}, #{password}, #{studentId}, #{name}, #{createTime}, #{email})
     </insert>
 
     <select id="getUserRole" resultType="userRole">
-        SELECT  role.id as roleId, role.`name` as roleName , role.sn as roleSn FROM user_role,`user`,role WHERE  user_role.role_id = role.id and user_role.user_id = `user`.id AND `user`.id = #{userId}
+        SELECT role.id as roleId, role.`name` as roleName, role.sn as roleSn
+        FROM user_role,
+             `user`,
+             role
+        WHERE user_role.role_id = role.id
+          and user_role.user_id = `user`.id
+          AND `user`.id = #{userId}
     </select>
 
 
@@ -46,11 +78,12 @@
 
 
     <insert id="createUserRole">
-        INSERT INTO user_role(user_id, role_id) VALUES (#{userId}, #{roleId})
+        INSERT INTO user_role(user_id, role_id)
+        VALUES (#{userId}, #{roleId})
     </insert>
 
 
-    <update id="updateUser" >
+    <update id="updateUser">
         update `user`
         <set>
             <if test="username != null">`username` = #{username},</if>
@@ -64,4 +97,16 @@
         </set>
         where `id` = #{id}
     </update>
+
+
+    <select id="getUserListByRole" resultType="user">
+        SELECT `user`.*
+        FROM `user`,
+             role,
+             user_role
+        WHERE `user`.id = user_role.user_id
+          AND role.id = user_role.role_id
+          AND role_id = #{roleId}
+    </select>
+
 </mapper>

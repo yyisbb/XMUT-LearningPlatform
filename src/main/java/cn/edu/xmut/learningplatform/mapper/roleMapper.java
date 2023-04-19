@@ -14,4 +14,13 @@ public interface roleMapper {
     List<role> getRoleList(role role);
 
     List<rolePermission> getRolePermissionList(int roleId);
+
+    void createRole(role role);
+
+
+    role getRoleBySn(String sn);
+
+    int deleteRole(role role);
+
+    List<role> getRoleListByPermission(int permissionId);
 }

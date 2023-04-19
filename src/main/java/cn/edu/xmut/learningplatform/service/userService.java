@@ -18,4 +18,6 @@ public interface userService {
     userRole getUserRole(int userId);
 
     PageInfo<user> getAllUser(user user);
+
+    void updateStatus(String username);
 }

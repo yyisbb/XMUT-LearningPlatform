@@ -28,4 +28,28 @@ public class permissionController {
     public ResultUtil<PageInfo<permission>> getPermissionList(@RequestBody permission permission){
         return  ResultUtil.success(permissionService.getPermissionList(permission));
     }
+
+
+    /**
+     * 新增权限
+     * @param permission
+     * @return
+     */
+    @PostMapping("/createPermission")
+    public ResultUtil<String> createPermission(@RequestBody permission permission) {
+        permissionService.createPermission(permission);
+        return ResultUtil.success();
+    }
+
+
+    /**
+     * 删除权限
+     * @param permission
+     * @return
+     */
+    @PostMapping("/deletePermission")
+    public ResultUtil<String> deletePermission(@RequestBody permission permission) {
+        permissionService.deletePermission(permission);
+        return ResultUtil.success();
+    }
 }
