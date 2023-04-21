@@ -7,17 +7,22 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import cn.edu.xmut.learningplatform.dto.permissionList;
+
 @Repository
 public interface roleService {
     /**
      * 查询所有角色列表
+     *
      * @return
      */
     PageInfo<role> getRoleList(role role);
 
-    List<rolePermission> getRolePermissionList(int roleId);
+    permissionList getRolePermissionList(int roleId);
 
     void createRole(role role);
 
     void deleteRole(role role);
+
+    void insertRolePermissions(Integer roleId,String[] permissionIds);
 }

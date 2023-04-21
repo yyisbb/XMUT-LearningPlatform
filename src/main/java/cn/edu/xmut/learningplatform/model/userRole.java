@@ -34,4 +34,9 @@ public class userRole implements Serializable {
      */
     private String roleSn;
 
+
+    /**
+     * 用户Id
+     */
+    private Integer userId;
 }

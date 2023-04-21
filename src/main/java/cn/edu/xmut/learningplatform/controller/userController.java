@@ -1,6 +1,7 @@
 package cn.edu.xmut.learningplatform.controller;
 
 import cn.edu.xmut.learningplatform.annotation.AuthPass;
+import cn.edu.xmut.learningplatform.dto.rolePermission;
 import cn.edu.xmut.learningplatform.model.user;
 import cn.edu.xmut.learningplatform.model.userRole;
 import cn.edu.xmut.learningplatform.service.userService;
@@ -51,6 +52,17 @@ public class userController {
     @PostMapping("/updateStatus")
     public ResultUtil<String> updateStatus(@RequestBody user user) {
         userService.updateStatus(user.getUsername());
+        return ResultUtil.success();
+    }
+
+    /**
+     * 修改用户角色
+     * @param userRole
+     * @return
+     */
+    @PostMapping("/insertUserRole")
+    public ResultUtil<String> insertUserRole(@RequestBody userRole userRole){
+        userService.insertUserRole(userRole.getUserId(),userRole.getRoleId());
         return ResultUtil.success();
     }
 }

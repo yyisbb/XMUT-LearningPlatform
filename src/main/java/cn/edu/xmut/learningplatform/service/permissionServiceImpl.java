@@ -27,7 +27,9 @@ public class permissionServiceImpl implements permissionService {
 
     @Override
     public PageInfo<permission> getPermissionList(permission permission) {
-        PageHelper.startPage(permission.getCurrent(), permission.getPageSize());
+        if (permission.getCurrent()!=0&&permission.getPageSize()!=0){
+            PageHelper.startPage(permission.getCurrent(), permission.getPageSize());
+        }
         List<permission> allPermission = permissionMapper.getPermissionList(permission);
         return new PageInfo<>(allPermission);
     }

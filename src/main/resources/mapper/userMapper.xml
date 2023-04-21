@@ -26,6 +26,22 @@
         where `username` = #{username};
     </select>
 
+
+    <select id="getUserInfoByUserId" resultType="user">
+        SELECT id,
+               username,
+               name,
+               school,
+               email,
+               studentID,
+               createTime,
+               updateTime,
+               school,
+               status
+        FROM `user`
+        where `id` = #{userId};
+    </select>
+
     <select id="getUserInfoByUserNameOrStuID" resultType="user">
         SELECT id,
                username,
@@ -108,5 +124,10 @@
           AND role.id = user_role.role_id
           AND role_id = #{roleId}
     </select>
+
+
+    <delete id="deleteUserRoleByUserId" parameterType="int">
+        DELETE FROM user_role WHERE user_id = #{userId}
+    </delete>
 
 </mapper>

@@ -13,6 +13,8 @@ public interface userService {
 
     user getUserByUserName(String username);
 
+    user getUserByUserId(Integer userId);
+
     void register(user user);
 
     userRole getUserRole(int userId);
@@ -20,4 +22,7 @@ public interface userService {
     PageInfo<user> getAllUser(user user);
 
     void updateStatus(String username);
+
+    void insertUserRole(Integer userId, Integer roleId);
+
 }

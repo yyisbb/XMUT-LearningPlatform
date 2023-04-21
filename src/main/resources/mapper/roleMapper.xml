@@ -23,16 +23,47 @@
         FROM role where sn=#{sn}
     </select>
 
-    <select id="getRolePermissionList" resultType="rolePermission">
+    <select id="getRoleByID" resultType="role">
+        SELECT id, name, sn, createTime, updateTime
+        FROM role where id=#{id}
+    </select>
+
+    <select id="getRoleAllowPermissionList" resultType="permission">
         SELECT
-            role.`name` as roleName ,
-            role.sn as roleSn,
-            permission.method as requestMethod,
-            permission.`name` as permissionName,
-            permission.url AS requestUrl
-        FROM role,role_permission,permission
-        WHERE role.id = role_permission.role_id AND permission.id = role_permission.permission_id
+            permission.id,
+            permission.method,
+            permission.`name`,
+            permission.url
+        FROM
+            role,
+            role_permission,
+            permission
+        WHERE
+            role.id = role_permission.role_id
+          AND permission.id = role_permission.permission_id
           AND role.id = #{roleId}
+    </select>
+
+    <select id="getRoleNotAllowPermissionList" resultType="permission">
+        SELECT
+            permission.id,
+            permission.method,
+            permission.`name`,
+            permission.url
+        FROM
+            permission
+                LEFT JOIN (
+                SELECT
+                    permission.id
+                FROM
+                    role
+                        INNER JOIN role_permission ON role.id = role_permission.role_id
+                        INNER JOIN permission ON permission.id = role_permission.permission_id
+                WHERE
+                    role.id = #{roleId}
+            ) AS rp ON permission.id = rp.id
+        WHERE
+            rp.id IS NULL;
     </select>
 
 
@@ -52,4 +83,22 @@
         WHERE role.id = role_permission.role_id AND permission.id = role_permission.permission_id
           AND role_permission.permission_id = #{permissionId}
     </select>
+
+
+    <insert id="insertRolePermissions" parameterType="map">
+        INSERT INTO role_permission (role_id, permission_id)
+        VALUES
+        <foreach item="permissionId" collection="permissionIds" separator=",">
+            <if test="permissionId != null">
+                (#{roleId}, #{permissionId})
+            </if>
+        </foreach>
+    </insert>
+
+
+    <delete id="deletePermissionsByRoleId" parameterType="int">
+        DELETE FROM role_permission WHERE role_id = #{roleId}
+    </delete>
+
+
 </mapper>

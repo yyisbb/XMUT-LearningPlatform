@@ -4,6 +4,9 @@ import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.UUID;
 
+/**
+ * @author zwj
+ */
 public class RandomStringUtil {
     public static String generateRandomString(int length) {
         SecureRandom random = new SecureRandom();

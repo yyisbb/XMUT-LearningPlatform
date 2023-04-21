@@ -25,8 +25,9 @@ public enum ErrorCode {
     PERMISSION_NAME_FORMAT_ERROR( "权限名格式错误，权限名必须是纯中文。"),
     PERMISSION_METHOD_FORMAT_ERROR( "HTTP请求方法格式错误，必须符合HTTP请求方法"),
     PERMISSION_URL_FORMAT_ERROR( "URL格式错误"),
-    ROLE_EXIST_ERROR( "角色已存在,请更换角色SN"),
-    ROLE_NOT_EXIST_ERROR( "角色不存在,请更换角色SN"),
+    ROLE_EXIST_ERROR( "角色已存在,请更换角色SN/ID"),
+    ROLE_NOT_EXIST_ERROR( "角色不存在,请更换角色SN/ID"),
+    USER_NOT_EXIST_ERROR( "用户不存在"),
     PERMISSION_NOT_EXIST_ERROR( "权限不存在"),
     PERMISSION_EXIST_ERROR( "权限已存在"),
     ROLE_EXIST_PERMISSION_ERROR( "角色存在权限或用户关联,无法删除"),
@@ -36,6 +37,7 @@ public enum ErrorCode {
     AUTH_CODE_ERROR("授权码不存在||错误||已使用"),
     SCHOOL_FORMAT_ERROR( "院校名格式错误，院校名必须是纯中文。"),
     SQL_ERROR("SQL有误"),
+    UPLOAD_ERROR("文件上传失败"),
     ;
 
     private final String message;

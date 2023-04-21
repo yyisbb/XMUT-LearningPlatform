@@ -62,6 +62,21 @@ public class userServiceImpl implements userService {
     @Override
     public user getUserByUserName(String username) {
         user user = userMapper.getUserInfoByUserName(username);
+        if (user==null||user.getId()==0){
+            throw new GlobalException(ErrorCode.USER_EMPTY_ERROR);
+        }
+        //查询角色
+        userRole role = userMapper.getUserRole(user.getId());
+        user.setAccess(role);
+        return user;
+    }
+
+    @Override
+    public user getUserByUserId(Integer userId) {
+        user user = userMapper.getUserInfoByUserId(userId);
+        if (user==null||user.getId()==0){
+            throw new GlobalException(ErrorCode.USER_EMPTY_ERROR);
+        }
         //查询角色
         userRole role = userMapper.getUserRole(user.getId());
         user.setAccess(role);
@@ -140,14 +155,13 @@ public class userServiceImpl implements userService {
                     //设置老师状态
                     user.setStatus(Status.ENABLE.getStatus());
                     userMapper.updateUser(user);
+
+                    //用完禁用授权码
+                    authCodeService.updateAuthCode(authCode);
                 }else {
                     //授权码为空是学生
                     userMapper.createUserRole(user.getId(), RoleType.STUDENT.getType());
                 }
-
-                //用完禁用授权码
-                authCodeService.updateAuthCode(authCode);
-
 
             } catch (Exception e) {
                 status.setRollbackOnly();
@@ -193,6 +207,34 @@ public class userServiceImpl implements userService {
         }
 
         userMapper.updateUser(user);
+    }
+
+    @Override
+    public void insertUserRole(Integer userId, Integer roleId) {
+        if (userId==0||roleId==0){
+            throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
+        }
+
+        //查询用户是否存在
+        user sqlUser = userMapper.getUserInfoByUserId(userId);
+        if (ObjectUtils.isEmpty(sqlUser)) {
+            throw new GlobalException(ErrorCode.USER_NOT_EXIST_ERROR);
+        }
+
+        //开事务
+        transactionTemplate.execute(status -> {
+            try {
+                //删除用户角色
+                userMapper.deleteUserRoleByUserId(userId);
+                sqlUser.setUpdateTime(new Date());
+                userMapper.updateUser(sqlUser);
+                userMapper.createUserRole(userId,roleId);
+            } catch (Exception e) {
+                status.setRollbackOnly();
+                throw e;
+            }
+            return null;
+        });
     }
 
 }

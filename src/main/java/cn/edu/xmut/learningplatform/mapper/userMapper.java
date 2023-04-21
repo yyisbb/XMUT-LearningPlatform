@@ -4,6 +4,7 @@ import cn.edu.xmut.learningplatform.model.role;
 import cn.edu.xmut.learningplatform.model.user;
 import cn.edu.xmut.learningplatform.model.userRole;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ public interface userMapper {
     user login(user user);
 
     user getUserInfoByUserName(String username);
+    user getUserInfoByUserId(Integer userId);
 
     void register(user user);
 
@@ -39,4 +41,7 @@ public interface userMapper {
 
 
     List<user> getUserListByRole(int roleId);
+
+
+    void deleteUserRoleByUserId(@Param("userId") int userId);
 }
