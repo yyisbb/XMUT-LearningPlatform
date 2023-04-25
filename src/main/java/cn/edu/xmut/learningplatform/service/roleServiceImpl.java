@@ -81,8 +81,6 @@ public class roleServiceImpl implements roleService {
             throw new GlobalException(ErrorCode.ROLE_NAME_FORMAT_ERROR);
         }
 
-        role.setCreateTime(new Date());
-
         //查询是否存在
         role roleBySn = roleMapper.getRoleBySn(role.getSn());
         if (!ObjectUtils.isEmpty(roleBySn)) {

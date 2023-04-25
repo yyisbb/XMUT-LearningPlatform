@@ -59,8 +59,8 @@
     </select>
 
     <insert id="register" useGeneratedKeys="true" keyProperty="id" parameterType="user">
-        insert into `user`(username, password, studentId, name, createTime, email)
-        values (#{username}, #{password}, #{studentId}, #{name}, #{createTime}, #{email})
+        insert into `user`(username, password, studentId, name,  email)
+        values (#{username}, #{password}, #{studentId}, #{name}, #{email})
     </insert>
 
     <select id="getUserRole" resultType="userRole">
@@ -108,8 +108,8 @@
             <if test="school != null">`school` = #{school},</if>
             <if test="email != null">`email` = #{email},</if>
             <if test="studentId != null">`studentId` = #{studentId},</if>
-            <if test="updateTime != null">`updateTime` = #{updateTime},</if>
             <if test="status != null">`status` = #{status},</if>
+            updateTime = now()
         </set>
         where `id` = #{id}
     </update>

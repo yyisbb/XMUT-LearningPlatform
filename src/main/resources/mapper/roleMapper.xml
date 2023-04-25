@@ -69,8 +69,8 @@
 
 
     <insert id="createRole" useGeneratedKeys="true" keyProperty="id" parameterType="role">
-        insert into `role`(name, sn, createTime)
-        values (#{name}, #{sn}, #{createTime})
+        insert into `role`(name, sn)
+        values (#{name}, #{sn})
     </insert>
 
     <delete id="deleteRole">

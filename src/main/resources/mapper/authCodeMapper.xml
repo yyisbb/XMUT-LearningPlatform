@@ -27,16 +27,16 @@
 
     <update id="updateAuthCode">
         update auth_code
-        set status = 1,updateTime=#{updateTime}
+        set status = 1, updateTime= now()
         where code = #{code}
     </update>
 
 
     <insert id="generateAuthCode" parameterType="java.util.List">
-        insert into `auth_code`(code, school, createTime)
+        insert into `auth_code`(code, school)
         values
         <foreach collection="list" item="item" separator=",">
-            (#{item.code}, #{item.school}, #{item.createTime})
+            (#{item.code}, #{item.school})
         </foreach>
     </insert>
 </mapper>

@@ -38,6 +38,12 @@ public enum ErrorCode {
     SCHOOL_FORMAT_ERROR( "院校名格式错误，院校名必须是纯中文。"),
     SQL_ERROR("SQL有误"),
     UPLOAD_ERROR("文件上传失败"),
+    GET_FILE_ERROR("获取文件失败"),
+    COURSE_EMPTY_ERROR("课程不存在"),
+    CHAPTER_EMPTY_ERROR("课程不存在"),
+    TASK_EMPTY_ERROR("任务点不存在"),
+    PREVIEW_EXIST_ERROR("预习已存在,无法添加新预习"),
+    TASK_NOT_EMPTY_EMPTY_ERROR("章节存在任务点,无法删除"),
     ;
 
     private final String message;

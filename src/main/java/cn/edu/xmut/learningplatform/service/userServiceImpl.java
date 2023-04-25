@@ -121,7 +121,6 @@ public class userServiceImpl implements userService {
 
         //将加密后的子串作为密码
         user.setPassword(SecuritySM4.EncryptStr(user.getPassword(), PropertiesUtil.getSm4Secret()));
-        user.setCreateTime(new Date());
 
         //查重
         List<user> dbUser = userMapper.getUserInfoByUserNameOrStuID(user.getUsername(), user.getStudentId());
@@ -226,7 +225,6 @@ public class userServiceImpl implements userService {
             try {
                 //删除用户角色
                 userMapper.deleteUserRoleByUserId(userId);
-                sqlUser.setUpdateTime(new Date());
                 userMapper.updateUser(sqlUser);
                 userMapper.createUserRole(userId,roleId);
             } catch (Exception e) {

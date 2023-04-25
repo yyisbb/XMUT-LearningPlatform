@@ -12,4 +12,12 @@ public interface courseService {
     PageInfo<course>  getAllCourse(course course);
 
     PageInfo<course> getTeacherAllCourse(course course);
+
+    void addCourse(course course);
+
+
+    /**
+     * 查询指定课程ID的课程
+     */
+    course getCourseByCourseId(course course);
 }

@@ -22,8 +22,8 @@
     </select>
 
     <insert id="createPermission" useGeneratedKeys="true" keyProperty="id" parameterType="role">
-        insert into `permission`(name, url,method, createTime)
-        values (#{name}, #{url},#{method}, #{createTime})
+        insert into `permission`(name, url,method)
+        values (#{name}, #{url},#{method})
     </insert>
 
     <select id="getPermission" resultType="permission">

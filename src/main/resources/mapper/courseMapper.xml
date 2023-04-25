@@ -38,4 +38,18 @@
         </if>
         AND userId = #{userId}
     </select>
+
+
+    <insert id="addCourse" useGeneratedKeys="true" keyProperty="id" parameterType="course">
+        INSERT INTO `course` (
+            `name`, `cover`, `startTime`, `endTime`, `description`, `userId`
+        ) VALUES (
+                     #{name}, #{cover}, #{startTime}, #{endTime}, #{description}, #{userId}
+                 )
+    </insert>
+
+
+    <select id="getCourseByCourseId" resultType="course">
+        SELECT * FROM course WHERE id = #{courseId}
+    </select>
 </mapper>

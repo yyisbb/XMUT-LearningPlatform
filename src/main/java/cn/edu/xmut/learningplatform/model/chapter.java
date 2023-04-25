@@ -1,31 +1,27 @@
 package cn.edu.xmut.learningplatform.model;
 
-import java.util.Date;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class course {
+public class chapter {
     private Integer id;
     private String name;
-    private String cover;
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date startTime;
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date endTime;
-    private String description;
-    private Integer userId;
+    private Integer courseId;
+    private String pptUrl;
+    private String viewPPtUrl;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
+
+    private List<task> taskList;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
-
-    public Integer current;
-    public Integer pageSize;
 }
 

@@ -29,6 +29,15 @@ public class courseController {
     }
 
 
+
+    /**
+     * 查询指定课程ID的课程
+     */
+    @PostMapping("/getCourseByCourseId")
+    public ResultUtil<course> getCourseByCourseId(@RequestBody course course) {
+        return ResultUtil.success(courseService.getCourseByCourseId(course));
+    }
+
     /**
      * 查询指定老师的课程
      */
@@ -40,4 +49,16 @@ public class courseController {
         userDTO.setUser(userService.getUserByUserId(course.getUserId()));
         return ResultUtil.success(userDTO);
     }
+
+
+    /**
+     * 添加课程
+     */
+    @PostMapping("/addCourse")
+    public ResultUtil<String> addCourse(@RequestBody course course) {
+        courseService.addCourse(course);
+        return ResultUtil.success();
+    }
+
+
 }

@@ -55,7 +55,6 @@ public class permissionServiceImpl implements permissionService {
             throw new GlobalException(ErrorCode.PERMISSION_METHOD_FORMAT_ERROR);
         }
 
-        permission.setCreateTime(new Date());
 
         //查询是否存在
         permission sqlPermission = permissionMapper.getPermission(permission);

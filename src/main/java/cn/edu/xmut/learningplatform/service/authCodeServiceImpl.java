@@ -49,9 +49,6 @@ public class authCodeServiceImpl implements authCodeService {
             throw new GlobalException(ErrorCode.AUTH_CODE_ERROR);
         }
 
-        //设置修改时间
-        authCode.setUpdateTime(new Date());
-
         if (authCodeMapper.updateAuthCode(authCode) == 0) {
             throw new GlobalException(ErrorCode.SQL_ERROR);
         }
@@ -71,7 +68,7 @@ public class authCodeServiceImpl implements authCodeService {
         }
         List<authCode> authCodeList = new LinkedList<>();
         for (int i = 0; i < authCode.getCount(); i++) {
-            authCodeList.add(new authCode(null, RandomStringUtil.generateRandomString(8), authCode.getSchool(), new Date(), null, null, null, null, null));
+            authCodeList.add(new authCode(null, RandomStringUtil.generateRandomString(8), authCode.getSchool(), null, null, null, null, null, null));
         }
 
         authCodeMapper.generateAuthCode(authCodeList);

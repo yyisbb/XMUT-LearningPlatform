@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.edu.xmut.learningplatform.mapper.taskMapper">
+    <select id="getAllTaskByChapterId" resultType="task">
+        SELECT * FROM task WHERE chapterId = #{chapterId}
+    </select>
+
+    <insert id="addTask" useGeneratedKeys="true" keyProperty="id" parameterType="task">
+        INSERT INTO `task` (`name`, `chapterId`)
+        VALUES (
+                   #{name},
+                   #{chapterId}
+               )
+    </insert>
+
+
+    <select id="getTaskById" resultType="task">
+        select *
+        from task
+        where id = #{id}
+        ;
+    </select>
+
+    <update id="updateTask" parameterType="task">
+        UPDATE task
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="videoUrl != null">
+                videoUrl = #{videoUrl},
+            </if>
+            updateTime = now()
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteTask" parameterType="int">
+        DELETE FROM `task` WHERE id = #{id}
+    </delete>
+</mapper>
