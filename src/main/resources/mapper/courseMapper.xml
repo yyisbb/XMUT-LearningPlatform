@@ -42,9 +42,9 @@
 
     <insert id="addCourse" useGeneratedKeys="true" keyProperty="id" parameterType="course">
         INSERT INTO `course` (
-            `name`, `cover`, `startTime`, `endTime`, `description`, `userId`
+            `name`, `cover`, `startTime`, `endTime`, `description`, `userId`,`courseCode`
         ) VALUES (
-                     #{name}, #{cover}, #{startTime}, #{endTime}, #{description}, #{userId}
+                     #{name}, #{cover}, #{startTime}, #{endTime}, #{description}, #{userId},#{courseCode}
                  )
     </insert>
 

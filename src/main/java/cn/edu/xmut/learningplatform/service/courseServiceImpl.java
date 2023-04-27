@@ -6,6 +6,7 @@ import cn.edu.xmut.learningplatform.exception.GlobalException;
 import cn.edu.xmut.learningplatform.mapper.authCodeMapper;
 import cn.edu.xmut.learningplatform.model.course;
 import cn.edu.xmut.learningplatform.mapper.courseMapper;
+import cn.edu.xmut.learningplatform.utils.RandomStringUtil;
 import cn.edu.xmut.learningplatform.utils.UserUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -57,6 +58,9 @@ public class courseServiceImpl implements courseService {
 
         //添加课程
         course.setUserId(UserUtil.getLoginUser().getId());
+        //生成随机课程码
+        course.setCourseCode(RandomStringUtil.generateRandomString(8));
+        //生成随机课程码
         courseMapper.addCourse(course);
 
         if (ObjectUtils.isEmpty(course)||course.getId()==0){
@@ -84,6 +88,7 @@ public class courseServiceImpl implements courseService {
         if (ObjectUtils.isEmpty(sqlCourse)){
             throw new GlobalException(ErrorCode.COURSE_EMPTY_ERROR);
         }
+
 
         return sqlCourse;
     }
