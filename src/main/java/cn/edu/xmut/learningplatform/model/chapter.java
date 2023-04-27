@@ -14,7 +14,7 @@ import java.util.List;
 public class chapter {
     private Integer id;
     private String name;
-    private Integer courseId;
+    private String courseGroupId;
     private String pptUrl;
     private String viewPPtUrl;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

@@ -42,6 +42,7 @@ public enum ErrorCode {
     COURSE_EMPTY_ERROR("课程不存在"),
     CHAPTER_EMPTY_ERROR("课程不存在"),
     TASK_EMPTY_ERROR("任务点不存在"),
+    GROUP_EMPTY_ERROR("课程组不存在"),
     PREVIEW_EXIST_ERROR("预习已存在,无法添加新预习"),
     TASK_NOT_EMPTY_EMPTY_ERROR("章节存在任务点,无法删除"),
     ;

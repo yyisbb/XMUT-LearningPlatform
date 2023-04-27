@@ -60,6 +60,24 @@ public class courseServiceImpl implements courseService {
         course.setUserId(UserUtil.getLoginUser().getId());
         //生成随机课程码
         course.setCourseCode(RandomStringUtil.generateRandomString(8));
+        //如果前端有传课程组ID 说明是复制课程
+
+        String groupId =RandomStringUtil.generateRandomString(10);
+
+        if (course.getGroupId()!=null&&course.getGroupId().length()!=0){
+            //否则直接引用 先查询课程组
+            List<course> courseListByGroupId = courseMapper.getCourseByGroupId(course.getGroupId());
+
+            if(courseListByGroupId==null||courseListByGroupId.size()==0){
+                throw new GlobalException(ErrorCode.GROUP_EMPTY_ERROR);
+            }
+
+            groupId = course.getGroupId();
+        }
+
+        //生成随机课程组ID
+        course.setGroupId(groupId);
+
         courseMapper.addCourse(course);
 
         if (ObjectUtils.isEmpty(course)||course.getId()==0){

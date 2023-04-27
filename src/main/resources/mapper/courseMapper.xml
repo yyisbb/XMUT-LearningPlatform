@@ -42,14 +42,19 @@
 
     <insert id="addCourse" useGeneratedKeys="true" keyProperty="id" parameterType="course">
         INSERT INTO `course` (
-            `name`, `cover`, `startTime`, `endTime`, `description`, `userId`,`courseCode`,`className`
+            `name`, `cover`, `startTime`, `endTime`, `description`, `userId`,`courseCode`,`className`,`groupId`
         ) VALUES (
-                     #{name}, #{cover}, #{startTime}, #{endTime}, #{description}, #{userId},#{courseCode},#{className}
+                     #{name}, #{cover}, #{startTime}, #{endTime}, #{description}, #{userId},#{courseCode},#{className},#{groupId}
                  )
     </insert>
 
 
     <select id="getCourseByCourseId" resultType="course">
         SELECT * FROM course WHERE id = #{courseId}
+    </select>
+
+
+    <select id="getCourseByGroupId" resultType="course">
+        SELECT * FROM course WHERE groupId = #{groupId}
     </select>
 </mapper>

@@ -31,24 +31,24 @@ public class chapterServiceImpl implements chapterService {
     private previewMapper previewMapper;
 
     @Override
-    public List<chapter> getCourseAllChapter(chapter chapter) {
+    public List<chapter> getCourseAllChapter(course course) {
         //参数空
-        if (ObjectUtils.isEmpty(chapter)){
+        if (ObjectUtils.isEmpty(course)){
             throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
         }
 
         //courseId为0
-        if(chapter.getCourseId()==null||chapter.getCourseId()==0){
+        if(course.getId()==null||course.getId()==0){
             throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
         }
         //查课程是否存在
-        course sqlCourse = courseMapper.getCourseByCourseId(chapter.getCourseId());
+        course sqlCourse = courseMapper.getCourseByCourseId(course.getId());
         if (ObjectUtils.isEmpty(sqlCourse)){
             throw new GlobalException(ErrorCode.COURSE_EMPTY_ERROR);
         }
 
         //课程存在 查询当前课程下的所有章节
-        List<chapter> allChapter = chapterMapper.getAllChapterByCourseId(sqlCourse.getId());
+        List<chapter> allChapter = chapterMapper.getAllChapterByCourseGroupId(sqlCourse.getGroupId());
 
         //遍历章节拿任务点
         for (chapter c : allChapter) {
@@ -93,7 +93,7 @@ public class chapterServiceImpl implements chapterService {
         }
         if(
                 chapter.getName()==null||chapter.getName().length()==0||
-                chapter.getCourseId()==null||chapter.getCourseId()==0
+                chapter.getCourseGroupId()==null||chapter.getCourseGroupId().length()==0
         ){
             throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
         }

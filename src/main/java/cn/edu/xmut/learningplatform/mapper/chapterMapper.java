@@ -12,7 +12,7 @@ public interface chapterMapper {
     /**
      * 根据课程ID查询所有章节
      */
-    List<chapter> getAllChapterByCourseId(Integer courseId);
+    List<chapter> getAllChapterByCourseGroupId(String courseGroupId);
 
 
     /**

@@ -1,5 +1,6 @@
 package cn.edu.xmut.learningplatform.controller;
 
+import cn.edu.xmut.learningplatform.model.course;
 import cn.edu.xmut.learningplatform.utils.ResultUtil;
 import cn.edu.xmut.learningplatform.model.chapter;
 import cn.edu.xmut.learningplatform.model.preview;
@@ -18,8 +19,8 @@ public class chapterController {
     @Autowired
     private chapterService chapterService;
     @PostMapping( "/getCourseAllChapter")
-    public ResultUtil<List<chapter>> getCourseAllChapter(@RequestBody chapter chapter){
-        return ResultUtil.success(chapterService.getCourseAllChapter(chapter));
+    public ResultUtil<List<chapter>> getCourseAllChapter(@RequestBody course course){
+        return ResultUtil.success(chapterService.getCourseAllChapter(course));
     }
 
 

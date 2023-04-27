@@ -20,4 +20,6 @@ public interface courseMapper {
      * @return
      */
     course getCourseByCourseId(Integer courseId);
+
+    List<course> getCourseByGroupId(String groupId);
 }
