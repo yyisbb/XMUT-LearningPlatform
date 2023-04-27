@@ -20,4 +20,10 @@ public interface courseService {
      * 查询指定课程ID的课程
      */
     course getCourseByCourseId(course course);
+
+    /**
+     * 查询指定学生ID的课程
+     */
+    PageInfo<course >selectStudentCourse(course course) ;
+
 }

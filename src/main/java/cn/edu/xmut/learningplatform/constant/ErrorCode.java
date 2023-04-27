@@ -45,6 +45,8 @@ public enum ErrorCode {
     GROUP_EMPTY_ERROR("课程组不存在"),
     PREVIEW_EXIST_ERROR("预习已存在,无法添加新预习"),
     TASK_NOT_EMPTY_EMPTY_ERROR("章节存在任务点,无法删除"),
+    Student_Has_Joined_The_Course("该学生已加入课程"),
+
     ;
 
     private final String message;

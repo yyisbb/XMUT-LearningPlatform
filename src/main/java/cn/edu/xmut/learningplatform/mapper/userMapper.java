@@ -44,4 +44,14 @@ public interface userMapper {
 
 
     void deleteUserRoleByUserId(@Param("userId") int userId);
+
+
+    /**
+     *
+     * @param userId
+     * @param courseId
+     */
+    void insertCourse(int userId,int courseId);
+
+
 }

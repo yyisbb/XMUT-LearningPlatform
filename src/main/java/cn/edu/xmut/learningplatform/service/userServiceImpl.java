@@ -5,9 +5,11 @@ import cn.edu.xmut.learningplatform.constant.ErrorCode;
 import cn.edu.xmut.learningplatform.constant.RoleType;
 import cn.edu.xmut.learningplatform.constant.Status;
 import cn.edu.xmut.learningplatform.exception.GlobalException;
+import cn.edu.xmut.learningplatform.mapper.courseMapper;
 import cn.edu.xmut.learningplatform.model.authCode;
 import cn.edu.xmut.learningplatform.model.user;
 import cn.edu.xmut.learningplatform.mapper.userMapper;
+import cn.edu.xmut.learningplatform.model.userCourse;
 import cn.edu.xmut.learningplatform.model.userRole;
 import cn.edu.xmut.learningplatform.utils.JwtUtils;
 import cn.edu.xmut.learningplatform.utils.PropertiesUtil;
@@ -29,6 +31,8 @@ public class userServiceImpl implements userService {
     private userMapper userMapper;
     @Autowired
     private authCodeService  authCodeService;
+    @Autowired
+    private courseMapper courseMapper;
 
 
     /**
@@ -235,4 +239,22 @@ public class userServiceImpl implements userService {
         });
     }
 
+
+    /**
+     *
+     * @param userId
+     * @param courseId
+     */
+    @Override
+    public void insertCourse(Integer userId, Integer courseId) {
+        if (userId==0||courseId==0){
+            throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
+        }
+        List<userCourse> sqlUserCourse = courseMapper.selectByCourseIdOrUserId(userId, courseId);
+        if (sqlUserCourse!=null&&sqlUserCourse.size()!=0){
+            throw new GlobalException(ErrorCode.Student_Has_Joined_The_Course);
+        }
+
+        userMapper.insertCourse(userId,courseId);
+    }
 }

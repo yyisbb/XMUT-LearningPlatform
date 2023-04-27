@@ -130,4 +130,9 @@
         DELETE FROM user_role WHERE user_id = #{userId}
     </delete>
 
+
+    <insert id="insertCourse">
+        INSERT INTO user_course(userId, courseId)
+        VALUES (#{userId}, #{courseId})
+    </insert>
 </mapper>

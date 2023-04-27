@@ -60,5 +60,13 @@ public class courseController {
         return ResultUtil.success();
     }
 
+    /**
+     * 查询指定学生选择的课程
+     */
+    @PostMapping("/selectStudentCourse")
+    public ResultUtil<PageInfo<course>> selectStudentCourse(@RequestBody course course){
+        return ResultUtil.success(courseService.selectStudentCourse(course));
+
+    }
 
 }

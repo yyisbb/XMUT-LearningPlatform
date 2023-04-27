@@ -6,6 +6,7 @@ import cn.edu.xmut.learningplatform.exception.GlobalException;
 import cn.edu.xmut.learningplatform.mapper.authCodeMapper;
 import cn.edu.xmut.learningplatform.model.course;
 import cn.edu.xmut.learningplatform.mapper.courseMapper;
+import cn.edu.xmut.learningplatform.model.userCourse;
 import cn.edu.xmut.learningplatform.utils.RandomStringUtil;
 import cn.edu.xmut.learningplatform.utils.UserUtil;
 import com.github.pagehelper.PageHelper;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -109,4 +111,35 @@ public class courseServiceImpl implements courseService {
 
         return sqlCourse;
     }
+
+
+    /**
+     * 学生获取所选的课程
+     *
+     * @param
+     * @return
+     */
+    @Override
+    public PageInfo<course> selectStudentCourse(course course)
+    {
+
+        ArrayList<course> courseList = new ArrayList<>();
+        if (course.getCurrent() != null &&
+                course.getPageSize() != null&&
+                course.getCurrent() !=0&&
+                course.getPageSize() !=0
+        ) {
+            PageHelper.startPage(course.getCurrent(), course.getPageSize());
+        }
+
+        List<userCourse> sqlCourseList = courseMapper.selectByCourseIdOrUserId(UserUtil.getLoginUser().getId(),null);
+        for (userCourse userCourse : sqlCourseList) {
+            course sqlCourse = courseMapper.getCourseByCourseId(userCourse.getCourseId());
+            if (sqlCourse!=null){
+                courseList.add(sqlCourse);
+            }
+        }
+        return new PageInfo<>(courseList);
+    }
+
 }

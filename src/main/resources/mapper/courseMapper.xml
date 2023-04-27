@@ -57,4 +57,12 @@
     <select id="getCourseByGroupId" resultType="course">
         SELECT * FROM course WHERE groupId = #{groupId}
     </select>
+
+    <select id="selectByCourseIdOrUserId" resultType="userCourse">
+        select * FROM user_course where userId=#{userId}
+        <if test="courseId != null">
+            and courseId = #{courseId}
+        </if>
+
+    </select>
 </mapper>

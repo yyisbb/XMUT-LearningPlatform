@@ -25,4 +25,6 @@ public interface userService {
 
     void insertUserRole(Integer userId, Integer roleId);
 
+    void insertCourse(Integer id, Integer courseId);
+
 }

@@ -2,6 +2,7 @@ package cn.edu.xmut.learningplatform.controller;
 
 import cn.edu.xmut.learningplatform.annotation.AuthPass;
 import cn.edu.xmut.learningplatform.model.user;
+import cn.edu.xmut.learningplatform.model.userCourse;
 import cn.edu.xmut.learningplatform.model.userRole;
 import cn.edu.xmut.learningplatform.service.userService;
 import cn.edu.xmut.learningplatform.utils.ResultUtil;
@@ -62,6 +63,18 @@ public class userController {
     @PostMapping("/insertUserRole")
     public ResultUtil<String> insertUserRole(@RequestBody userRole userRole){
         userService.insertUserRole(userRole.getUserId(),userRole.getRoleId());
+        return ResultUtil.success();
+    }
+
+    /**
+     * 学生加入课程
+     *
+     * @param userCourse
+     * @return
+     */
+    @PostMapping("/joinCourse")
+    public ResultUtil<String> joinCourse(@RequestBody userCourse userCourse) {
+        userService.insertCourse(UserUtil.getLoginUser().getId(),userCourse.getCourseId());
         return ResultUtil.success();
     }
 }

@@ -1,6 +1,7 @@
 package cn.edu.xmut.learningplatform.mapper;
 
 import cn.edu.xmut.learningplatform.model.course;
+import cn.edu.xmut.learningplatform.model.userCourse;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -22,4 +23,13 @@ public interface courseMapper {
     course getCourseByCourseId(Integer courseId);
 
     List<course> getCourseByGroupId(String groupId);
+
+    /**
+     * 根据当前id查选课的id
+     * @param userId
+     * @param courseId
+     * @return
+     */
+    List<userCourse> selectByCourseIdOrUserId(Integer userId, Integer courseId);
+
 }
