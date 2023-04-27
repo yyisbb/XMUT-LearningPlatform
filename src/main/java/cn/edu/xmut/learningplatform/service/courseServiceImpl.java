@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -50,7 +49,8 @@ public class courseServiceImpl implements courseService {
                 || course.getDescription()==null||course.getDescription().length() == 0 ||
                 course.getStartTime() == null ||
                 course.getEndTime() == null||
-                course.getCover()==null||course.getCover().length() == 0
+                course.getCover()==null||course.getCover().length() == 0||
+                course.getClassName()==null||course.getClassName().length() == 0
         ) {
             throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
         }
@@ -60,7 +60,6 @@ public class courseServiceImpl implements courseService {
         course.setUserId(UserUtil.getLoginUser().getId());
         //生成随机课程码
         course.setCourseCode(RandomStringUtil.generateRandomString(8));
-        //生成随机课程码
         courseMapper.addCourse(course);
 
         if (ObjectUtils.isEmpty(course)||course.getId()==0){

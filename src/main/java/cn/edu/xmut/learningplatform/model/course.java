@@ -20,6 +20,7 @@ public class course {
     private Date endTime;
     private String description;
     private String courseCode;
+    private String className;
     private Integer userId;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
