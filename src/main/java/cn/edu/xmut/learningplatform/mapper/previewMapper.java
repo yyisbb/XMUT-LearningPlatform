@@ -23,5 +23,5 @@ public interface previewMapper {
     preview getPreViewByCourseIdAndChapterId(Integer courseId,Integer chapterId);
 
 
-    List<preview> selectByIdPreview(Integer courseId);
+    List<preview> selectPreviewByCourseId(Integer courseId);
 }

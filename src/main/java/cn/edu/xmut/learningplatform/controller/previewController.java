@@ -22,8 +22,8 @@ public class previewController {
      * @param course
      * @return
      */
-    @PostMapping("/selectByIdPreview")
-    public ResultUtil<PageInfo<preview>> selectByIdPreview(@RequestBody course course){
-        return ResultUtil.success(previewService.selectByIdPreview(course));
+    @PostMapping("/selectPreviewByCourseId")
+    public ResultUtil<PageInfo<preview>> selectPreviewByCourseId(@RequestBody course course){
+        return ResultUtil.success(previewService.selectPreviewByCourseId(course));
     }
 }

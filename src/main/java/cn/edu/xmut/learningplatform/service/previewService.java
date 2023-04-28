@@ -12,5 +12,5 @@ public interface previewService {
      * @param course
      * @return
      */
-    PageInfo<preview> selectByIdPreview(course course);
+    PageInfo<preview> selectPreviewByCourseId(course course);
 }
