@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.ObjectUtils;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -241,7 +240,7 @@ public class userServiceImpl implements userService {
 
 
     /**
-     *
+     *学生加入课程
      * @param userId
      * @param courseId
      */
@@ -252,7 +251,7 @@ public class userServiceImpl implements userService {
         }
         List<userCourse> sqlUserCourse = courseMapper.selectByCourseIdOrUserId(userId, courseId);
         if (sqlUserCourse!=null&&sqlUserCourse.size()!=0){
-            throw new GlobalException(ErrorCode.Student_Has_Joined_The_Course);
+            throw new GlobalException(ErrorCode.STUDENT_HAS_JOINED_THE_COURSE);
         }
 
         userMapper.insertCourse(userId,courseId);

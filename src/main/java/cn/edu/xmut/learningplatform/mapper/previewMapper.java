@@ -3,9 +3,13 @@ package cn.edu.xmut.learningplatform.mapper;
 import cn.edu.xmut.learningplatform.model.preview;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 
 @Mapper
 public interface previewMapper {
+
+
     /**
      * 添加预习
      * @param preView
@@ -17,4 +21,7 @@ public interface previewMapper {
      * @param chapterId
      */
     preview getPreViewByCourseIdAndChapterId(Integer courseId,Integer chapterId);
+
+
+    List<preview> selectByIdPreview(Integer courseId);
 }

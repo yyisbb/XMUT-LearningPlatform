@@ -1,9 +1,7 @@
 package cn.edu.xmut.learningplatform.controller;
 
 import cn.edu.xmut.learningplatform.annotation.AuthPass;
-import cn.edu.xmut.learningplatform.model.user;
-import cn.edu.xmut.learningplatform.model.userCourse;
-import cn.edu.xmut.learningplatform.model.userRole;
+import cn.edu.xmut.learningplatform.model.*;
 import cn.edu.xmut.learningplatform.service.userService;
 import cn.edu.xmut.learningplatform.utils.ResultUtil;
 import cn.edu.xmut.learningplatform.utils.UserUtil;
@@ -77,4 +75,7 @@ public class userController {
         userService.insertCourse(UserUtil.getLoginUser().getId(),userCourse.getCourseId());
         return ResultUtil.success();
     }
+
+
+
 }

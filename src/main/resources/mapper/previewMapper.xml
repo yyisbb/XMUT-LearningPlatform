@@ -13,4 +13,9 @@
         select * from preview where courseId = #{courseId} and chapterId = #{chapterId}
     </select>
 
+
+    <select id="selectByIdPreview" resultType="preview">
+        select * from preview where courseId = #{courseId}
+    </select>
+
 </mapper>

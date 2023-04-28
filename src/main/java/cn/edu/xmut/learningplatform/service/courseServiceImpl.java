@@ -94,7 +94,7 @@ public class courseServiceImpl implements courseService {
      */
     @Override
     public course getCourseByCourseId(course course) {
-        if (ObjectUtils.isEmpty(course)){
+        if(ObjectUtils.isEmpty(course)){
             throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
         }
         //校验参数
