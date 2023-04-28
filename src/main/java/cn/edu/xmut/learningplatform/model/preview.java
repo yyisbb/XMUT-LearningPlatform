@@ -20,4 +20,5 @@ public class preview {
     private Date startTime;
     private Date endTime;
     private Integer chapterId;
+    private Integer courseId;
 }

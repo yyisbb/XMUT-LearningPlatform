@@ -41,6 +41,7 @@ public enum ErrorCode {
     GET_FILE_ERROR("获取文件失败"),
     COURSE_EMPTY_ERROR("课程不存在"),
     CHAPTER_EMPTY_ERROR("课程不存在"),
+    CHAPTER_BELONG_COURSE_EMPTY_ERROR("章节所属课程不匹配"),
     TASK_EMPTY_ERROR("任务点不存在"),
     GROUP_EMPTY_ERROR("课程组不存在"),
     PREVIEW_EXIST_ERROR("预习已存在,无法添加新预习"),

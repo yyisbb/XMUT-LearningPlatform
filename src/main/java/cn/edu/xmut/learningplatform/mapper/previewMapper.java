@@ -16,5 +16,5 @@ public interface previewMapper {
      * 根据章节ID查询预习信息
      * @param chapterId
      */
-    preview getPreViewByChapterId(Integer chapterId);
+    preview getPreViewByCourseIdAndChapterId(Integer courseId,Integer chapterId);
 }
