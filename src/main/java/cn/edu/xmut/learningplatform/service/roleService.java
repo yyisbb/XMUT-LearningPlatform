@@ -9,7 +9,6 @@ import java.util.List;
 
 import cn.edu.xmut.learningplatform.dto.permissionList;
 
-@Repository
 public interface roleService {
     /**
      * 查询所有角色列表
