@@ -1,7 +1,7 @@
 package cn.edu.xmut.learningplatform.mapper;
 
-import cn.edu.xmut.learningplatform.model.chapter;
 import cn.edu.xmut.learningplatform.model.task;
+import cn.edu.xmut.learningplatform.model.taskProgress;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -21,4 +21,9 @@ public interface taskMapper {
     int updateTask(task task);
 
     int deleteTask(task task);
+
+    taskProgress getTaskProgressByTaskIdAndUserId(Integer taskId, Integer userId);
+    Integer createTaskProgress(taskProgress taskProgress);
+
+    Integer updateTaskProgress(taskProgress taskProgress);
 }

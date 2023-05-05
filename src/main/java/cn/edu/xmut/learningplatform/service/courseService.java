@@ -1,5 +1,6 @@
 package cn.edu.xmut.learningplatform.service;
 
+import cn.edu.xmut.learningplatform.dto.courseListDTO;
 import cn.edu.xmut.learningplatform.model.authCode;
 import cn.edu.xmut.learningplatform.model.course;
 import com.github.pagehelper.PageInfo;
@@ -8,9 +9,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 public interface courseService {
-    PageInfo<course>  getAllCourse(course course);
+    courseListDTO getAllCourse(course course);
 
-    PageInfo<course> getTeacherAllCourse(course course);
+    courseListDTO getTeacherAllCourse(course course);
 
     void addCourse(course course);
 

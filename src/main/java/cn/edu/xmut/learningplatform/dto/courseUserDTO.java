@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class courseUserDTO {
-    private PageInfo<course> courseList;
+    private courseListDTO courseListDTO;
     private user user;
 }

@@ -40,4 +40,26 @@
     <delete id="deleteTask" parameterType="int">
         DELETE FROM `task` WHERE id = #{id}
     </delete>
+    
+    <select id="getTaskProgressByTaskIdAndUserId" resultType="taskProgress">
+        select *
+        from task_progress where taskId = #{taskId} and userId = #{userId};
+    </select>
+
+    <insert id="createTaskProgress" parameterType="taskProgress">
+        INSERT INTO `task_progress`
+        VALUES (
+                   #{taskId},
+                   #{userId},
+                #{progress}
+               )
+    </insert>
+
+    <update id="updateTaskProgress" parameterType="taskProgress">
+        UPDATE task_progress
+        <set>
+            progress = #{progress}
+        </set>
+        where taskId = #{taskId} and userId = #{userId};
+    </update>
 </mapper>

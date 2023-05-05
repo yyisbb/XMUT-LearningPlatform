@@ -30,5 +30,17 @@ public class course {
 
     public Integer current;
     public Integer pageSize;
+
+    public course(course copyCouse) {
+        this.name = copyCouse.name;
+        this.cover = copyCouse.cover;
+        this.startTime = copyCouse.startTime;
+        this.endTime = copyCouse.endTime;
+        this.description = copyCouse.description;
+        this.groupId = copyCouse.groupId;
+        this.userId = copyCouse.userId;
+        this.createTime = copyCouse.createTime;
+        this.updateTime = copyCouse.updateTime;
+    }
 }
 

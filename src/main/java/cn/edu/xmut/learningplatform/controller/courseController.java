@@ -1,5 +1,6 @@
 package cn.edu.xmut.learningplatform.controller;
 
+import cn.edu.xmut.learningplatform.dto.courseListDTO;
 import cn.edu.xmut.learningplatform.model.course;
 import cn.edu.xmut.learningplatform.dto.courseUserDTO;
 import cn.edu.xmut.learningplatform.utils.ResultUtil;
@@ -24,7 +25,7 @@ public class courseController {
      * 查询所有课程
      */
     @PostMapping("/getAllCourse")
-    public ResultUtil<PageInfo<course>> getAllCourse(@RequestBody course course) {
+    public ResultUtil<courseListDTO> getAllCourse(@RequestBody course course) {
         return ResultUtil.success(courseService.getAllCourse(course));
     }
 
@@ -45,7 +46,7 @@ public class courseController {
     public ResultUtil<courseUserDTO> getTeacherAllCourse(@RequestBody course course) {
         courseUserDTO userDTO = new courseUserDTO();
         course.setUserId(UserUtil.getLoginUser().getId());
-        userDTO.setCourseList(courseService.getTeacherAllCourse(course));
+        userDTO.setCourseListDTO(courseService.getTeacherAllCourse(course));
         userDTO.setUser(userService.getUserByUserId(course.getUserId()));
         return ResultUtil.success(userDTO);
     }

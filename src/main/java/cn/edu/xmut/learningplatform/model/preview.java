@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @Data
@@ -21,4 +22,5 @@ public class preview {
     private Date endTime;
     private Integer chapterId;
     private Integer courseId;
+    private List<task> videoUrlList;
 }

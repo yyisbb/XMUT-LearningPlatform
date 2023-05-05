@@ -1,12 +1,8 @@
 package cn.edu.xmut.learningplatform.service;
 
-import cn.edu.xmut.learningplatform.model.course;
 import cn.edu.xmut.learningplatform.model.user;
 import cn.edu.xmut.learningplatform.model.userRole;
 import com.github.pagehelper.PageInfo;
-import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 public interface userService {
     String login(user user);
