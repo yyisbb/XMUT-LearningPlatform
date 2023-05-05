@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.edu.xmut.learningplatform.mapper.signMapper">
+
+    <insert id="createSign" useGeneratedKeys="true" keyProperty="id" parameterType="sign">
+        INSERT INTO sign (startTime, courseId,endTime, publisherUserId)
+        VALUES (#{startTime},#{courseId}, #{endTime},#{publisherUserId})
+    </insert>
+
+<select id="getSignListByCourseId" resultType="sign">
+    select *
+    from sign
+    where courseId = #{courseId};
+</select>
+</mapper>

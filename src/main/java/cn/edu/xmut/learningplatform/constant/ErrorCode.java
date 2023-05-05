@@ -49,6 +49,7 @@ public enum ErrorCode {
     TASK_NOT_EMPTY_EMPTY_ERROR("章节存在任务点,无法删除"),
     STUDENT_HAS_JOINED_THE_COURSE("该学生已加入课程"),
     PREVIEW_EMPTY_ERROR("预习点不存在"),
+    TEACHER_ERROR("任课老师有误"),
     ;
 
     private final String message;
