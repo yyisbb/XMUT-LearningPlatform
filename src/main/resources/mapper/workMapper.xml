@@ -20,16 +20,16 @@
     <!--教师布置作业-->
     <insert id="addWork" useGeneratedKeys="true" keyProperty="id" parameterType="works">
         insert into work
-        (name,detail,startTime,endTime,courseId,chapterId,userId)
+        (name,detail,startTime,endTime,courseId,chapterId)
         values
-        (#{name},#{detail},#{startTime},#{endTime},#{courseId},#{chapterId},#{userId})
+        (#{name},#{detail},#{startTime},#{endTime},#{courseId},#{chapterId})
     </insert>
-<!--删除作业-->
+    <!--删除作业-->
     <delete id="delWork" parameterType="works">
         DELETE
         FROM work
         WHERE courseId=#{courseId} and
-        chapterId=#{chapterId} and userId=#{userId}
+        chapterId=#{chapterId}
     </delete>
     <!--教师修改作业-->
     <update id="editWork" parameterType="works">

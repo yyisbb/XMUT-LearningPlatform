@@ -27,6 +27,7 @@ public class workController {
      */
     @PostMapping("/getStudentAllWork")
     public ResultUtil<PageInfo<works>> getStudentAllWork() {
+        //TODO CodeReview 新增按课程查询
         user loginUser = UserUtil.getLoginUser();
         return ResultUtil.success(workService.getStudentAllWork(loginUser));
     }
@@ -35,7 +36,8 @@ public class workController {
      * 查询教师已布置的作业
      */
     @PostMapping("/getTeacherAllWork")
-    public ResultUtil<PageInfo<works>> getTeacherAllWork(){
+    public ResultUtil<PageInfo<works>> getTeacherAllWork() {
+        //TODO CodeReview 删除这个接口
         user loginUser = UserUtil.getLoginUser();
         return ResultUtil.success(workService.getTeacherAllWork(loginUser));
     }
@@ -44,29 +46,29 @@ public class workController {
      * 教师布置作业
      */
     @PostMapping("/addWork")
-    public ResultUtil<String> addWork(@RequestBody works works ){
-        user loginUser = UserUtil.getLoginUser();
-        workService.addWork(works,loginUser);
+    public ResultUtil<String> addWork(@RequestBody works works) {
+        //TODO CodeReview 删userId字段
+        workService.addWork(works);
         return ResultUtil.success();
     }
+
     /**
      * 教师删除作业
      * courseId chapterId userId
      */
     @PostMapping("/delWork")
-    public ResultUtil<String> delWork(@RequestBody works works ){
-        user loginUser = UserUtil.getLoginUser();
-        workService.delWork(loginUser,works);
+    public ResultUtil<String> delWork(@RequestBody works works) {
+        workService.delWork( works);
         return ResultUtil.success();
     }
+
     /**
      * 教师修改作业
      * id
      */
     @PostMapping("/editWork")
-    public ResultUtil<String> editWork(@RequestBody works works ){
-        user loginUser = UserUtil.getLoginUser();
-        workService.editWork(loginUser,works);
+    public ResultUtil<String> editWork(@RequestBody works works) {
+        workService.editWork( works);
         return ResultUtil.success();
     }
 //    /**

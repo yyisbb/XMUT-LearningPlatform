@@ -16,9 +16,9 @@ public interface workService {
 
    PageInfo<works> getTeacherAllWork(user loginUser);
 
-   void addWork(works works, user loginUser);
+   void addWork(works works);
 
-    void delWork(user loginUser, works works);
+    void delWork( works works);
 
-    void editWork(user loginUser, works works);
+    void editWork( works works);
 }
