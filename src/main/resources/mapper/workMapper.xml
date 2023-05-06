@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.edu.xmut.learningplatform.mapper.workMapper">
+    <!--查询学生全部作业-->
+    <select id="getWorkByStudentId" resultType="works">
+        select `work`.*
+        from user_course RIGHT JOIN `work` ON
+        user_course.courseId=`work`.courseId
+        WHERE user_course.userId=#{user_id}
+    </select>
+    <!--查询教师自己已布置的作业-->
+    <select id="getWorkByTeacherId" resultType="works">
+        select *
+        from work
+        where userId = #{user_id}
+    </select>
+    <!--教师布置作业-->
+    <insert id="addWork" useGeneratedKeys="true" keyProperty="id" parameterType="works">
+        insert into work
+        (name,detail,startTime,endTime,courseId,chapterId,userId)
+        values
+        (#{name},#{detail},#{startTime},#{endTime},#{courseId},#{chapterId},#{userId})
+    </insert>
+<!--删除作业-->
+    <delete id="delWork" parameterType="works">
+        DELETE
+        FROM work
+        WHERE courseId=#{courseId} and
+        chapterId=#{chapterId} and userId=#{userId}
+    </delete>
+    <!--教师修改作业-->
+    <update id="editWork" parameterType="works">
+        UPDATE `work`
+        SET `name`=#{name},
+        detail=#{detail},
+        startTime=#{startTime},
+        endTime=#{endTime},
+        courseId=#{courseId},
+        chapterId=#{chapterId}
+        WHERE id=#{id}
+    </update>
+</mapper>
