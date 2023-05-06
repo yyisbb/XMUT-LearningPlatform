@@ -32,4 +32,8 @@ public interface courseMapper {
      */
     List<userCourse> selectByCourseIdOrUserId(Integer userId, Integer courseId);
 
+
+    Integer getChooseCourseCountByCourseId(Integer courseId);
+
+
 }

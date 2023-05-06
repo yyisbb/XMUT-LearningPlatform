@@ -40,7 +40,7 @@ public enum ErrorCode {
     UPLOAD_ERROR("文件上传失败"),
     GET_FILE_ERROR("获取文件失败"),
     COURSE_EMPTY_ERROR("课程不存在"),
-    CHAPTER_EMPTY_ERROR("课程不存在"),
+    CHAPTER_EMPTY_ERROR("章节不存在"),
     CHAPTER_BELONG_COURSE_EMPTY_ERROR("章节所属课程不匹配"),
     TASK_EMPTY_ERROR("任务点不存在"),
     TASK_PROGRESS_EMPTY_ERROR("任务点进度不存在"),
@@ -48,8 +48,13 @@ public enum ErrorCode {
     PREVIEW_EXIST_ERROR("预习已存在,无法添加新预习"),
     TASK_NOT_EMPTY_EMPTY_ERROR("章节存在任务点,无法删除"),
     STUDENT_HAS_JOINED_THE_COURSE("该学生已加入课程"),
+    STUDENT_NOT_JOINED_THE_COURSE("该学生未加入课程"),
     PREVIEW_EMPTY_ERROR("预习点不存在"),
     TEACHER_ERROR("任课老师有误"),
+    SIGN_CODE_ERROR("签到码有误或签到码已过期"),
+    SIGN_EMPTY_ERROR("签到不存在"),
+    SIGN_TIME_EXPIRE_ERROR("签到时间已过"),
+    SIGN_REPETITION_ERROR("无法重复签到"),
     ;
 
     private final String message;

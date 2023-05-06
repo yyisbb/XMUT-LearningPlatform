@@ -5,13 +5,34 @@
 <mapper namespace="cn.edu.xmut.learningplatform.mapper.signMapper">
 
     <insert id="createSign" useGeneratedKeys="true" keyProperty="id" parameterType="sign">
-        INSERT INTO sign (startTime, courseId,endTime, publisherUserId)
-        VALUES (#{startTime},#{courseId}, #{endTime},#{publisherUserId})
+        INSERT INTO sign (startTime, courseId,endTime, publisherUserId,signCode)
+        VALUES (#{startTime},#{courseId}, #{endTime},#{publisherUserId},#{signCode})
     </insert>
 
-<select id="getSignListByCourseId" resultType="sign">
-    select *
-    from sign
-    where courseId = #{courseId};
-</select>
+    <select id="getSignListByCourseId" resultType="sign">
+        select *
+        from sign
+        where courseId = #{courseId} order by id desc;
+    </select>
+
+    <select id="getSignBySignId" resultType="sign">
+        select *
+        from sign
+        where id = #{signId};
+    </select>
+    
+    <select id="getSignRecord" resultType="signUser">
+        select * from sign_user
+        where signId =#{signId} and userId = #{userId}
+    </select>
+
+    <select id="getSignCount" resultType="int">
+        select count(*) from sign_user
+        where signId =#{signId}
+    </select>
+
+    <insert id="signIn" parameterType="signUser">
+        INSERT INTO sign_user (signId, userId,status)
+        VALUES (#{signId},#{userId},#{status})
+    </insert>
 </mapper>

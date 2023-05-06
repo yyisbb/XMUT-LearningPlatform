@@ -65,4 +65,8 @@
         </if>
 
     </select>
+
+    <select id="getChooseCourseCountByCourseId" resultType="int">
+        select count(*) FROM user_course where courseId = #{courseId}
+    </select>
 </mapper>
