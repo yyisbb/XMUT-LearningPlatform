@@ -1,6 +1,7 @@
 package cn.edu.xmut.learningplatform.mapper;
 
 import cn.edu.xmut.learningplatform.model.course;
+import cn.edu.xmut.learningplatform.model.user;
 import cn.edu.xmut.learningplatform.model.userCourse;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -35,5 +36,5 @@ public interface courseMapper {
 
     Integer getChooseCourseCountByCourseId(Integer courseId);
 
-
+    List<user> getUserListByCourseId(Integer courseId);
 }

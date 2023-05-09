@@ -23,5 +23,7 @@ public class chapter {
     private List<task> taskList;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updateTime;
+
+    private preview preview;
 }
 

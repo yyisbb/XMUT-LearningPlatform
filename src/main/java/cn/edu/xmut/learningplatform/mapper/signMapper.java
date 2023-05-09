@@ -2,6 +2,7 @@ package cn.edu.xmut.learningplatform.mapper;
 
 import cn.edu.xmut.learningplatform.model.sign;
 import cn.edu.xmut.learningplatform.model.signUser;
+import cn.edu.xmut.learningplatform.model.user;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -14,8 +15,11 @@ public interface signMapper {
 
     sign getSignBySignId(Integer signId);
 
-    signUser getSignRecord(Integer signId,Integer userId);
+    signUser getSignRecord(Integer signId, Integer userId);
+
     int signIn(signUser signUser);
 
-    Integer getSignCount(Integer signId);
+    List<user> getSignUserList(Integer signId);
+
+    int updateSignCode(Integer signId,String signCode);
 }

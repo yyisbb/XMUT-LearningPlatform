@@ -26,7 +26,6 @@ public class sign {
     private Integer duration;
 
     private String signCode;
-    private Long expire;
 
     public sign(Integer courseId, Date startTime, Date endTime, Integer publisherUserId, String signCode) {
         this.courseId = courseId;

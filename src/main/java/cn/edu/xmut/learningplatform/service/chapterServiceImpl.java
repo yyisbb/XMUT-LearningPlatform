@@ -50,9 +50,10 @@ public class chapterServiceImpl implements chapterService {
         //课程存在 查询当前课程下的所有章节
         List<chapter> allChapter = chapterMapper.getAllChapterByCourseGroupId(sqlCourse.getGroupId());
 
-        //遍历章节拿任务点
+        //遍历章节拿任务点和预习任务
         for (chapter c : allChapter) {
             c.setTaskList(taskMapper.getAllTaskByChapterId(c.getId()));
+            c.setPreview(previewMapper.getPreViewByCourseIdAndChapterId(sqlCourse.getId(),c.getId()));
         }
 
 

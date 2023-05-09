@@ -14,13 +14,20 @@ import java.util.List;
 @Mapper
 public interface workMapper {
 
-     List<works> getWorkByStudentId(@Param("user_id") Integer userId);
-     /**
-      * 添加作业
-      */
-     void addWork(works works);
+    List<works> getWorkByStudentId(@Param("user_id") Integer userId);
+
+
+    List<works> getWorkByCourseId( Integer courseId);
+
+    /**
+     * 添加作业
+     */
+    void addWork(works works);
 
     void delWork(works works);
 
     void editWork(works works);
+
+
+    works getWorkByWorkId(Integer workId);
 }

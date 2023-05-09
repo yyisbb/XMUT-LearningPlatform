@@ -2,7 +2,9 @@ package cn.edu.xmut.learningplatform.controller;
 
 import cn.edu.xmut.learningplatform.model.authCode;
 import cn.edu.xmut.learningplatform.model.sign;
+import cn.edu.xmut.learningplatform.model.user;
 import cn.edu.xmut.learningplatform.utils.ResultUtil;
+import cn.edu.xmut.learningplatform.utils.UserUtil;
 import cn.edu.xmut.learningplatform.vo.signInVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,5 +65,27 @@ public class signController {
         return ResultUtil.success();
     }
 
+
+    /**
+     * 切换签到码
+     * @param signInVo
+     * @return
+     */
+    @PostMapping("/changeSignCode")
+    public ResultUtil<String> changeSignCode(@RequestBody signInVo signInVo) {
+        signService.changeSignCode(signInVo);
+        return ResultUtil.success();
+    }
+
+
+    /**
+     * 查看本次签到人数与未签人数
+     * @param signInVo
+     * @return
+     */
+    @PostMapping("/getSignRecordBySignId")
+    public ResultUtil<List<user>> getSignRecordBySignId(@RequestBody signInVo signInVo) {
+        return ResultUtil.success(signService.getSignRecordBySignId(signInVo));
+    }
 
 }

@@ -5,6 +5,7 @@ import cn.edu.xmut.learningplatform.model.user;
 import cn.edu.xmut.learningplatform.service.workService;
 import cn.edu.xmut.learningplatform.utils.ResultUtil;
 import cn.edu.xmut.learningplatform.utils.UserUtil;
+import cn.edu.xmut.learningplatform.vo.workVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,6 +31,25 @@ public class workController {
         //TODO CodeReview 新增按课程查询
         user loginUser = UserUtil.getLoginUser();
         return ResultUtil.success(workService.getStudentAllWork(loginUser));
+    }
+
+    /**
+     * 按课程查询作业
+     * @return
+     */
+    @PostMapping("/getCourseAllWork")
+    public ResultUtil<PageInfo<works>> getCourseAllWork(@RequestBody workVo workVo) {
+        return ResultUtil.success(workService.getCourseAllWork(workVo));
+    }
+
+    /**
+     * 查询具体作业详情
+     * @param workVo
+     * @return
+     */
+    @PostMapping("/getWorkByWorkId")
+    public ResultUtil<works> getWorkByWorkId(@RequestBody workVo workVo) {
+        return ResultUtil.success(workService.getWorkByWorkId(workVo.getWorkId()));
     }
 
     /**

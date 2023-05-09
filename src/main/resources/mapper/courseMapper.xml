@@ -69,4 +69,12 @@
     <select id="getChooseCourseCountByCourseId" resultType="int">
         select count(*) FROM user_course where courseId = #{courseId}
     </select>
+
+
+    <select id="getUserListByCourseId" resultType="user">
+        SELECT `user`.id,`user`.name,`user`.username,`user`.studentId FROM
+                            user_course,`user`,course
+        WHERE user_course.courseId = course.id
+          AND user_course.userId = `user`.id AND user_course.courseId = #{courseId}
+    </select>
 </mapper>

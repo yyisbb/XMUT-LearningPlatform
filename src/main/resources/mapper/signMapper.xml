@@ -26,13 +26,23 @@
         where signId =#{signId} and userId = #{userId}
     </select>
 
-    <select id="getSignCount" resultType="int">
-        select count(*) from sign_user
-        where signId =#{signId}
+    <select id="getSignUserList" resultType="user">
+        SELECT `user`.id,`user`.name,`user`.username,`user`.studentId FROM
+                            sign_user,`user`,sign
+        WHERE sign_user.signId = sign.id
+          AND sign_user.userId = `user`.id AND sign_user.signId = #{signId}
     </select>
 
     <insert id="signIn" parameterType="signUser">
         INSERT INTO sign_user (signId, userId,status)
         VALUES (#{signId},#{userId},#{status})
     </insert>
+
+    <update id="updateSignCode">
+        UPDATE sign
+        <set>
+            signCode = #{signCode}
+        </set>
+        where id = #{signId} ;
+    </update>
 </mapper>

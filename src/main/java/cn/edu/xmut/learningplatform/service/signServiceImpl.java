@@ -5,15 +5,14 @@ import cn.edu.xmut.learningplatform.constant.RedisKey;
 import cn.edu.xmut.learningplatform.constant.SignType;
 import cn.edu.xmut.learningplatform.mapper.signMapper;
 import cn.edu.xmut.learningplatform.mapper.courseMapper;
+import cn.edu.xmut.learningplatform.mapper.userMapper;
 import cn.edu.xmut.learningplatform.exception.GlobalException;
-import cn.edu.xmut.learningplatform.model.course;
-import cn.edu.xmut.learningplatform.model.sign;
-import cn.edu.xmut.learningplatform.model.signUser;
-import cn.edu.xmut.learningplatform.model.userCourse;
+import cn.edu.xmut.learningplatform.model.*;
 import cn.edu.xmut.learningplatform.utils.RandomStringUtil;
 import cn.edu.xmut.learningplatform.utils.RedisUtil;
 import cn.edu.xmut.learningplatform.utils.TimeUtils;
 import cn.edu.xmut.learningplatform.utils.UserUtil;
+import cn.edu.xmut.learningplatform.vo.signInVo;
 import com.alibaba.druid.util.StringUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -24,6 +23,7 @@ import org.springframework.util.ObjectUtils;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Service
 public class signServiceImpl implements signService {
@@ -33,6 +33,8 @@ public class signServiceImpl implements signService {
     private courseMapper courseMapper;
     @Autowired
     private RedisUtil redisUtil;
+    @Autowired
+    private userMapper userMapper;
 
     @Override
     public void createSign(sign sign) {
@@ -75,7 +77,7 @@ public class signServiceImpl implements signService {
             throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
         }
 
-        if (sign.getCurrent()!=0&&sign.getPageSize()!=0){
+        if (sign.getCurrent() != 0 && sign.getPageSize() != 0) {
             PageHelper.startPage(sign.getCurrent(), sign.getPageSize());
         }
 
@@ -148,14 +150,80 @@ public class signServiceImpl implements signService {
             throw new GlobalException(ErrorCode.SIGN_EMPTY_ERROR);
         }
 
-        //去缓存查过期时间
-        sqlSign.setExpire(redisUtil.getExpire(sqlSign.getSignCode()));
-
         //查询签到人数
-        sqlSign.setSignCount(signMapper.getSignCount(signId));
+        List<user> signUserList = signMapper.getSignUserList(signId);
+        if (signUserList == null || signUserList.size() == 0) {
+            sqlSign.setSignCount(0);
+        } else {
+            sqlSign.setSignCount(signUserList.size());
+        }
+
         //签到所在课程总人数
         sqlSign.setTotal(courseMapper.getChooseCourseCountByCourseId(sqlSign.getCourseId()));
         return sqlSign;
+    }
+
+    @Override
+    public void changeSignCode(signInVo signInVo) {
+        //参数判空
+        if (signInVo.getSignId() == null || signInVo.getSignId() == 0) {
+            throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
+        }
+
+        //查询签到
+        sign sqlSign = signMapper.getSignBySignId(signInVo.getSignId());
+        if (ObjectUtils.isEmpty(signInVo)) {
+            throw new GlobalException(ErrorCode.SIGN_CODE_ERROR);
+        }
+
+        //查询签到是否过期
+        if (sqlSign.getEndTime().compareTo(new Date()) < 0) {
+            throw new GlobalException(ErrorCode.SIGN_TIME_EXPIRE_ERROR);
+        }
+
+        //拿到原签到码
+        String originalSignCode = sqlSign.getSignCode();
+
+        //查询到后修改签到码
+        String signCode = RandomStringUtil.generateRandomNumberString(4);
+        if (signMapper.updateSignCode(sqlSign.getId(), signCode) == 0) {
+            throw new GlobalException(ErrorCode.SQL_ERROR);
+        }
+
+        //成功后取Redis里的到期时间
+        Long expire = redisUtil.getExpire(sqlSign.getSignCode());
+        //删除原签到码
+        redisUtil.delete(originalSignCode);
+        //设置新签到码
+        redisUtil.setEx(signCode, RedisKey.SIGN + sqlSign.getId(), expire);
+    }
+
+    @Override
+    public List<user> getSignRecordBySignId(signInVo signInVo) {
+        //参数判空
+        if (signInVo.getSignId() == null || signInVo.getSignId() == 0) {
+            throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
+        }
+
+        //查询签到
+        sign sqlSign = signMapper.getSignBySignId(signInVo.getSignId());
+        if (ObjectUtils.isEmpty(signInVo)) {
+            throw new GlobalException(ErrorCode.SIGN_CODE_ERROR);
+        }
+
+        //查询签到人数
+        //先查询本次签到的课程
+        course sqlCourse = courseMapper.getCourseByCourseId(sqlSign.getCourseId());
+        //查询课程人数
+        List<user> courseUserList = courseMapper.getUserListByCourseId(sqlCourse.getId());
+        //查询签到人数
+        List<user> signUserList = signMapper.getSignUserList(sqlSign.getId());
+        if (signUserList == null || signUserList.size() == 0) {
+            return courseUserList;
+        }
+        return courseUserList.stream()
+                .filter(user -> !signUserList.contains(user))
+                .collect(Collectors.toList());
     }
 
 

@@ -53,6 +53,7 @@ public enum ErrorCode {
     TEACHER_ERROR("任课老师有误"),
     SIGN_CODE_ERROR("签到码有误或签到码已过期"),
     SIGN_EMPTY_ERROR("签到不存在"),
+    WORK_EMPTY_ERROR("作业不存在"),
     SIGN_TIME_EXPIRE_ERROR("签到时间已过"),
     SIGN_REPETITION_ERROR("无法重复签到"),
     ;

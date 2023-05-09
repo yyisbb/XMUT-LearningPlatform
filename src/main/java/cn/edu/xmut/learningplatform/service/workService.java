@@ -2,6 +2,7 @@ package cn.edu.xmut.learningplatform.service;
 
 import cn.edu.xmut.learningplatform.model.works;
 import cn.edu.xmut.learningplatform.model.user;
+import cn.edu.xmut.learningplatform.vo.workVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Repository;
 
@@ -20,4 +21,8 @@ public interface workService {
     void delWork( works works);
 
     void editWork( works works);
+
+    PageInfo<works> getCourseAllWork(workVo workVo);
+
+    works getWorkByWorkId(Integer workId);
 }
