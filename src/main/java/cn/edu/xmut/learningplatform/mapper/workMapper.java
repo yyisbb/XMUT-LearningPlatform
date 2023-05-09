@@ -15,8 +15,6 @@ import java.util.List;
 public interface workMapper {
 
      List<works> getWorkByStudentId(@Param("user_id") Integer userId);
-
-     List<works> getWorkByTeacherId(@Param("user_id") Integer userId);
      /**
       * 添加作业
       */

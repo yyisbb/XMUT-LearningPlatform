@@ -33,21 +33,10 @@ public class workController {
     }
 
     /**
-     * 查询教师已布置的作业
-     */
-    @PostMapping("/getTeacherAllWork")
-    public ResultUtil<PageInfo<works>> getTeacherAllWork() {
-        //TODO CodeReview 删除这个接口
-        user loginUser = UserUtil.getLoginUser();
-        return ResultUtil.success(workService.getTeacherAllWork(loginUser));
-    }
-
-    /**
      * 教师布置作业
      */
     @PostMapping("/addWork")
     public ResultUtil<String> addWork(@RequestBody works works) {
-        //TODO CodeReview 删userId字段
         workService.addWork(works);
         return ResultUtil.success();
     }

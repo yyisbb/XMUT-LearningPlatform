@@ -14,7 +14,6 @@ public interface workService {
 
    PageInfo<works> getStudentAllWork(user loginUser);
 
-   PageInfo<works> getTeacherAllWork(user loginUser);
 
    void addWork(works works);
 

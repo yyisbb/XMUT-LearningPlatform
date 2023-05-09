@@ -11,12 +11,6 @@
         user_course.courseId=`work`.courseId
         WHERE user_course.userId=#{user_id}
     </select>
-    <!--查询教师自己已布置的作业-->
-    <select id="getWorkByTeacherId" resultType="works">
-        select *
-        from work
-        where userId = #{user_id}
-    </select>
     <!--教师布置作业-->
     <insert id="addWork" useGeneratedKeys="true" keyProperty="id" parameterType="works">
         insert into work

@@ -29,14 +29,6 @@ public class workServiceImpl implements workService {
         return new PageInfo<>(worksList);
     }
 
-    /**
-     * 根据当前教师id查询已经布置作业
-     */
-    @Override
-    public PageInfo<works> getTeacherAllWork(user loginUser) {
-        List<works> worksList = workMapper.getWorkByTeacherId(loginUser.getId());
-        return new PageInfo<>(worksList);
-    }
 
     /**
      * 教师添加作业
