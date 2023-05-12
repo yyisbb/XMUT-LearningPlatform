@@ -12,16 +12,15 @@
         WHERE user_course.userId=#{user_id}
     </select>
 
-
+    <!--查看指定课程所有作业-->
     <select id="getWorkByCourseId" resultType="works">
         SELECT * FROM `work` WHERE courseId = #{courseId}
     </select>
 
-
+    <!--查看作业详情-->
     <select id="getWorkByWorkId" resultType="works">
         SELECT * FROM `work` WHERE id = #{workId}
     </select>
-
 
     <!--教师布置作业-->
     <insert id="addWork" useGeneratedKeys="true" keyProperty="id" parameterType="works">
@@ -30,6 +29,7 @@
         values
         (#{name},#{detail},#{startTime},#{endTime},#{courseId},#{chapterId})
     </insert>
+
     <!--删除作业-->
     <delete id="delWork" parameterType="works">
         DELETE
@@ -37,6 +37,7 @@
         WHERE courseId=#{courseId} and
         chapterId=#{chapterId}
     </delete>
+
     <!--教师修改作业-->
     <update id="editWork" parameterType="works">
         UPDATE `work`
@@ -48,4 +49,30 @@
         chapterId=#{chapterId}
         WHERE id=#{id}
     </update>
+
+    <!--获取学生提交的作业-->
+    <select id="getWorkId" resultType="java.lang.Integer">
+        select id
+        FROM `work`
+        WHERE `work`.courseId=#{courseId} and `work`.chapterId=#{chapterId}
+    </select>
+    <select id="getSubmitWork" resultType="userWork">
+        select *
+        FROM user_work
+        WHERE user_work.workId =#{id}
+    </select>
+
+    <!--作业评分-->
+    <update id="correctWork">
+        UPDATE user_work
+        SET score = #{score},
+        feedback =  #{feedback},
+        WHERE workId = #{workId} AND userId = #{userId}
+    </update>
+
+    <!--学生交作业-->
+    <insert id="doWork">
+        INSERT INTO user_work(workId,userId,upFilePath,`comment`)
+        VALUE (#{workId},#{userId},#{upFilePath},#{`comment`})
+    </insert>
 </mapper>

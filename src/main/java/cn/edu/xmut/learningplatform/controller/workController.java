@@ -1,17 +1,22 @@
 package cn.edu.xmut.learningplatform.controller;
 
+import cn.edu.xmut.learningplatform.model.userWork;
 import cn.edu.xmut.learningplatform.model.works;
 import cn.edu.xmut.learningplatform.model.user;
 import cn.edu.xmut.learningplatform.service.workService;
 import cn.edu.xmut.learningplatform.utils.ResultUtil;
 import cn.edu.xmut.learningplatform.utils.UserUtil;
+import cn.edu.xmut.learningplatform.vo.fileVo;
 import cn.edu.xmut.learningplatform.vo.workVo;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * @author 李大大
@@ -26,17 +31,17 @@ public class workController {
     /**
      * 查询学生的全部作业
      */
+    //TODO 要体现出继续作业 重新作业 查看等状态
     @PostMapping("/getStudentAllWork")
     public ResultUtil<PageInfo<works>> getStudentAllWork() {
-        //TODO CodeReview 新增按课程查询
         user loginUser = UserUtil.getLoginUser();
         return ResultUtil.success(workService.getStudentAllWork(loginUser));
     }
 
     /**
      * 按课程查询作业
-     * @return
      */
+    //TODO 要体现出继续作业 重新作业 查看等状态
     @PostMapping("/getCourseAllWork")
     public ResultUtil<PageInfo<works>> getCourseAllWork(@RequestBody workVo workVo) {
         return ResultUtil.success(workService.getCourseAllWork(workVo));
@@ -63,29 +68,66 @@ public class workController {
 
     /**
      * 教师删除作业
-     * courseId chapterId userId
+     * courseId chapterId
      */
     @PostMapping("/delWork")
-    public ResultUtil<String> delWork(@RequestBody works works) {
-        workService.delWork( works);
+    public ResultUtil<String> delWork(@RequestBody workVo workVo) {
+        workService.delWork(workVo);
         return ResultUtil.success();
     }
 
     /**
      * 教师修改作业
-     * id
      */
     @PostMapping("/editWork")
     public ResultUtil<String> editWork(@RequestBody works works) {
-        workService.editWork( works);
+        workService.editWork(works);
         return ResultUtil.success();
     }
-//    /**
-//     * 查看作业详情
-//     */
-//    @PostMapping("/detailsWork")
-//    public ResultUtil<String> detailsWork(){
-//        user loginUser = UserUtil.getLoginUser();
-//        return ResultUtil.success(workService.getdetailsWork(loginUser));
+
+    /**
+     * 教师查看学生提交作业详情/可打成绩/可评价
+     * courseId chapterId -> work_id->user_work
+     */
+    @PostMapping("/getSubmitWork")
+    public ResultUtil<PageInfo<userWork>> getSubmitWork(@RequestBody workVo workVo){
+        Integer id = workService.getWorkId(workVo);
+        PageInfo<userWork> submitWork = workService.getSubmitWork(id);
+        System.out.println(ResultUtil.success(submitWork));
+        return  ResultUtil.success(submitWork);
+    }
+    /**
+     * 批改作业/打分评价
+     * userId workId
+     */
+    @PostMapping("/correctWork")
+    public ResultUtil<String> correctWork(@RequestBody userWork userWork){
+        workService.correctWork(userWork);
+        return  ResultUtil.success();
+    }
+    /**
+     * 学生写作业
+     */
+    @PostMapping("/doWork")
+    public ResultUtil<String> doWork(@RequestBody userWork userWork){
+        user loginUser = UserUtil.getLoginUser();
+        userWork.setUserId(loginUser.getId());
+        workService.doWork(userWork);
+        return  ResultUtil.success();
+    }
+//    *
+//     * 下载作业
+//
+//    @PostMapping("/downWork")
+//    public ResultUtil<String> downWork(@RequestBody fileVo fileVo){
+//        return  ResultUtil.success();
+//    }
+//
+//    *
+//     * 模糊查找指定章节的作业
+//
+//    @PostMapping("/blurWork")
+//    public ResultUtil<PageInfo<works>> blurWork(@RequestBody ){
+//        return ResultUtil.success(workService.getCourseAllWork(workVo));
 //    }
 }

@@ -28,6 +28,13 @@ public class workServiceImpl implements workService {
     @Autowired
     private chapterMapper chapterMapper;
 
+
+    /**
+     * 此方法用于查询作业时 判断作业当前处于什么状态
+     */
+    public void  workStatus(){
+        //如果userWork表upFilePath/comment字段有数据就表示已提交 作业时间并未截至 可以重新提交
+    }
     /**
      * 根据当前学生id查询作业
      */
@@ -62,9 +69,13 @@ public class workServiceImpl implements workService {
      * 教师删除作业
      */
     @Override
-    public void delWork(works works) {
-        //TODO 健壮性校验
-        workMapper.delWork(works);
+    public void delWork(workVo workVo) {
+        //参数判空
+        if (workVo.getCourseId() == null || workVo.getCourseId() == 0
+                || workVo.getChapterId() == null|| workVo.getChapterId() == 0) {
+            throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
+        }
+        workMapper.delWork(workVo);
     }
 
     /**
@@ -112,7 +123,9 @@ public class workServiceImpl implements workService {
 
         return new PageInfo<>(worksList);
     }
-
+    /**
+     * 查看作业详情
+     */
     @Override
     public works getWorkByWorkId(Integer workId) {
         //参数判空
@@ -125,5 +138,59 @@ public class workServiceImpl implements workService {
             throw new GlobalException(ErrorCode.WORK_EMPTY_ERROR);
         }
         return sqlWork;
+    }
+
+    @Override
+    public Integer getWorkId(workVo workVo) {
+        //参数
+        if (ObjectUtils.isEmpty(workVo)) {
+            throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
+        }
+        //判空
+        if (workVo.getCourseId() == null || workVo.getCourseId() == 0||
+                workVo.getChapterId() == null || workVo.getChapterId() == 0) {
+            throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
+        }
+        Integer id =  workMapper.getWorkId(workVo);
+        return id;
+    }
+
+    /**
+     * 获取学生提交的作业
+     */
+    @Override
+    public PageInfo<userWork> getSubmitWork(Integer id) {
+        //查询作业
+        List<userWork> userWorkList = workMapper.getSubmitWork(id);
+        return new PageInfo<>(userWorkList);
+    }
+
+
+    /**
+     * 批改作业/打分评价
+     * userId workId
+     * @param userWork
+     */
+    @Override
+    public void correctWork(userWork userWork) {
+        workMapper.correctWork(userWork);
+    }
+    /**
+     * 学生写作业
+     */
+    @Override
+    public void doWork(userWork userWork) {
+        //第一次点开作业 -->继续作业 前端的事儿
+        //参数
+        if (ObjectUtils.isEmpty(userWork)) {
+            throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
+        }
+
+        //判空
+        if (userWork.getWorkId() == null || userWork.getWorkId() == 0
+           ||userWork.getUserId() == null || userWork.getUserId() == 0) {
+            throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
+        }
+        workMapper.doWork(userWork);
     }
 }

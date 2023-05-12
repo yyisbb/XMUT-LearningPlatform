@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class workVo {
     private Integer courseId;
+    private Integer chapterId;
+    private Integer userId;
     private Integer workId;
     public int current;
     public int pageSize;

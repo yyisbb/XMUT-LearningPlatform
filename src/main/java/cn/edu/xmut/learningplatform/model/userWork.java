@@ -18,4 +18,7 @@ public class userWork {
     private Integer userId;
     private Integer status;
     private String upFilePath;
+    private Integer score;
+    private String comment;
+    private String feedback;
 }
