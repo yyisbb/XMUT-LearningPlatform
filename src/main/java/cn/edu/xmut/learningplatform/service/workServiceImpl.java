@@ -193,4 +193,13 @@ public class workServiceImpl implements workService {
         }
         workMapper.doWork(userWork);
     }
+    /**
+     * 模糊
+     */
+    @Override
+    public PageInfo<works> getWorkByBlur(workVo workVo) {
+        List<works> worksList = workMapper.getWorkByBlur(workVo);
+        System.out.println(worksList);
+        return new PageInfo<>(worksList);
+    }
 }

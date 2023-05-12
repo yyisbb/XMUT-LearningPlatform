@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class workVo {
+    private String name;
     private Integer courseId;
     private Integer chapterId;
     private Integer userId;

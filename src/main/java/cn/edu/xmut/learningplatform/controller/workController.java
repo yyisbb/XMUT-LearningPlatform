@@ -115,19 +115,20 @@ public class workController {
         workService.doWork(userWork);
         return  ResultUtil.success();
     }
-//    *
+
+//    /**
 //     * 下载作业
-//
+//     */
 //    @PostMapping("/downWork")
 //    public ResultUtil<String> downWork(@RequestBody fileVo fileVo){
 //        return  ResultUtil.success();
 //    }
-//
-//    *
-//     * 模糊查找指定章节的作业
-//
-//    @PostMapping("/blurWork")
-//    public ResultUtil<PageInfo<works>> blurWork(@RequestBody ){
-//        return ResultUtil.success(workService.getCourseAllWork(workVo));
-//    }
+
+    /**
+     * 模糊查询作业根据name
+     */
+    @PostMapping("/blurWork")
+    public ResultUtil<PageInfo<works>> blurWork(@RequestBody workVo workVo){
+        return ResultUtil.success(workService.getWorkByBlur(workVo));
+    }
 }

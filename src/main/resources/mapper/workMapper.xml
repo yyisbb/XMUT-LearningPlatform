@@ -62,6 +62,13 @@
         WHERE user_work.workId =#{id}
     </select>
 
+    <!--模糊-->
+    <select id="getWorkByBlur" resultType="works">
+        SELECT *
+        FROM `work`
+        WHERE name LIKE concat('%',#{name},'%')
+    </select>
+
     <!--作业评分-->
     <update id="correctWork">
         UPDATE user_work

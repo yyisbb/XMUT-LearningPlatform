@@ -34,4 +34,6 @@ public interface workMapper {
     void correctWork(userWork userWork);
 
     void doWork(userWork userWork);
+
+    List<works> getWorkByBlur(workVo workVo);
 }

@@ -33,4 +33,6 @@ public interface workService {
     void correctWork(userWork workVo);
 
     void doWork(userWork userWork);
+
+ PageInfo<works> getWorkByBlur(workVo workVo);
 }
