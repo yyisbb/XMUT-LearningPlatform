@@ -31,7 +31,6 @@ public class workController {
     /**
      * 查询学生的全部作业
      */
-    //TODO 要体现出继续作业 重新作业 查看等状态
     @PostMapping("/getStudentAllWork")
     public ResultUtil<PageInfo<works>> getStudentAllWork() {
         user loginUser = UserUtil.getLoginUser();
@@ -41,7 +40,6 @@ public class workController {
     /**
      * 按课程查询作业
      */
-    //TODO 要体现出继续作业 重新作业 查看等状态
     @PostMapping("/getCourseAllWork")
     public ResultUtil<PageInfo<works>> getCourseAllWork(@RequestBody workVo workVo) {
         return ResultUtil.success(workService.getCourseAllWork(workVo));
@@ -91,9 +89,8 @@ public class workController {
      */
     @PostMapping("/getSubmitWork")
     public ResultUtil<PageInfo<userWork>> getSubmitWork(@RequestBody workVo workVo){
-        Integer id = workService.getWorkId(workVo);
-        PageInfo<userWork> submitWork = workService.getSubmitWork(id);
-        System.out.println(ResultUtil.success(submitWork));
+       workVo.setWorkId(workService.getWorkId(workVo));
+        PageInfo<userWork> submitWork = workService.getSubmitWork(workVo);
         return  ResultUtil.success(submitWork);
     }
     /**
@@ -116,13 +113,6 @@ public class workController {
         return  ResultUtil.success();
     }
 
-//    /**
-//     * 下载作业
-//     */
-//    @PostMapping("/downWork")
-//    public ResultUtil<String> downWork(@RequestBody fileVo fileVo){
-//        return  ResultUtil.success();
-//    }
 
     /**
      * 模糊查询作业根据name

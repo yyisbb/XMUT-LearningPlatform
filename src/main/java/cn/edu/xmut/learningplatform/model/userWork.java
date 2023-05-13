@@ -16,9 +16,9 @@ import java.util.List;
 public class userWork {
     private Integer workId;
     private Integer userId;
-    private Integer status;
     private String upFilePath;
     private Integer score;
     private String comment;
     private String feedback;
+
 }

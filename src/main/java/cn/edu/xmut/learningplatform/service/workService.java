@@ -28,11 +28,13 @@ public interface workService {
     works getWorkByWorkId(Integer workId);
 
     Integer getWorkId(workVo workVo);
-    PageInfo<userWork> getSubmitWork(Integer id);
+    PageInfo<userWork> getSubmitWork(workVo workVo);
 
     void correctWork(userWork workVo);
 
     void doWork(userWork userWork);
 
  PageInfo<works> getWorkByBlur(workVo workVo);
+
+
 }

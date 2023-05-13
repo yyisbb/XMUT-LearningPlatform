@@ -15,7 +15,7 @@ import java.util.List;
 @Mapper
 public interface workMapper {
 
-    List<works> getWorkByStudentId(@Param("user_id") Integer userId);
+    List<works> getWorkByStudentId(@Param("userId") Integer userId);
 
     List<works> getWorkByCourseId( Integer courseId);
 
@@ -29,11 +29,13 @@ public interface workMapper {
 
     Integer getWorkId(workVo workVo);
 
-    List<userWork> getSubmitWork(Integer id);
+    List<userWork> getSubmitWork(workVo workVo);
 
     void correctWork(userWork userWork);
 
     void doWork(userWork userWork);
 
     List<works> getWorkByBlur(workVo workVo);
+
+    userWork getWorkStatus(workVo workVo);
 }

@@ -6,6 +6,7 @@ import cn.edu.xmut.learningplatform.mapper.workMapper;
 import cn.edu.xmut.learningplatform.mapper.courseMapper;
 import cn.edu.xmut.learningplatform.mapper.chapterMapper;
 import cn.edu.xmut.learningplatform.model.*;
+import cn.edu.xmut.learningplatform.utils.UserUtil;
 import cn.edu.xmut.learningplatform.vo.workVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -27,23 +28,33 @@ public class workServiceImpl implements workService {
     private courseMapper courseMapper;
     @Autowired
     private chapterMapper chapterMapper;
+//通用代码
+    private PageInfo<works> getWorkStatus(workVo workVo, List<works> worksList) {
+        userWork userWork;
+        for (int i = 0; i < worksList.size(); i++) {
+            workVo.setWorkId(worksList.get(i).getId());
+            userWork = workMapper.getWorkStatus(workVo);
+            if (userWork == null) {
+                worksList.get(i).setStatus(0);
+            }
+            else if (userWork.getUpFilePath()!=null || userWork.getComment()!=null){
+                worksList.get(i).setStatus(1);
+            }else worksList.get(i).setStatus(-1);
 
-
-    /**
-     * 此方法用于查询作业时 判断作业当前处于什么状态
-     */
-    public void  workStatus(){
-        //如果userWork表upFilePath/comment字段有数据就表示已提交 作业时间并未截至 可以重新提交
-    }
-    /**
-     * 根据当前学生id查询作业
-     */
-    @Override
-    public PageInfo<works> getStudentAllWork(user loginUser) {
-        List<works> worksList = workMapper.getWorkByStudentId(loginUser.getId());
+        }
         return new PageInfo<>(worksList);
     }
 
+    /**
+     * 根据当前学生id查询所有课程作业
+     */
+    @Override
+    public PageInfo<works> getStudentAllWork(user loginUser) {
+        workVo workVo = new workVo();
+        workVo.setUserId(loginUser.getId());
+        List<works> worksList = workMapper.getWorkByStudentId(loginUser.getId());
+        return getWorkStatus(workVo, worksList);
+    }
 
     /**
      * 教师添加作业
@@ -83,10 +94,20 @@ public class workServiceImpl implements workService {
      */
     @Override
     public void editWork(works works) {
-        //TODO 健壮性校验
+        //校验参数
+        if (works.getName() == null || works.getName().length() == 0
+                || works.getStartTime() == null
+                || works.getEndTime() == null
+                || works.getChapterId() == null
+                || works.getCourseId() == null
+        ) {
+            throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
+        }
         workMapper.editWork(works);
     }
-
+    /**
+     * 获取当前课程下所有作业
+     */
     @Override
     public PageInfo<works> getCourseAllWork(workVo courseVo) {
 
@@ -120,7 +141,10 @@ public class workServiceImpl implements workService {
             chapter sqlChapter = chapterMapper.getChapterById(works.getChapterId());
             works.setChapterName(sqlChapter.getName());
         }
-
+        //作业状态
+/*        user loginUser = UserUtil.getLoginUser();
+        workVo work = new workVo();
+        work.setUserId(loginUser.getId());*/
         return new PageInfo<>(worksList);
     }
     /**
@@ -151,17 +175,17 @@ public class workServiceImpl implements workService {
                 workVo.getChapterId() == null || workVo.getChapterId() == 0) {
             throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
         }
-        Integer id =  workMapper.getWorkId(workVo);
-        return id;
+        Integer workId =  workMapper.getWorkId(workVo);
+        return workId;
     }
 
     /**
      * 获取学生提交的作业
      */
     @Override
-    public PageInfo<userWork> getSubmitWork(Integer id) {
+    public PageInfo<userWork> getSubmitWork(workVo workVo) {
         //查询作业
-        List<userWork> userWorkList = workMapper.getSubmitWork(id);
+        List<userWork> userWorkList = workMapper.getSubmitWork(workVo);
         return new PageInfo<>(userWorkList);
     }
 
@@ -180,7 +204,7 @@ public class workServiceImpl implements workService {
      */
     @Override
     public void doWork(userWork userWork) {
-        //第一次点开作业 -->继续作业 前端的事儿
+        //第一次点开作业 -->继续作业
         //参数
         if (ObjectUtils.isEmpty(userWork)) {
             throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
@@ -198,8 +222,11 @@ public class workServiceImpl implements workService {
      */
     @Override
     public PageInfo<works> getWorkByBlur(workVo workVo) {
+        user loginUser = UserUtil.getLoginUser();
+        workVo work = new workVo();
+        work.setUserId(loginUser.getId());
         List<works> worksList = workMapper.getWorkByBlur(workVo);
-        System.out.println(worksList);
-        return new PageInfo<>(worksList);
+        //判断当前作业完成状态 userId workId
+        return getWorkStatus(work, worksList);
     }
 }

@@ -4,12 +4,11 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="cn.edu.xmut.learningplatform.mapper.workMapper">
-    <!--查询学生全部作业-->
+    <!--查询学生全部课程下作业-->
     <select id="getWorkByStudentId" resultType="works">
-        select `work`.*
-        from user_course RIGHT JOIN `work` ON
-        user_course.courseId=`work`.courseId
-        WHERE user_course.userId=#{user_id}
+        SELECT `work`.*
+        FROM user_course,`work`
+        WHERE user_course.courseId=`work`.courseId AND userId = #{userId}
     </select>
 
     <!--查看指定课程所有作业-->
@@ -54,12 +53,19 @@
     <select id="getWorkId" resultType="java.lang.Integer">
         select id
         FROM `work`
-        WHERE `work`.courseId=#{courseId} and `work`.chapterId=#{chapterId}
+        WHERE courseId=#{courseId} and chapterId=#{chapterId}
     </select>
     <select id="getSubmitWork" resultType="userWork">
         select *
         FROM user_work
-        WHERE user_work.workId =#{id}
+        <where>
+            <if test="workId !='' and workId != null">
+              and  workId = #{workId}
+            </if>
+            <if test="userId !='' and userId != null">
+                and  workId = #{userId}
+            </if>
+        </where>
     </select>
 
     <!--模糊-->
@@ -67,6 +73,12 @@
         SELECT *
         FROM `work`
         WHERE name LIKE concat('%',#{name},'%')
+    </select>
+    <!--作业状态-->
+    <select id="getWorkStatus" resultType="userWork">
+        SELECT workId,userId,upFilePath,`comment`
+        FROM user_work
+        WHERE workId=#{workId} AND userId=#{userId}
     </select>
 
     <!--作业评分-->
