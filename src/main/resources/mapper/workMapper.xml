@@ -85,13 +85,20 @@
     <update id="correctWork">
         UPDATE user_work
         SET score = #{score},
-        feedback =  #{feedback},
+        feedback =  #{feedback}
+        WHERE workId = #{workId} AND userId = #{userId}
+    </update>
+    <!--提交作业-->
+    <update id="doWork">
+        UPDATE user_work
+        SET upFilePath = #{upFilePath},
+       comment =  #{comment}
         WHERE workId = #{workId} AND userId = #{userId}
     </update>
 
-    <!--学生交作业-->
-    <insert id="doWork">
-        INSERT INTO user_work(workId,userId,upFilePath,`comment`)
-        VALUE (#{workId},#{userId},#{upFilePath},#{`comment`})
+    <!--学生第一次点击作业-->
+    <insert id="viewWork">
+        INSERT INTO user_work(workId,userId)
+        VALUE (#{workId},#{userId})
     </insert>
 </mapper>

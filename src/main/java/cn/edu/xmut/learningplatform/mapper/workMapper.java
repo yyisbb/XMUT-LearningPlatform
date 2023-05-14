@@ -33,9 +33,11 @@ public interface workMapper {
 
     void correctWork(userWork userWork);
 
-    void doWork(userWork userWork);
+    void viewWork(workVo workVo);
 
     List<works> getWorkByBlur(workVo workVo);
 
     userWork getWorkStatus(workVo workVo);
+
+    int doWork(workVo workVo);
 }

@@ -56,6 +56,8 @@ public enum ErrorCode {
     WORK_EMPTY_ERROR("作业不存在"),
     SIGN_TIME_EXPIRE_ERROR("签到时间已过"),
     SIGN_REPETITION_ERROR("无法重复签到"),
+    SCORE_EMPTY_ERROR("成绩不能为空"),
+    WORKUP_EMPTY_ERROR("作业不能为空"),
     ;
 
     private final String message;

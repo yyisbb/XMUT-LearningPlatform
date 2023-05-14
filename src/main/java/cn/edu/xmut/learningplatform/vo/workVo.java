@@ -13,6 +13,8 @@ public class workVo {
     private Integer chapterId;
     private Integer userId;
     private Integer workId;
+    private String upFilePath;
+    private String comment;
     public int current;
     public int pageSize;
 }

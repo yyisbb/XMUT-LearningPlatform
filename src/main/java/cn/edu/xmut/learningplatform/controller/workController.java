@@ -6,17 +6,13 @@ import cn.edu.xmut.learningplatform.model.user;
 import cn.edu.xmut.learningplatform.service.workService;
 import cn.edu.xmut.learningplatform.utils.ResultUtil;
 import cn.edu.xmut.learningplatform.utils.UserUtil;
-import cn.edu.xmut.learningplatform.vo.fileVo;
 import cn.edu.xmut.learningplatform.vo.workVo;
 import com.github.pagehelper.PageInfo;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * @author 李大大
@@ -89,7 +85,6 @@ public class workController {
      */
     @PostMapping("/getSubmitWork")
     public ResultUtil<PageInfo<userWork>> getSubmitWork(@RequestBody workVo workVo){
-       workVo.setWorkId(workService.getWorkId(workVo));
         PageInfo<userWork> submitWork = workService.getSubmitWork(workVo);
         return  ResultUtil.success(submitWork);
     }
@@ -103,17 +98,25 @@ public class workController {
         return  ResultUtil.success();
     }
     /**
-     * 学生写作业
+     * 学生第一次点击作业
      */
-    @PostMapping("/doWork")
-    public ResultUtil<String> doWork(@RequestBody userWork userWork){
+    @PostMapping("/viewWork")
+    public ResultUtil<String> viewWork(@RequestBody workVo workVo){
         user loginUser = UserUtil.getLoginUser();
-        userWork.setUserId(loginUser.getId());
-        workService.doWork(userWork);
+        workVo.setUserId(loginUser.getId());
+        workService.viewWork(workVo);
         return  ResultUtil.success();
     }
-
-
+    /**
+     * 学生交作业/重新提交作业
+     */
+    @PostMapping("/doWork")
+    public ResultUtil<String> doWork(@RequestBody workVo workVo){
+        user loginUser = UserUtil.getLoginUser();
+        workVo.setUserId(loginUser.getId());
+        workService.doWork(workVo);
+        return  ResultUtil.success();
+    }
     /**
      * 模糊查询作业根据name
      */

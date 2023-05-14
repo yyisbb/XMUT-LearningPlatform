@@ -30,6 +30,9 @@ public class workServiceImpl implements workService {
     private chapterMapper chapterMapper;
 //通用代码
     private PageInfo<works> getWorkStatus(workVo workVo, List<works> worksList) {
+        if (ObjectUtils.isEmpty(worksList)) {
+            throw new GlobalException(ErrorCode.WORK_EMPTY_ERROR);
+        }
         userWork userWork;
         for (int i = 0; i < worksList.size(); i++) {
             workVo.setWorkId(worksList.get(i).getId());
@@ -46,7 +49,7 @@ public class workServiceImpl implements workService {
     }
 
     /**
-     * 根据当前学生id查询所有课程作业
+     * 根据当wdadwadwadwdadd前学生id查询所有课程作业
      */
     @Override
     public PageInfo<works> getStudentAllWork(user loginUser) {
@@ -61,9 +64,6 @@ public class workServiceImpl implements workService {
      */
     @Override
     public void addWork(works works) {
-        if (ObjectUtils.isEmpty(works)) {
-            throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
-        }
         //校验参数
         if (works.getName() == null || works.getName().length() == 0
                 || works.getStartTime() == null
@@ -73,6 +73,7 @@ public class workServiceImpl implements workService {
         ) {
             throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
         }
+        // TODO 直接调接口的时候要判断是否为已存在的老师?
         workMapper.addWork(works);
     }
 
@@ -152,7 +153,7 @@ public class workServiceImpl implements workService {
      */
     @Override
     public works getWorkByWorkId(Integer workId) {
-        //参数判空
+        //参数校验
         if (workId == null || workId == 0) {
             throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
         }
@@ -164,32 +165,22 @@ public class workServiceImpl implements workService {
         return sqlWork;
     }
 
-    @Override
-    public Integer getWorkId(workVo workVo) {
-        //参数
-        if (ObjectUtils.isEmpty(workVo)) {
-            throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
-        }
-        //判空
-        if (workVo.getCourseId() == null || workVo.getCourseId() == 0||
-                workVo.getChapterId() == null || workVo.getChapterId() == 0) {
-            throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
-        }
-        Integer workId =  workMapper.getWorkId(workVo);
-        return workId;
-    }
-
     /**
      * 获取学生提交的作业
      */
     @Override
     public PageInfo<userWork> getSubmitWork(workVo workVo) {
+        //参数校验
+        if (workVo.getCourseId() == null || workVo.getCourseId() == 0||
+                workVo.getChapterId() == null || workVo.getChapterId() == 0) {
+            throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
+        }
+        //获取作业Id
+        workVo.setWorkId(workMapper.getWorkId(workVo));
         //查询作业
         List<userWork> userWorkList = workMapper.getSubmitWork(workVo);
         return new PageInfo<>(userWorkList);
     }
-
-
     /**
      * 批改作业/打分评价
      * userId workId
@@ -197,25 +188,24 @@ public class workServiceImpl implements workService {
      */
     @Override
     public void correctWork(userWork userWork) {
+        //参数校验
+        if (userWork.getScore() == null){
+            throw new GlobalException(ErrorCode.SCORE_EMPTY_ERROR);
+        }
         workMapper.correctWork(userWork);
     }
     /**
-     * 学生写作业
+     * 学生第一次点开作业
      */
     @Override
-    public void doWork(userWork userWork) {
+    public void viewWork(workVo workVo) {
         //第一次点开作业 -->继续作业
-        //参数
-        if (ObjectUtils.isEmpty(userWork)) {
+        //参数校验
+        if (workVo.getWorkId() == null || workVo.getWorkId() == 0
+           ||workVo.getUserId() == null || workVo.getUserId() == 0) {
             throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
         }
-
-        //判空
-        if (userWork.getWorkId() == null || userWork.getWorkId() == 0
-           ||userWork.getUserId() == null || userWork.getUserId() == 0) {
-            throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
-        }
-        workMapper.doWork(userWork);
+        workMapper.viewWork(workVo);
     }
     /**
      * 模糊
@@ -228,5 +218,23 @@ public class workServiceImpl implements workService {
         List<works> worksList = workMapper.getWorkByBlur(workVo);
         //判断当前作业完成状态 userId workId
         return getWorkStatus(work, worksList);
+    }
+    /**
+     * 交作业
+     */
+    @Override
+    public void doWork(workVo workVo) {
+        //参数校验
+        if (workVo.getWorkId() == null || workVo.getWorkId() == 0
+                ||workVo.getUserId() == null || workVo.getUserId() == 0) {
+            throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
+        }
+        if(workVo.getUpFilePath()==null && workVo.getComment()==null){
+            throw new GlobalException(ErrorCode.WORKUP_EMPTY_ERROR);
+        }
+        //没有这份作业时
+        if (workMapper.doWork(workVo)==0){
+            throw new GlobalException(ErrorCode.WORK_EMPTY_ERROR);
+        }
     }
 }
