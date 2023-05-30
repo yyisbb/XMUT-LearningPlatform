@@ -58,6 +58,16 @@ public enum ErrorCode {
     SIGN_REPETITION_ERROR("无法重复签到"),
     SCORE_EMPTY_ERROR("成绩不能为空"),
     WORKUP_EMPTY_ERROR("作业不能为空"),
+
+
+
+
+    Discussion_EMPTY_ERROR("该课程没有讨论"),
+
+
+
+
+    PLEASE_DO_NOT_REPEATEDLY_LIKE_ERROR("請勿反復點讚"),
     ;
 
     private final String message;
