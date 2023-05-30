@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.edu.xmut.learningplatform.mapper.discussionMapper">
+    <insert id="addDiscussion" parameterType="discussion">
+    INSERT INTO discuss (id,authorId, courseId, title,content, date) VALUES (#{id},#{authorId}, #{courseId}, #{title},#{content},#{date});
+    </insert>
+    <update id="updateDiscussionById" parameterType="discussion">
+        update discuss set title=#{title},content=#{content} where id=#{id}
+    </update>
+    <delete id="deleteDiscussionById" >
+        Delete from discuss where Id=#{id}
+    </delete>
+    <select id="selectDiscussionById" resultType="discussion">
+        SELECT * from discuss where courseId=#{courseId}
+    </select>
+</mapper>

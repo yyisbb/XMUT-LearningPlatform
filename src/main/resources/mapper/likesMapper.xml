@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.edu.xmut.learningplatform.mapper.likesMapper">
+    <update id="updateDiscussionById"  parameterType="discussion">
+        UPDATE discuss SET likesCount = likesCount + 1 WHERE discussionId = #{id}
+    </update>
+    <update id="updateStatusById" parameterType="likes">
+        UPDATE likes
+        SET status = 2, cancelTime = NOW()
+        WHERE userId = #{userId} AND discussionId = #{discussionId} AND status = 1;
+    </update>
+    <update id="updateLikes"  parameterType="likes">
+        UPDATE likes
+        SET status = 1, createTime = NOW()
+        WHERE userId = #{userId} AND discussionId = #{discussionId} AND status = 0;
+    </update>
+
+    <select id="selectStatusById" resultType="java.lang.Integer" parameterType="likes">
+        SELECT COUNT(*) FROM likes WHERE discussionId = #{id} AND userId =#{userId} AND status =0
+    </select>
+    <select id="selectDiscussion" resultType="discussion">
+        SELECT *
+        FROM discuss
+        ORDER BY likes_num DESC
+        LIMIT 10;
+    </select>
+    <select id="selectLikesDiscussion" resultType="java.lang.Integer" parameterType="likes">
+        SELECT discussionId FROM likes where UserId={#userId}
+    </select>
+    <select id="selectDiscussionByUserID" resultType="discussion">
+        SELECT * from  discuss where id=#{id}
+    </select>
+
+</mapper>
