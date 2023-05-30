@@ -30,7 +30,8 @@ public class works {
     private Date updateTime;
     private String filePath;
 
-    private String chapterName;
+    private chapter chapter;
+    private course course;
     private Integer status;// 0表示未查看过 -1表示已查看但没有任何作答 1表示已经作答
 }
 

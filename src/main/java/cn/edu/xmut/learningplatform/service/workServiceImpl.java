@@ -28,34 +28,38 @@ public class workServiceImpl implements workService {
     private courseMapper courseMapper;
     @Autowired
     private chapterMapper chapterMapper;
-//通用代码
-    private PageInfo<works> getWorkStatus(workVo workVo, List<works> worksList) {
+    public PageInfo<works> getWorkStatus(workVo workVo, List<works> worksList) {
         if (ObjectUtils.isEmpty(worksList)) {
             throw new GlobalException(ErrorCode.WORK_EMPTY_ERROR);
         }
         userWork userWork;
-        for (int i = 0; i < worksList.size(); i++) {
-            workVo.setWorkId(worksList.get(i).getId());
+        for (works works : worksList) {
+            workVo.setWorkId(works.getId());
             userWork = workMapper.getWorkStatus(workVo);
             if (userWork == null) {
-                worksList.get(i).setStatus(0);
+                works.setStatus(0);
+            } else if (userWork.getUpFilePath() != null || userWork.getComment() != null) {
+                works.setStatus(1);
+            } else {
+                works.setStatus(-1);
             }
-            else if (userWork.getUpFilePath()!=null || userWork.getComment()!=null){
-                worksList.get(i).setStatus(1);
-            }else worksList.get(i).setStatus(-1);
 
         }
         return new PageInfo<>(worksList);
     }
 
     /**
-     * 根据当wdadwadwadwdadd前学生id查询所有课程作业
+     * 根据当前学生id查询所有课程作业
      */
     @Override
     public PageInfo<works> getStudentAllWork(user loginUser) {
         workVo workVo = new workVo();
         workVo.setUserId(loginUser.getId());
         List<works> worksList = workMapper.getWorkByStudentId(loginUser.getId());
+        for (works works : worksList) {
+            works.setChapter(chapterMapper.getChapterById(works.getChapterId()));
+            works.setCourse(courseMapper.getCourseByCourseId(works.getCourseId()));
+        }
         return getWorkStatus(workVo, worksList);
     }
 
@@ -139,8 +143,8 @@ public class workServiceImpl implements workService {
 
         //查询每个作业的章节
         for (works works : worksList) {
-            chapter sqlChapter = chapterMapper.getChapterById(works.getChapterId());
-            works.setChapterName(sqlChapter.getName());
+            works.setChapter(chapterMapper.getChapterById(works.getChapterId()));
+            works.setCourse(courseMapper.getCourseByCourseId(works.getCourseId()));
         }
         //作业状态
 /*        user loginUser = UserUtil.getLoginUser();
@@ -159,6 +163,8 @@ public class workServiceImpl implements workService {
         }
         //查询作业
         works sqlWork = workMapper.getWorkByWorkId(workId);
+        sqlWork.setChapter(chapterMapper.getChapterById(sqlWork.getChapterId()));
+        sqlWork.setCourse(courseMapper.getCourseByCourseId(sqlWork.getCourseId()));
         if (ObjectUtils.isEmpty(sqlWork)) {
             throw new GlobalException(ErrorCode.WORK_EMPTY_ERROR);
         }
