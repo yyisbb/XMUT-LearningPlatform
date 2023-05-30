@@ -9,9 +9,9 @@ public interface likesService {
 
     void likesDiscussion(discussion discussion);
     //取消点赞
-    void cancelLikes(likes likes);
+    void cancelLikes(discussion discussion);
 
-    ArrayList<discussion> selectDiscussion(Integer limit);
+    ArrayList<discussion> selectDiscussion();
 
     ArrayList<discussion> selectLikesDiscussion();
 }

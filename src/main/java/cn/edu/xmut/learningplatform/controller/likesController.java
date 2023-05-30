@@ -26,14 +26,14 @@ public class likesController {
     }
     //取消点赞
     @PostMapping("/cancelLikes")
-    public ResultUtil<String> cancelLikes(@RequestBody likes likes) {
-        likesService.cancelLikes(likes);
+    public ResultUtil<String> cancelLikes(@RequestBody discussion discussion) {
+        likesService.cancelLikes(discussion);
         return ResultUtil.success();
     }
     //查询点赞数为前limit的讨论
     @PostMapping("/selectDiscussion")
-    public ResultUtil<ArrayList<discussion>> selectDiscussion(@RequestBody Integer limit ) {
-        ArrayList<discussion> discussions = likesService.selectDiscussion(limit);
+    public ResultUtil<ArrayList<discussion>> selectDiscussion() {
+        ArrayList<discussion> discussions = likesService.selectDiscussion();
         return ResultUtil.success(discussions);
     }
 
