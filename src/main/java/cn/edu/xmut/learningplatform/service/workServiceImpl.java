@@ -108,6 +108,8 @@ public class workServiceImpl implements workService {
         ) {
             throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
         }
+        //TODO 查询该章节是否存在作业存在就先删除后新增 实现 替换
+
         workMapper.editWork(works);
     }
     /**
