@@ -15,7 +15,6 @@
     <description>learning-platform</description>
     <properties>
         <java.version>8</java.version>
-        <kotlin.version>1.4.32-release-380</kotlin.version>
     </properties>
     <dependencies>
         <dependency>
