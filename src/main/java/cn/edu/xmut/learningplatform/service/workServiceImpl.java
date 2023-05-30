@@ -78,6 +78,8 @@ public class workServiceImpl implements workService {
             throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
         }
         // TODO 直接调接口的时候要判断是否为已存在的老师?
+
+        //TODO 查询该章节是否存在作业存在就先删除后新增 实现 替换
         workMapper.addWork(works);
     }
 
@@ -108,8 +110,6 @@ public class workServiceImpl implements workService {
         ) {
             throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
         }
-        //TODO 查询该章节是否存在作业存在就先删除后新增 实现 替换
-
         workMapper.editWork(works);
     }
     /**
