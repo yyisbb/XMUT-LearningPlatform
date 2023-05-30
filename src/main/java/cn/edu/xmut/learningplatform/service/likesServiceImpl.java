@@ -33,13 +33,13 @@ public class likesServiceImpl implements likesService{
                 Integer userId = UserUtil.getLoginUser().getId();
 
                 //判断当前用户是否已经点赞该文章
-                if((likesMapper.selectStatusById(discussion,userId))==1){
+                if((likesMapper.selectStatusById(discussion.getId(),userId))==1){
                     //点赞记录表中修改原來的点赞记录
-                    likesMapper.updateLikes(discussion,userId);
+                    likesMapper.updateLikes(discussion.getId(),userId);
                     //更新文章表中的点赞数量通过文章Id
-                    likesMapper.updateDiscussionById(discussion);
-                }else if ((likesMapper.selectStatusById(discussion,userId))==0){
-                    throw new GlobalException(ErrorCode.PLEASE_DO_NOT_REPEATEDLY_LIKE_ERROR);
+                    likesMapper.updateDiscussionById(discussion.getId());
+                }else if ((likesMapper.selectStatusById(discussion.getId(),userId))==0){
+                    likesMapper.insertDiscussionById(discussion.getId(),userId);
                 }
             } catch (Exception e) {
                 status.setRollbackOnly();
@@ -53,22 +53,19 @@ public class likesServiceImpl implements likesService{
 
     //取消点赞
     @Override
-    public void cancelLikes(likes likes) {
-        if (ObjectUtils.isEmpty(likes)) {
+    public void cancelLikes(discussion discussion) {
+        if (ObjectUtils.isEmpty(discussion)) {
             throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
         }
+        Integer userId = UserUtil.getLoginUser().getId();
         //取消点赞
-        likesMapper.updateStatusById(likes);
+        likesMapper.updateStatusById(discussion.getId(),userId);
     }
     //查询点赞数为前limit的文章
     @Override
-    public ArrayList<discussion> selectDiscussion(Integer limit) {
-        if (ObjectUtils.isEmpty(limit)) {
-            throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
-        }
-        //查询点赞数为前limit的文章
-        ArrayList<discussion> discussions = likesMapper.selectDiscussion(limit);
-        return  discussions;
+    public ArrayList<discussion> selectDiscussion() {
+
+        return  likesMapper.selectDiscussion();
     }
     //查詢該用戶點讚的所有討論
     @Override
