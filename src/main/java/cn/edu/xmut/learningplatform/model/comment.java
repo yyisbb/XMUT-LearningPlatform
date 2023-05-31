@@ -6,11 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-<<<<<<< HEAD
 import java.util.List;
 
-=======
->>>>>>> origin/main
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
@@ -22,8 +19,6 @@ public class comment {
     private Integer commentUserId;
     private Integer discussionId;
     private Integer parentId;
-<<<<<<< HEAD
     private List<comment> childComments;
-=======
->>>>>>> origin/main
+
 }
