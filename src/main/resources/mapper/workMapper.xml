@@ -24,9 +24,9 @@
     <!--教师布置作业-->
     <insert id="addWork" useGeneratedKeys="true" keyProperty="id" parameterType="works">
         insert into work
-        (name,detail,startTime,endTime,courseId,chapterId)
+        (name,detail,startTime,endTime,courseId,chapterId,filePath)
         values
-        (#{name},#{detail},#{startTime},#{endTime},#{courseId},#{chapterId})
+        (#{name},#{detail},#{startTime},#{endTime},#{courseId},#{chapterId},#{filePath})
     </insert>
 
     <!--删除作业-->
@@ -55,6 +55,7 @@
         FROM `work`
         WHERE courseId=#{courseId} and chapterId=#{chapterId}
     </select>
+
     <select id="getSubmitWork" resultType="userWork">
         select *
         FROM user_work
