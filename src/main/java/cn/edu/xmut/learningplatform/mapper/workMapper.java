@@ -17,7 +17,7 @@ public interface workMapper {
 
     List<works> getWorkByStudentId(@Param("userId") Integer userId);
 
-    List<works> getWorkByCourseId( Integer courseId);
+    List<works> getWorkByCourseId(workVo workVo);
 
     void addWork(works works);
 
@@ -25,17 +25,13 @@ public interface workMapper {
 
     void editWork(works works);
 
-    works getWorkByWorkId(Integer workId);
-
-    Integer getWorkId(workVo workVo);
+    works getWorkDetails(workVo workVo);
 
     List<userWork> getSubmitWork(workVo workVo);
 
     void correctWork(userWork userWork);
 
     void viewWork(workVo workVo);
-
-    List<works> getWorkByBlur(workVo workVo);
 
     userWork getWorkStatus(workVo workVo);
 

@@ -16,8 +16,7 @@ public interface workService {
 
    PageInfo<works> getStudentAllWork(user loginUser);
 
-
-   void addWork(works works);
+    void addWork(works works);
 
     void delWork (workVo workVo);
 
@@ -25,15 +24,12 @@ public interface workService {
 
     PageInfo<works> getCourseAllWork(workVo workVo);
 
-    works getWorkByWorkId(Integer workId);
+    works getWorkDetails(workVo workVo);
 
     PageInfo<userWork> getSubmitWork(workVo workVo);
 
     void correctWork(userWork userWork);
 
-    void viewWork(workVo workVo);
-
- PageInfo<works> getWorkByBlur(workVo workVo);
-
     void doWork(workVo workVo);
+
 }

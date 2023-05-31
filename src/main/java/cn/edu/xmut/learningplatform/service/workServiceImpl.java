@@ -85,7 +85,7 @@ public class workServiceImpl implements workService {
             throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
         }
         workVo workVo = new workVo(works.getCourseId(), works.getChapterId());
-        works sqlWork = workMapper.getWorkByWorkId(workMapper.getWorkId(workVo));
+        works sqlWork = workMapper.getWorkDetails(workVo);
 
         //开事务
         transactionTemplate.execute(status -> {
@@ -163,38 +163,50 @@ public class workServiceImpl implements workService {
         }
 
         //查询作业
-        List<works> worksList = workMapper.getWorkByCourseId(courseVo.getCourseId());
+        List<works> worksList = workMapper.getWorkByCourseId(courseVo);
 
         //查询每个作业的章节
         for (works works : worksList) {
             works.setChapter(chapterMapper.getChapterById(works.getChapterId()));
             works.setCourse(courseMapper.getCourseByCourseId(works.getCourseId()));
         }
-        //作业状态
-/*        user loginUser = UserUtil.getLoginUser();
+      //作业状态
+        user loginUser = UserUtil.getLoginUser();
         workVo work = new workVo();
-        work.setUserId(loginUser.getId());*/
-        return new PageInfo<>(worksList);
+        work.setUserId(loginUser.getId());
+        return getWorkStatus(work, worksList);
     }
 
-    /**
-     * 查看作业详情
-     */
     @Override
-    public works getWorkByWorkId(Integer workId) {
+    public works getWorkDetails(workVo workVo) {
         //参数校验
-        if (workId == null || workId == 0) {
+        if (workVo.getWorkId() == null || workVo.getWorkId() == 0
+                || workVo.getUserId() == null || workVo.getUserId() == 0
+                || workVo.getStatus() == null) {
             throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
         }
+        //第一次
+        if (workVo.getStatus()==0){
+            workMapper.viewWork(workVo);
+        }
         //查询作业
-        works sqlWork = workMapper.getWorkByWorkId(workId);
+        works sqlWork = workMapper.getWorkDetails(workVo);
         sqlWork.setChapter(chapterMapper.getChapterById(sqlWork.getChapterId()));
         sqlWork.setCourse(courseMapper.getCourseByCourseId(sqlWork.getCourseId()));
+        //拿到已经写过的作业
+        if (workVo.getStatus()==1){
+            List<userWork> userWorkList = workMapper.getSubmitWork(workVo);
+            System.out.println(userWorkList);
+            sqlWork.setUpFilePath(userWorkList.get(0).getUpFilePath());
+            sqlWork.setComment(userWorkList.get(0).getComment());
+        }
+
         if (ObjectUtils.isEmpty(sqlWork)) {
             throw new GlobalException(ErrorCode.WORK_EMPTY_ERROR);
         }
         return sqlWork;
     }
+
 
     /**
      * 获取学生提交的作业
@@ -206,8 +218,6 @@ public class workServiceImpl implements workService {
                 workVo.getChapterId() == null || workVo.getChapterId() == 0) {
             throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
         }
-        //获取作业Id
-        workVo.setWorkId(workMapper.getWorkId(workVo));
         //查询作业
         List<userWork> userWorkList = workMapper.getSubmitWork(workVo);
         return new PageInfo<>(userWorkList);
@@ -228,32 +238,8 @@ public class workServiceImpl implements workService {
         workMapper.correctWork(userWork);
     }
 
-    /**
-     * 学生第一次点开作业
-     */
-    @Override
-    public void viewWork(workVo workVo) {
-        //第一次点开作业 -->继续作业
-        //参数校验
-        if (workVo.getWorkId() == null || workVo.getWorkId() == 0
-                || workVo.getUserId() == null || workVo.getUserId() == 0) {
-            throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
-        }
-        workMapper.viewWork(workVo);
-    }
 
-    /**
-     * 模糊
-     */
-    @Override
-    public PageInfo<works> getWorkByBlur(workVo workVo) {
-        user loginUser = UserUtil.getLoginUser();
-        workVo work = new workVo();
-        work.setUserId(loginUser.getId());
-        List<works> worksList = workMapper.getWorkByBlur(workVo);
-        //判断当前作业完成状态 userId workId
-        return getWorkStatus(work, worksList);
-    }
+
 
     /**
      * 交作业

@@ -34,7 +34,7 @@ public class workController {
     }
 
     /**
-     * 按课程查询作业
+     * 按课程查询作业/模糊
      */
     @PostMapping("/getCourseAllWork")
     public ResultUtil<PageInfo<works>> getCourseAllWork(@RequestBody workVo workVo) {
@@ -42,14 +42,17 @@ public class workController {
     }
 
     /**
-     * 查询具体作业详情
+     * 查询具体作业详情/第一次/继续
      * @param workVo
      * @return
      */
-    @PostMapping("/getWorkByWorkId")
-    public ResultUtil<works> getWorkByWorkId(@RequestBody workVo workVo) {
-        return ResultUtil.success(workService.getWorkByWorkId(workVo.getWorkId()));
+    @PostMapping("/getWorkDetails")
+    public ResultUtil<works> getWorkDetails(@RequestBody workVo workVo) {
+        user loginUser = UserUtil.getLoginUser();
+        workVo.setUserId(loginUser.getId());
+        return ResultUtil.success(workService.getWorkDetails(workVo));
     }
+
 
     /**
      * 教师布置作业
@@ -97,16 +100,7 @@ public class workController {
         workService.correctWork(userWork);
         return  ResultUtil.success();
     }
-    /**
-     * 学生第一次点击作业
-     */
-    @PostMapping("/viewWork")
-    public ResultUtil<String> viewWork(@RequestBody workVo workVo){
-        user loginUser = UserUtil.getLoginUser();
-        workVo.setUserId(loginUser.getId());
-        workService.viewWork(workVo);
-        return  ResultUtil.success();
-    }
+
     /**
      * 学生交作业/重新提交作业
      */
@@ -117,11 +111,5 @@ public class workController {
         workService.doWork(workVo);
         return  ResultUtil.success();
     }
-    /**
-     * 模糊查询作业根据name
-     */
-    @PostMapping("/blurWork")
-    public ResultUtil<PageInfo<works>> blurWork(@RequestBody workVo workVo){
-        return ResultUtil.success(workService.getWorkByBlur(workVo));
-    }
+
 }

@@ -22,4 +22,5 @@ public class workVo {
         this.courseId = courseId;
         this.chapterId = chapterId;
     }
+    private Integer status;
 }

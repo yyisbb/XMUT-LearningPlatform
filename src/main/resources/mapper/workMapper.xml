@@ -13,13 +13,22 @@
 
     <!--查看指定课程所有作业-->
     <select id="getWorkByCourseId" resultType="works">
-        SELECT * FROM `work` WHERE courseId = #{courseId}
+        SELECT * FROM `work`
+        <where>
+            <if test="courseId != ''and courseId != null">
+                and courseId = #{courseId}
+            </if>
+            <if test="name != null and name != ''">
+                and name  LIKE concat('%',#{name},'%')
+            </if>
+        </where>
     </select>
 
-    <!--查看作业详情-->
-    <select id="getWorkByWorkId" resultType="works">
-        SELECT * FROM `work` WHERE id = #{workId}
-    </select>
+    <!--学生第一次点击作业-->
+    <insert id="viewWork">
+        INSERT INTO user_work(workId,userId)
+        VALUE (#{workId},#{userId})
+    </insert>
 
     <!--教师布置作业-->
     <insert id="addWork" useGeneratedKeys="true" keyProperty="id" parameterType="works">
@@ -49,32 +58,43 @@
         WHERE id=#{id}
     </update>
 
-    <!--获取学生提交的作业-->
-    <select id="getWorkId" resultType="java.lang.Integer">
-        select id
-        FROM `work`
-        WHERE courseId=#{courseId} and chapterId=#{chapterId}
+    <!--查看作业详情-->
+    <select id="getWorkDetails" resultType="works">
+        SELECT * FROM `work`
+        <where>
+            <if test="workId !='' and workId != null">
+               and id = #{workId}
+            </if>
+            <if test="courseId !='' and courseId != null ">
+                and courseId=#{courseId}
+            </if>
+            <if test="chapterId !='' and chapterId != null">
+                and chapterId=#{chapterId}
+            </if>
+        </where>
     </select>
-
+    <!--获取学生提交的作业-->
     <select id="getSubmitWork" resultType="userWork">
-        select *
+        SELECT *
         FROM user_work
         <where>
             <if test="workId !='' and workId != null">
-              and  workId = #{workId}
+                AND workId = #{workId}
             </if>
             <if test="userId !='' and userId != null">
-                and  workId = #{userId}
+                AND userId = #{userId}
+            </if>
+            <if test="courseId !='' and courseId != null and chapterId !='' and chapterId != null">
+                AND workId IN (
+                SELECT id
+                FROM `work`
+                WHERE courseId=#{courseId} AND chapterId=#{chapterId}
+                )
             </if>
         </where>
     </select>
 
-    <!--模糊-->
-    <select id="getWorkByBlur" resultType="works">
-        SELECT *
-        FROM `work`
-        WHERE name LIKE concat('%',#{name},'%')
-    </select>
+
     <!--作业状态-->
     <select id="getWorkStatus" resultType="userWork">
         SELECT workId,userId,upFilePath,`comment`
@@ -97,9 +117,5 @@
         WHERE workId = #{workId} AND userId = #{userId}
     </update>
 
-    <!--学生第一次点击作业-->
-    <insert id="viewWork">
-        INSERT INTO user_work(workId,userId)
-        VALUE (#{workId},#{userId})
-    </insert>
+
 </mapper>
