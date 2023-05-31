@@ -5,8 +5,10 @@ import cn.edu.xmut.learningplatform.constant.ErrorCode;
 import cn.edu.xmut.learningplatform.dto.courseListDTO;
 import cn.edu.xmut.learningplatform.exception.GlobalException;
 import cn.edu.xmut.learningplatform.mapper.authCodeMapper;
+import cn.edu.xmut.learningplatform.mapper.userMapper;
 import cn.edu.xmut.learningplatform.model.course;
 import cn.edu.xmut.learningplatform.mapper.courseMapper;
+import cn.edu.xmut.learningplatform.model.user;
 import cn.edu.xmut.learningplatform.model.userCourse;
 import cn.edu.xmut.learningplatform.utils.RandomStringUtil;
 import cn.edu.xmut.learningplatform.utils.UserUtil;
@@ -25,6 +27,8 @@ import java.util.stream.Collectors;
 public class courseServiceImpl implements courseService {
     @Autowired
     private courseMapper courseMapper;
+    @Autowired
+    private userMapper userMapper;
 
     @Override
     public courseListDTO getAllCourse(course course) {
@@ -151,6 +155,8 @@ public class courseServiceImpl implements courseService {
         List<userCourse> sqlCourseList = courseMapper.selectByCourseIdOrUserId(UserUtil.getLoginUser().getId(), null);
         for (userCourse userCourse : sqlCourseList) {
             course sqlCourse = courseMapper.getCourseByCourseId(userCourse.getCourseId());
+            user userInfoByUserId = userMapper.getUserInfoByUserId(sqlCourse.getUserId());
+            sqlCourse.setUser(userInfoByUserId);
             if (sqlCourse != null) {
                 courseList.add(sqlCourse);
             }
