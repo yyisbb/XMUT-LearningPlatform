@@ -31,7 +31,9 @@ public class likesServiceImpl implements likesService{
                     throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
                 }
                 Integer userId = UserUtil.getLoginUser().getId();
-
+                if (discussion.getId() == null || discussion.getId() == 0) {
+                    throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
+                }
                 //判断当前用户是否已经点赞该文章
                 if((likesMapper.selectStatusById(discussion.getId(),userId))==1){
                     //点赞记录表中修改原來的点赞记录
@@ -58,13 +60,15 @@ public class likesServiceImpl implements likesService{
             throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
         }
         Integer userId = UserUtil.getLoginUser().getId();
+        if (discussion.getId() == null || discussion.getId() == 0) {
+            throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
+        }
         //取消点赞
         likesMapper.updateStatusById(discussion.getId(),userId);
     }
     //查询点赞数为前limit的文章
     @Override
     public ArrayList<discussion> selectDiscussion() {
-
         return  likesMapper.selectDiscussion();
     }
     //查詢該用戶點讚的所有討論

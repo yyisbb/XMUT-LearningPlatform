@@ -30,6 +30,7 @@ public class course {
 
     public Integer current;
     public Integer pageSize;
+    private user user;
 
     public course(course copyCouse) {
         this.name = copyCouse.name;

@@ -52,7 +52,9 @@ public class discussionServiceImpl implements discussionService{
         if (ObjectUtils.isEmpty(discussion)) {
             throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
         }
-        System.out.println(discussion.getId());
+        if (discussion.getId() == null || discussion.getId() == 0) {
+            throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
+        }
         discussionMapper.deleteDiscussionById(discussion.getId());
     }
     //修改讨论
@@ -69,8 +71,10 @@ public class discussionServiceImpl implements discussionService{
         if (ObjectUtils.isEmpty(discussion)) {
             throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
         }
-        ArrayList<comment> comments = commentMapper.selectCommentById(discussion.getId());
-        return comments;
+        if (discussion.getId() == null || discussion.getId() == 0) {
+            throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
+        }
+        return  commentMapper.selectCommentById(discussion.getId());
     }
 
 

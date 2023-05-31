@@ -5,11 +5,11 @@
 <mapper namespace="cn.edu.xmut.learningplatform.mapper.commentMapper">
 
     <insert id="addComment" parameterType="comment">
-        INSERT INTO comment (id, commentContent, commentDate,commentuserId,discussionId,parentId)
-        VALUES (#{id}, #{commentContent}, #{commentDate},#{commentUserId},#{discussionId},#{parentId});
+        INSERT INTO comment (commentContent, commentDate,commentuserId,discussionId,parentId)
+        VALUES (#{commentContent}, #{commentDate},#{commentUserId},#{discussionId},#{parentId});
     </insert>
     <update id="updateComment" parameterType="comment">
-        update comment set commentContent=#{commentContent},commentDate=#{commentDate} where id=#{id}
+        update comment SET commentContent=#{commentContent},commentDate=NOW() where id=#{id}
     </update>
     <delete id="deleteComment">
         delete from comment where id=#{id}

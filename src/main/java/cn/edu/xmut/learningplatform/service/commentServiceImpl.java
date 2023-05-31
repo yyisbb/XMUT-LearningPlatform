@@ -10,11 +10,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class commentServiceImpl implements commentService {
     @Autowired
     private commentMapper commentMapper;
+
     //发布评论
     @Override
     public void addComment(comment comment) {
@@ -25,16 +28,25 @@ public class commentServiceImpl implements commentService {
     }
     //展开回复
     @Override
-    public ArrayList<comment> expandComment(Integer parentId) {
-        if (ObjectUtils.isEmpty(parentId)) {
-            throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
+    public ArrayList<comment> expandComment(Integer parentId,Set<Integer> queriedCommentIds) {
+        ArrayList<comment> childComments = commentMapper.expandComment(parentId);
+        System.out.println(childComments);
+        for (comment childComment : childComments) {
+            if (!queriedCommentIds.contains(childComment.getId())) {
+                queriedCommentIds.add(childComment.getId());
+                ArrayList<comment> grandchildComments = expandComment(childComment.getId(), queriedCommentIds);
+                childComment.setChildComments(grandchildComments);
+            }
         }
-        return commentMapper.expandComment(parentId);
+        return childComments;
     }
     //删除评论
     @Override
     public void deleteComment(comment comment) {
         if (ObjectUtils.isEmpty(comment)) {
+            throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
+        }
+        if (comment.getId() == null || comment.getId() == 0) {
             throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
         }
         commentMapper.deleteComment(comment.getId());

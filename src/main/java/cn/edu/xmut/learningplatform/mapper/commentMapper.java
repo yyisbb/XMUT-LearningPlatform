@@ -17,7 +17,7 @@ public interface commentMapper {
     //查询该讨论的所有评论
     ArrayList<comment> selectCommentById(Integer discussionId);
 
-    //查询回复该条回复的所有回复
+    //查询回复该条回复的所有直接子回复
     ArrayList<comment> expandComment(Integer parentId);
     //删除评论
     void deleteComment(Integer id);
