@@ -9,7 +9,7 @@
         VALUES (#{id}, #{commentContent}, #{commentDate},#{commentUserId},#{discussionId},#{parentId});
     </insert>
     <update id="updateComment" parameterType="comment">
-        update comment set commentContent=#{commentContent},commentDate=#{commentDate} where id=#{id}
+        update comment SET commentContent=#{commentContent},commentDate=NOW() where id=#{id}
     </update>
     <delete id="deleteComment">
         delete from comment where id=#{id}

@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 @RestController
 @RequestMapping("/comment")
 public class commentController {
@@ -25,14 +29,15 @@ public class commentController {
 
     //展开回复
     @PostMapping("/expandComment")
-    public ResultUtil<comment> expandComment(@RequestBody Integer parentId) {
-        commentService.expandComment(parentId);
-        return ResultUtil.success();
+    public ResultUtil<ArrayList<comment>> expandComment(@RequestBody comment comment) {
+        Set<Integer> queriedCommentIds = new HashSet<>();
+        return ResultUtil.success(commentService.expandComment(comment.getId(), queriedCommentIds));
     }
 
     //删除回复
     @PostMapping("/deleteComment")
     public ResultUtil<String> deleteComment(@RequestBody comment comment) {
+
         commentService.deleteComment(comment);
         return ResultUtil.success();
     }
