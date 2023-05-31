@@ -46,6 +46,9 @@ public class commentServiceImpl implements commentService {
         if (ObjectUtils.isEmpty(comment)) {
             throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
         }
+        if (comment.getId() == null || comment.getId() == 0) {
+            throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
+        }
         commentMapper.deleteComment(comment.getId());
     }
     //修改评论
