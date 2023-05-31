@@ -17,4 +17,9 @@ public class workVo {
     private String comment;
     public int current;
     public int pageSize;
+
+    public workVo(Integer courseId, Integer chapterId) {
+        this.courseId = courseId;
+        this.chapterId = chapterId;
+    }
 }
