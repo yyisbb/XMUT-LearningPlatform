@@ -80,5 +80,6 @@ public class user implements Serializable {
     public int pageSize;
     public String authCode;
 
+    private List<Integer> gradingUsers;
 
 }

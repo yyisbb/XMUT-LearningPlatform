@@ -2,6 +2,7 @@ package cn.edu.xmut.learningplatform.service;
 
 import cn.edu.xmut.learningplatform.constant.ErrorCode;
 import cn.edu.xmut.learningplatform.exception.GlobalException;
+import cn.edu.xmut.learningplatform.mapper.userMapper;
 import cn.edu.xmut.learningplatform.mapper.workMapper;
 import cn.edu.xmut.learningplatform.mapper.courseMapper;
 import cn.edu.xmut.learningplatform.mapper.chapterMapper;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -29,6 +32,9 @@ public class workServiceImpl implements workService {
     private courseMapper courseMapper;
     @Autowired
     private chapterMapper chapterMapper;
+
+    @Autowired
+    private userMapper userMapper;
     /**
      * 事务
      */
@@ -36,21 +42,20 @@ public class workServiceImpl implements workService {
     private TransactionTemplate transactionTemplate;
 
     public PageInfo<works> getWorkStatus(workVo workVo, List<works> worksList) {
-        if (ObjectUtils.isEmpty(worksList)) {
-            throw new GlobalException(ErrorCode.WORK_EMPTY_ERROR);
-        }
-        userWork userWork;
-        for (works works : worksList) {
-            workVo.setWorkId(works.getId());
-            userWork = workMapper.getWorkStatus(workVo);
-            if (userWork == null) {
-                works.setStatus(0);
-            } else if (userWork.getUpFilePath() != null || userWork.getComment() != null) {
-                works.setStatus(1);
-            } else {
-                works.setStatus(-1);
-            }
+        if (!ObjectUtils.isEmpty(worksList)) {
+            userWork userWork;
+            for (works works : worksList) {
+                workVo.setWorkId(works.getId());
+                userWork = workMapper.getWorkStatus(workVo);
+                if (userWork == null) {
+                    works.setStatus(0);
+                } else if (userWork.getUpFilePath() != null || userWork.getComment() != null) {
+                    works.setStatus(1);
+                } else {
+                    works.setStatus(-1);
+                }
 
+            }
         }
         return new PageInfo<>(worksList);
     }
@@ -170,7 +175,7 @@ public class workServiceImpl implements workService {
             works.setChapter(chapterMapper.getChapterById(works.getChapterId()));
             works.setCourse(courseMapper.getCourseByCourseId(works.getCourseId()));
         }
-      //作业状态
+        //作业状态
         user loginUser = UserUtil.getLoginUser();
         workVo work = new workVo();
         work.setUserId(loginUser.getId());
@@ -204,6 +209,7 @@ public class workServiceImpl implements workService {
         if (ObjectUtils.isEmpty(sqlWork)) {
             throw new GlobalException(ErrorCode.WORK_EMPTY_ERROR);
         }
+
         return sqlWork;
     }
 
@@ -258,5 +264,34 @@ public class workServiceImpl implements workService {
         if (workMapper.doWork(workVo) == 0) {
             throw new GlobalException(ErrorCode.WORK_EMPTY_ERROR);
         }
+    }
+
+
+    @Override
+    public List<user> releaseMutual(mutual mutual) {
+        //查询当前作业是否存在
+        works workByWorkId = workMapper.getWorkDetails(new workVo(mutual.getWorkId()));
+        if (ObjectUtils.isEmpty(workByWorkId)) {
+            throw new GlobalException(ErrorCode.WORK_EMPTY_ERROR);
+        }
+
+        //作业存在发布互改
+        //查询所有学生
+        List<user> allUser = userMapper.getAllUser(null);
+
+        //打乱学生
+        Collections.shuffle(allUser);
+
+        //生成互改
+        for (int i = 0; i < allUser.size(); i++) {
+            user currentUser = allUser.get(i);
+            currentUser.setGradingUsers(new ArrayList<>());
+            for (int j = 1; j <= 3; j++) {
+                user gradingUser = allUser.get((i + j) % allUser.size());
+                currentUser.getGradingUsers().add(gradingUser.getId());
+            }
+        }
+
+        return allUser;
     }
 }

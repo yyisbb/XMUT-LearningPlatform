@@ -38,7 +38,7 @@ public class courseServiceImpl implements courseService {
         List<course> nowCourseList = courseMapper.getAllCourse(course);
         List<course> beforeCourseList = nowCourseList.stream().filter(course1 -> course1.getEndTime().compareTo(new Date()) < 0).collect(Collectors.toList());
 
-        return new courseListDTO(nowCourseList,beforeCourseList);
+        return new courseListDTO(nowCourseList, beforeCourseList);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class courseServiceImpl implements courseService {
         List<course> allTeacherCourse = courseMapper.getTeacherAllCourse(course);
         List<course> beforeCourseList = allTeacherCourse.stream().filter(course1 -> course1.getEndTime().compareTo(new Date()) < 0).collect(Collectors.toList());
 
-        return new courseListDTO(allTeacherCourse,beforeCourseList);
+        return new courseListDTO(allTeacherCourse, beforeCourseList);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class courseServiceImpl implements courseService {
         if (course.getGroupId() != null && course.getGroupId().length() != 0) {
             //如果有带组ID 校验班级名
             String courseName = course.getClassName();
-            if (courseName == null || courseName.length() == 0){
+            if (courseName == null || courseName.length() == 0) {
                 throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
             }
             //否则直接引用 先查询课程组
@@ -81,7 +81,7 @@ public class courseServiceImpl implements courseService {
             //复制课程
             course = new course(courseListByGroupId.get(0));
             course.setClassName(courseName);
-        }else {
+        } else {
             //生成随机课程组ID
             course.setGroupId(groupId);
 
@@ -162,6 +162,29 @@ public class courseServiceImpl implements courseService {
             }
         }
         return new PageInfo<>(courseList);
+    }
+
+    @Override
+    public void studentAddCourse(course course) {
+        //查询课程是否存在
+        //查询课程
+        course sqlCourse = courseMapper.getCourseByCourseCode(course.getCourseCode());
+        if (ObjectUtils.isEmpty(sqlCourse)) {
+            throw new GlobalException(ErrorCode.COURSE_EMPTY_ERROR);
+        }
+
+        //查询学生是否已经加入了
+        userCourse userCourse = new userCourse(UserUtil.getLoginUser().getId(), sqlCourse.getId());
+        userCourse sqlUserCourse = courseMapper.getUserCourse(userCourse);
+        if (!ObjectUtils.isEmpty(sqlUserCourse)) {
+            throw new GlobalException(ErrorCode.USER_COURSE_EXIST_ERROR);
+        }
+
+        //学生加入课程
+        int count = courseMapper.studentAddCourse(userCourse);
+        if (count == 0) {
+            throw new GlobalException(ErrorCode.SQL_ERROR);
+        }
     }
 
 }

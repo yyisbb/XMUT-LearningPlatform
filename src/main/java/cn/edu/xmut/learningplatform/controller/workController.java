@@ -1,5 +1,8 @@
 package cn.edu.xmut.learningplatform.controller;
 
+import cn.edu.xmut.learningplatform.constant.ErrorCode;
+import cn.edu.xmut.learningplatform.exception.GlobalException;
+import cn.edu.xmut.learningplatform.model.mutual;
 import cn.edu.xmut.learningplatform.model.userWork;
 import cn.edu.xmut.learningplatform.model.works;
 import cn.edu.xmut.learningplatform.model.user;
@@ -9,10 +12,13 @@ import cn.edu.xmut.learningplatform.utils.UserUtil;
 import cn.edu.xmut.learningplatform.vo.workVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * @author 李大大
@@ -91,6 +97,7 @@ public class workController {
         PageInfo<userWork> submitWork = workService.getSubmitWork(workVo);
         return  ResultUtil.success(submitWork);
     }
+
     /**
      * 批改作业/打分评价
      * userId workId
@@ -112,4 +119,16 @@ public class workController {
         return  ResultUtil.success();
     }
 
+
+
+    /**
+     * 发布互改
+     */
+    @PostMapping("/releaseMutual")
+    public ResultUtil<List<user>> releaseMutual(@RequestBody mutual mutual) {
+        if (ObjectUtils.isEmpty(mutual.getWorkId())) {
+            throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
+        }
+        return ResultUtil.success(workService.releaseMutual(mutual));
+    }
 }

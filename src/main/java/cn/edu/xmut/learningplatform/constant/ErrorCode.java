@@ -40,6 +40,7 @@ public enum ErrorCode {
     UPLOAD_ERROR("文件上传失败"),
     GET_FILE_ERROR("获取文件失败"),
     COURSE_EMPTY_ERROR("课程不存在"),
+    USER_COURSE_EXIST_ERROR("学生已加入过该课程"),
     CHAPTER_EMPTY_ERROR("章节不存在"),
     CHAPTER_BELONG_COURSE_EMPTY_ERROR("章节所属课程不匹配"),
     TASK_EMPTY_ERROR("任务点不存在"),

@@ -6,7 +6,7 @@
 
     <select id="getAllCourse" resultType="course">
         SELECT * FROM course
-        WHERE 1 = 1
+        WHERE coxx = 1 and  1 = 1
         <if test="id != null">
             AND id = #{id}
         </if>
@@ -77,4 +77,25 @@
         WHERE user_course.courseId = course.id
           AND user_course.userId = `user`.id AND user_course.courseId = #{courseId}
     </select>
+
+    <insert id="studentAddCourse" >
+        INSERT INTO `user_course` (
+            `userId`, `courseId`
+        ) VALUES (
+                     #{userId}, #{courseId}
+                )
+    </insert>
+
+
+    <select id="getUserCourse" resultType="userCourse">
+        SELECT * FROM
+            user_course
+        WHERE userId = #{userId}
+          AND courseId = #{courseId}
+    </select>
+
+    <select id="getCourseByCourseCode" resultType="course">
+        SELECT * FROM course WHERE courseCode = #{courseCode}
+    </select>
+
 </mapper>

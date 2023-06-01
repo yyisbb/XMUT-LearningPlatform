@@ -22,6 +22,7 @@ public interface courseMapper {
      * @return
      */
     course getCourseByCourseId(Integer courseId);
+    course getCourseByCourseCode(String courseCode);
 
     List<course> getCourseByGroupId(String groupId);
 
@@ -37,4 +38,8 @@ public interface courseMapper {
     Integer getChooseCourseCountByCourseId(Integer courseId);
 
     List<user> getUserListByCourseId(Integer courseId);
+
+    int studentAddCourse(userCourse userCourse);
+
+    userCourse getUserCourse(userCourse userCourse);
 }

@@ -26,7 +26,7 @@ public class taskController {
         return ResultUtil.success();
     }
 
-    @PostMapping("/ ")
+    @PostMapping("/updateTaskVideo")
     public ResultUtil<String> updateTaskVideo(@RequestBody task task){
         taskService.updateTaskVideo(task);
         return ResultUtil.success();

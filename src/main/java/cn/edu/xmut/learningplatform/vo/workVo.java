@@ -23,4 +23,8 @@ public class workVo {
         this.chapterId = chapterId;
     }
     private Integer status;
+
+    public workVo(Integer workId) {
+        this.workId = workId;
+    }
 }

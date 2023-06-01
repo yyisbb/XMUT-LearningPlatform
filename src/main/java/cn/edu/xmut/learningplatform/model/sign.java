@@ -40,5 +40,6 @@ public class sign {
 
     public int total;
     public int signCount;
+    private boolean isSign;
 }
 

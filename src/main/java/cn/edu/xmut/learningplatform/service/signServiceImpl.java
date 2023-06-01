@@ -81,7 +81,13 @@ public class signServiceImpl implements signService {
             PageHelper.startPage(sign.getCurrent(), sign.getPageSize());
         }
 
-        return new PageInfo<>(signMapper.getSignListByCourseId(sign.getCourseId()));
+        List<sign> listByCourseId = signMapper.getSignListByCourseId(sign.getCourseId());
+        for (sign item : listByCourseId) {
+            signUser sqlSignRecord = signMapper.getSignRecord(item.getId(), UserUtil.getLoginUser().getId());
+            item.setSign(!ObjectUtils.isEmpty(sqlSignRecord));
+        }
+
+        return new PageInfo<>(listByCourseId);
     }
 
     @Override

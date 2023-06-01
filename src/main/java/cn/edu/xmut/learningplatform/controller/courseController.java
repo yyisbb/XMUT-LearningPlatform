@@ -1,12 +1,15 @@
 package cn.edu.xmut.learningplatform.controller;
 
+import cn.edu.xmut.learningplatform.constant.ErrorCode;
 import cn.edu.xmut.learningplatform.dto.courseListDTO;
+import cn.edu.xmut.learningplatform.exception.GlobalException;
 import cn.edu.xmut.learningplatform.model.course;
 import cn.edu.xmut.learningplatform.dto.courseUserDTO;
 import cn.edu.xmut.learningplatform.utils.ResultUtil;
 import cn.edu.xmut.learningplatform.utils.UserUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -67,7 +70,19 @@ public class courseController {
     @PostMapping("/selectStudentCourse")
     public ResultUtil<PageInfo<course>> selectStudentCourse(@RequestBody course course){
         return ResultUtil.success(courseService.selectStudentCourse(course));
+    }
 
+
+    /**
+     * 学生加入课程
+     */
+    @PostMapping("/studentAddCourse")
+    public ResultUtil<String> studentAddCourse(@RequestBody course course) {
+        if (ObjectUtils.isEmpty(course.getCourseCode())){
+            throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
+        }
+        courseService.studentAddCourse(course);
+        return ResultUtil.success();
     }
 
 }

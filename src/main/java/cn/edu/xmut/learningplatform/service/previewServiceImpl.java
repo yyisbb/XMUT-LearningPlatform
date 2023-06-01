@@ -56,14 +56,14 @@ public class previewServiceImpl implements previewService {
         }
 
         List<preview> previews = previewMapper.selectPreviewByCourseId(course.getId());
-        if (ObjectUtils.isEmpty(previews) || previews.size() == 0) {
-            throw new GlobalException(ErrorCode.PREVIEW_EMPTY_ERROR);
+        if (!ObjectUtils.isEmpty(previews) && previews.size() != 0) {
+            //根据每个预习任务 拿到对应的视频地址
+            for (preview preview : previews) {
+                preview.setVideoUrlList(taskMapper.getAllTaskByChapterId(preview.getChapterId()));
+            }
         }
 
-        //根据每个预习任务 拿到对应的视频地址
-        for (preview preview : previews) {
-           preview.setVideoUrlList(taskMapper.getAllTaskByChapterId(preview.getChapterId()));
-        }
+
         return new PageInfo<>(previews);
     }
 

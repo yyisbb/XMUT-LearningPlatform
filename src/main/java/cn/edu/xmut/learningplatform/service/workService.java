@@ -1,11 +1,14 @@
 package cn.edu.xmut.learningplatform.service;
 
+import cn.edu.xmut.learningplatform.model.mutual;
 import cn.edu.xmut.learningplatform.model.userWork;
 import cn.edu.xmut.learningplatform.model.works;
 import cn.edu.xmut.learningplatform.model.user;
 import cn.edu.xmut.learningplatform.vo.workVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author 李大大
@@ -32,4 +35,5 @@ public interface workService {
 
     void doWork(workVo workVo);
 
+    List<user> releaseMutual(mutual mutual);
 }

@@ -26,4 +26,5 @@ public interface courseService {
      */
     PageInfo<course>selectStudentCourse(course course) ;
 
+    void studentAddCourse(course course);
 }
