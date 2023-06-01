@@ -24,5 +24,10 @@ public interface commentMapper {
 
     //修改评论
     void updateComment(comment comment);
+
+    comment findById(Integer parentId);
+
+
+
 }
 

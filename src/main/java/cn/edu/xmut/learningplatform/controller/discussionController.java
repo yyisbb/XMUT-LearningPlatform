@@ -1,5 +1,6 @@
 package cn.edu.xmut.learningplatform.controller;
 
+import cn.edu.xmut.learningplatform.model.classify;
 import cn.edu.xmut.learningplatform.model.comment;
 import cn.edu.xmut.learningplatform.model.course;
 import cn.edu.xmut.learningplatform.model.discussion;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/discussion")
@@ -28,11 +31,12 @@ public class discussionController {
         return ResultUtil.success();
     }
 
-    //查询该课程下的讨论区
+    //根据分类查找讨论区
     @PostMapping("/selectDiscussionById")
-    public ResultUtil<PageInfo<discussion>> selectDiscussionById(@RequestBody course course) {
-        return ResultUtil.success(discussionService.selectDiscussionById(course));
+    public ResultUtil<PageInfo<discussion>> selectDiscussionById(@RequestBody classify classify) {
+        return ResultUtil.success(discussionService.selectDiscussionById(classify));
     }
+
     //删除讨论
     @PostMapping("/deleteDiscussionById")
     public ResultUtil<String> deleteDiscussionById(@RequestBody discussion discussion) {
@@ -45,7 +49,7 @@ public class discussionController {
         discussionService.updateDiscussionById(discussion);
         return ResultUtil.success();
     }
-    //查询某课程下某个讨论上的所有评论
+    //查询某个讨论上的所有评论
     @PostMapping("/selectCommentById")
     public ResultUtil<ArrayList<comment>> selectCommentById(@RequestBody discussion discussion){
         return ResultUtil.success(discussionService.selectCommentById(discussion));

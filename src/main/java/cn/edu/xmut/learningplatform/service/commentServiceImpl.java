@@ -26,11 +26,27 @@ public class commentServiceImpl implements commentService {
         }
         commentMapper.addComment(comment);
     }
+    //发布子评论
+    @Override
+    public void addSubComment(comment comment) {
+        Integer parentId = comment.getParentId();
+        if (parentId!=null){
+            comment comments = commentMapper.findById(parentId);
+             if (comments!=null){
+                 commentMapper.addComment(comment);
+             }
+        }
+    }
     //展开回复
     @Override
     public ArrayList<comment> expandComment(Integer parentId,Set<Integer> queriedCommentIds) {
+        if (parentId==null){
+            return null;
+        }
         ArrayList<comment> childComments = commentMapper.expandComment(parentId);
-        System.out.println(childComments);
+        if (childComments==null){
+            return null;
+        }
         for (comment childComment : childComments) {
             if (!queriedCommentIds.contains(childComment.getId())) {
                 queriedCommentIds.add(childComment.getId());
@@ -59,4 +75,6 @@ public class commentServiceImpl implements commentService {
         }
         commentMapper.updateComment(comment);
     }
+    //
+
 }

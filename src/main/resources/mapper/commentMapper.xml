@@ -9,7 +9,13 @@
         VALUES (#{commentContent}, #{commentDate},#{commentUserId},#{discussionId},#{parentId});
     </insert>
     <update id="updateComment" parameterType="comment">
-        update comment SET commentContent=#{commentContent},commentDate=NOW() where id=#{id}
+        update comment
+        <set>
+            <if test="commentContent != null">
+                commentContent=#{commentContent},
+            </if>
+        </set>
+         where id=#{id}
     </update>
     <delete id="deleteComment">
         delete from comment where id=#{id}
@@ -20,4 +26,8 @@
     <select id="expandComment" resultType="comment">
         SELECT * from comment where parentId=#{parentId}
     </select>
+    <select id="findById" resultType="comment">
+        SELECT * FROM comment where id=#{parentId}
+    </select>
+
 </mapper>
