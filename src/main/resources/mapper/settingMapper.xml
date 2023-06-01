@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.edu.xmut.learningplatform.mapper.settingMapper">
+    <insert id="addBanner" parameterType="setting">
+        INSERT INTO setting (`key`, value)
+        VALUES (#{key}, #{value})
+    </insert>
+
+    <delete id="deleteBannerById" parameterType="int">
+        DELETE FROM setting WHERE id = #{id}
+    </delete>
+
+    <select id="getAllBanners" resultType="setting">
+        SELECT `id`,`key`, `value` FROM `setting` WHERE `key` LIKE '%banner%';
+    </select>
+
+    <update id="updateBanner" parameterType="setting">
+        UPDATE setting
+        SET value = #{value}
+        WHERE `key` = #{key};
+    </update>
+</mapper>
