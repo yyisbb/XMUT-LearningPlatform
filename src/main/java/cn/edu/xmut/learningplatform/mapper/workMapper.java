@@ -1,5 +1,6 @@
 package cn.edu.xmut.learningplatform.mapper;
 
+import cn.edu.xmut.learningplatform.model.mutual;
 import cn.edu.xmut.learningplatform.model.userWork;
 import cn.edu.xmut.learningplatform.model.works;
 import cn.edu.xmut.learningplatform.vo.workVo;
@@ -36,4 +37,14 @@ public interface workMapper {
     userWork getWorkStatus(workVo workVo);
 
     int doWork(workVo workVo);
+    int updateMutual(Integer mutual,Integer workId);
+    int insertMutual(mutual mutual);
+
+
+    List<userWork> getMutualWork(mutual mutual);
+
+    int mutualCorrectWork(mutual mutual);
+    mutual getMutual(mutual mutual);
+
+    Integer computeScore(mutual mutual);
 }

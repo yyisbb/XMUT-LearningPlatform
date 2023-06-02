@@ -16,8 +16,15 @@ public class mutual {
     private Integer gradedUserId;
     private Integer workId;
     private Integer grade;
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date startTime;
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date endTime;
+
+    public mutual(Integer userId, Integer gradedUserId, Integer workId) {
+        this.userId = userId;
+        this.gradedUserId = gradedUserId;
+        this.workId = workId;
+    }
+
+    public mutual(Integer userId, Integer workId) {
+        this.userId = userId;
+        this.workId = workId;
+    }
 }

@@ -13,12 +13,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import cn.edu.xmut.learningplatform.service.signService;
-
 import java.util.List;
 
 @RestController
 @RequestMapping("/sign")
-public class signController {
+public class signController  {
     @Autowired
     private signService signService;
 

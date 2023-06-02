@@ -21,4 +21,7 @@ public class userWork {
     private String comment;
     private String feedback;
 
+    private user user;
+    private works works;
+
 }

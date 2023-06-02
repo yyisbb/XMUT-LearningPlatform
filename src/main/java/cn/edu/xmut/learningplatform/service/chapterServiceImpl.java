@@ -171,8 +171,10 @@ public class chapterServiceImpl implements chapterService {
             throw new GlobalException(ErrorCode.CHAPTER_BELONG_COURSE_EMPTY_ERROR);
         }
         //预习已经存在 要先删除
-        if (!ObjectUtils.isEmpty(previewMapper.getPreViewByCourseIdAndChapterId(preview.getCourseId(), preview.getChapterId()))) {
-            throw new GlobalException(ErrorCode.PREVIEW_EXIST_ERROR);
+        preview preViewByCourseIdAndChapterId = previewMapper.getPreViewByCourseIdAndChapterId(preview.getCourseId(), preview.getChapterId());
+        if (!ObjectUtils.isEmpty(preViewByCourseIdAndChapterId)) {
+            //删除预习
+            previewMapper.deletePreview(preViewByCourseIdAndChapterId.getId());
         }
 
         //创建预习

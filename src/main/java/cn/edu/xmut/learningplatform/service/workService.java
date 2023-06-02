@@ -17,13 +17,13 @@ import java.util.List;
 @Repository
 public interface workService {
 
-   PageInfo<works> getStudentAllWork(user loginUser);
+    PageInfo<works> getStudentAllWork(user loginUser);
 
     void addWork(works works);
 
-    void delWork (workVo workVo);
+    void delWork(workVo workVo);
 
-    void editWork( works works);
+    void editWork(works works);
 
     PageInfo<works> getCourseAllWork(workVo workVo);
 
@@ -33,7 +33,13 @@ public interface workService {
 
     void correctWork(userWork userWork);
 
+    void mutualCorrectWork(mutual mutual);
+
     void doWork(workVo workVo);
 
     List<user> releaseMutual(mutual mutual);
+
+    List<userWork> getMutualWork(mutual mutual);
+
+    mutual computeScore(mutual mutual);
 }

@@ -118,4 +118,34 @@
     </update>
 
 
+    <!--提交作业-->
+    <update id="updateMutual">
+        UPDATE work
+        SET mutual = #{mutual}
+        WHERE id = #{workId}
+    </update>
+
+    <insert id="insertMutual" parameterType="mutual">
+        INSERT INTO `mutual` (`userId`, `gradedUserId`, `workId`)
+        VALUES (#{userId}, #{gradedUserId}, #{workId})
+    </insert>
+
+    <select id="getMutualWork" resultType="userWork">
+        SELECT * FROM user_work WHERE workId = #{workId} AND userId in (SELECT gradedUserId FROM mutual WHERE userId = #{userId} AND workId = #{workId})
+    </select>
+
+
+    <update id="mutualCorrectWork" parameterType="mutual">
+        UPDATE `mutual`
+        SET `grade` = #{grade}
+        WHERE `userId` = #{userId} and `workId` = #{workId} and `gradedUserId` = #{gradedUserId}
+    </update>
+
+    <select id="getMutual" resultType="mutual">
+        SELECT * FROM mutual WHERE `userId` = #{userId} and `workId` = #{workId} and `gradedUserId` = #{gradedUserId}
+    </select>
+
+    <select id="computeScore" resultType="int">
+        SELECT sum(IFNULL(grade,0)) FROM mutual WHERE  `workId` = #{workId} and `gradedUserId` = #{gradedUserId}
+    </select>
 </mapper>

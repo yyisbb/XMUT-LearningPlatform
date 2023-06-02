@@ -18,4 +18,10 @@
         select * from preview where courseId = #{courseId}
     </select>
 
+    <delete id="deletePreview">
+        delete
+        from preview
+        where id = #{id};
+    </delete>
+
 </mapper>

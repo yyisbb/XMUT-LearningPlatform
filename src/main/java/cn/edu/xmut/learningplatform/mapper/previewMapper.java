@@ -24,4 +24,6 @@ public interface previewMapper {
 
 
     List<preview> selectPreviewByCourseId(Integer courseId);
+
+    int deletePreview(Integer id);
 }

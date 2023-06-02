@@ -3,6 +3,7 @@ package cn.edu.xmut.learningplatform.interceptor;
 
 import cn.edu.xmut.learningplatform.annotation.AuthPass;
 import cn.edu.xmut.learningplatform.constant.ErrorCode;
+import cn.edu.xmut.learningplatform.dto.permissionList;
 import cn.edu.xmut.learningplatform.exception.AuthException;
 import cn.edu.xmut.learningplatform.exception.TokenException;
 import cn.edu.xmut.learningplatform.model.*;
@@ -76,39 +77,33 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
             //验证成功
             UserUtil.setLoginUser(user);
 
-
-            //TODO 暂时返回通过 后面整体做完再开权限
-            return true;
-
-            /*//2.开始鉴权RBAC
+            //2.开始鉴权RBAC
             //(1) 查询该用户的角色
-            userRole userRole = userService.getUserRole(user.getId());
+            userRole ur = userService.getUserRole(user.getId());
 
             //管理员跳过
-            if ("admin".equals(userRole.getRoleSn())){
+            if ("admin".equals(ur.getRoleSn())){
                 return true;
             }
 
             //TODO 这里要做Redis缓存所有的角色对应的权限 后面写....
             //(2) 查询该角色列表对应的权限集合
-            ArrayList<rolePermission> allowPermissionList = new ArrayList<>();
-            allowPermissionList.addAll(roleService.getRolePermissionList(userRole.getRoleId()));
-
+            permissionList rolePermissionList = roleService.getRolePermissionList(ur.getRoleId());
             //如果权限为空或者没有存在该请求的path和method就拒绝执行 抛出异常
-            if (allowPermissionList.size()==0){
+            if (rolePermissionList.getAllowPermission().size()==0){
                 throw new AuthException(ErrorCode.PERMISSION_DENIED);
             }
 
-            for (rolePermission permission : allowPermissionList) {
-                if (permission.getRequestUrl().equals(requestURI)
+            for (permission item : rolePermissionList.getAllowPermission()) {
+                if (item.getUrl().equals(requestURI)
                     &&
-                        permission.getRequestMethod().equals(requestMethod)
+                        item.getMethod().equals(requestMethod)
                 ){
                     return true;
                 }
             }
 
-            throw new AuthException(ErrorCode.PERMISSION_DENIED);*/
+            throw new AuthException(ErrorCode.PERMISSION_DENIED);
         }
 
         return true;

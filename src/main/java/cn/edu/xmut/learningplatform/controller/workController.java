@@ -102,6 +102,16 @@ public class workController {
      * 批改作业/打分评价
      * userId workId
      */
+    @PostMapping("/mutualCorrectWork")
+    public ResultUtil<String> mutualCorrectWork(@RequestBody mutual mutual){
+        workService.mutualCorrectWork(mutual);
+        return  ResultUtil.success();
+    }
+
+    /**
+     * 批改作业/打分评价
+     * userId workId
+     */
     @PostMapping("/correctWork")
     public ResultUtil<String> correctWork(@RequestBody userWork userWork){
         workService.correctWork(userWork);
@@ -130,5 +140,29 @@ public class workController {
             throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
         }
         return ResultUtil.success(workService.releaseMutual(mutual));
+    }
+
+
+    /**
+     * 查看我互改的同学的作业
+     */
+    @PostMapping("/getMutualWork")
+    public ResultUtil<List<userWork>> getMutualWork(@RequestBody mutual mutual) {
+        if (ObjectUtils.isEmpty(mutual.getWorkId())) {
+            throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
+        }
+        return ResultUtil.success(workService.getMutualWork(mutual));
+    }
+
+
+    /**
+     * 计算分数
+     */
+    @PostMapping("/computeScore")
+    public ResultUtil<mutual> computeScore(@RequestBody mutual mutual) {
+        if (ObjectUtils.isEmpty(mutual.getWorkId())) {
+            throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
+        }
+        return ResultUtil.success(workService.computeScore(mutual));
     }
 }

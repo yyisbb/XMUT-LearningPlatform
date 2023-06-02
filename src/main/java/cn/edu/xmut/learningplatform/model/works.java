@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.sound.sampled.Port;
 import java.util.Date;
 
 /**
@@ -18,15 +19,15 @@ public class works {
     private Integer id;
     private String name;
     private String detail;
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date startTime;
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date endTime;
     private Integer courseId;
     private Integer chapterId;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateTime;
     private String filePath;
 
@@ -35,6 +36,8 @@ public class works {
     private Integer status;// 0表示未查看过 -1表示已查看但没有任何作答 1表示已经作答
     private String upFilePath;
     private String comment;
+
+    private Integer mutual;
 
 }
 

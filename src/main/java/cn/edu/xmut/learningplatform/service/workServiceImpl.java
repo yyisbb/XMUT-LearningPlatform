@@ -91,22 +91,18 @@ public class workServiceImpl implements workService {
         }
         workVo workVo = new workVo(works.getCourseId(), works.getChapterId());
         works sqlWork = workMapper.getWorkDetails(workVo);
+       if (sqlWork!=null){
+           Integer id = sqlWork.getId();
+           sqlWork = works;
+           sqlWork.setId(id);
+       }
 
-        //开事务
-        transactionTemplate.execute(status -> {
-            try {
-                if (!ObjectUtils.isEmpty(sqlWork)) {
-                    //删除作业
-                    workMapper.delWork(workVo);
-                }
-                workMapper.addWork(works);
-
-            } catch (Exception e) {
-                status.setRollbackOnly();
-                throw e;
-            }
-            return null;
-        });
+        if (!ObjectUtils.isEmpty(sqlWork)) {
+            //修改作业
+            workMapper.editWork(sqlWork);
+            return;
+        }
+        workMapper.addWork(works);
     }
 
     /**
@@ -191,7 +187,7 @@ public class workServiceImpl implements workService {
             throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
         }
         //第一次
-        if (workVo.getStatus()==0){
+        if (workVo.getStatus() == 0) {
             workMapper.viewWork(workVo);
         }
         //查询作业
@@ -199,7 +195,7 @@ public class workServiceImpl implements workService {
         sqlWork.setChapter(chapterMapper.getChapterById(sqlWork.getChapterId()));
         sqlWork.setCourse(courseMapper.getCourseByCourseId(sqlWork.getCourseId()));
         //拿到已经写过的作业
-        if (workVo.getStatus()==1){
+        if (workVo.getStatus() == 1) {
             List<userWork> userWorkList = workMapper.getSubmitWork(workVo);
             System.out.println(userWorkList);
             sqlWork.setUpFilePath(userWorkList.get(0).getUpFilePath());
@@ -245,8 +241,6 @@ public class workServiceImpl implements workService {
     }
 
 
-
-
     /**
      * 交作业
      */
@@ -275,23 +269,103 @@ public class workServiceImpl implements workService {
             throw new GlobalException(ErrorCode.WORK_EMPTY_ERROR);
         }
 
+
         //作业存在发布互改
         //查询所有学生
-        List<user> allUser = userMapper.getAllUser(null);
+        List<user> courseUserList = courseMapper.getUserListByCourseId(//查询当前作业所在的课程
+                workByWorkId.getCourseId());
 
         //打乱学生
-        Collections.shuffle(allUser);
+        Collections.shuffle(courseUserList);
 
         //生成互改
-        for (int i = 0; i < allUser.size(); i++) {
-            user currentUser = allUser.get(i);
+        for (int i = 0; i < courseUserList.size(); i++) {
+            user currentUser = courseUserList.get(i);
+            if (currentUser.getId() == 1) {
+                continue;
+            }
             currentUser.setGradingUsers(new ArrayList<>());
             for (int j = 1; j <= 3; j++) {
-                user gradingUser = allUser.get((i + j) % allUser.size());
+                user gradingUser = courseUserList.get((i + j) % courseUserList.size());
                 currentUser.getGradingUsers().add(gradingUser.getId());
             }
         }
 
-        return allUser;
+        //开事务
+        transactionTemplate.execute(status -> {
+            try {
+
+                //修改当前作业互改状态
+                int count = workMapper.updateMutual(1, mutual.getWorkId());
+                if (count == 0) {
+                    throw new GlobalException(ErrorCode.SQL_ERROR);
+                }
+
+                for (user user : courseUserList) {
+                    if (user.getId() == 1) {
+                        continue;
+                    }
+                    for (int i = 0; i < user.getGradingUsers().size(); i++) {
+                        //插入互改
+                        int c = workMapper.insertMutual(new mutual(user.getId(), user.getGradingUsers().get(i), mutual.getWorkId()));
+                        if (c == 0) {
+                            throw new GlobalException(ErrorCode.SQL_ERROR);
+                        }
+                    }
+                }
+
+            } catch (Exception e) {
+                status.setRollbackOnly();
+                throw e;
+            }
+            return null;
+        });
+
+
+        return courseUserList;
     }
+
+    @Override
+    public List<userWork> getMutualWork(mutual mutual) {
+        //查询互改列表
+        Integer userId = UserUtil.getLoginUser().getId();
+        List<userWork> mutualWork = workMapper.getMutualWork(new mutual(userId, mutual.getWorkId()));
+        for (userWork userWork : mutualWork) {
+            userWork.setUser(userMapper.getUserInfoByUserId(userWork.getUserId()));
+            userWork.setWorks(workMapper.getWorkDetails(new workVo(userWork.getWorkId())));
+            userWork.setScore(workMapper.getMutual(new mutual(userId, userWork.getUserId(), mutual.getWorkId())).getGrade());
+        }
+        return mutualWork;
+    }
+
+    @Override
+    public mutual computeScore(mutual mutual) {
+        mutual.setGradedUserId(UserUtil.getLoginUser().getId());
+        Integer grade = workMapper.computeScore(mutual);
+        mutual.setGrade(grade/3);
+        return mutual;
+    }
+
+
+    /**
+     * 批改作业/打分评价
+     * userId workId
+     *
+     * @param mutual
+     */
+    @Override
+    public void mutualCorrectWork(mutual mutual) {
+        //参数校验
+        if (mutual.getGrade() == null || mutual.getGradedUserId() == null || mutual.getWorkId() == null) {
+            throw new GlobalException(ErrorCode.SCORE_EMPTY_ERROR);
+        }
+
+        mutual.setUserId(UserUtil.getLoginUser().getId());
+
+        int count = workMapper.mutualCorrectWork(mutual);
+        if (count == 0) {
+            throw new GlobalException(ErrorCode.SQL_ERROR);
+        }
+    }
+
 }
