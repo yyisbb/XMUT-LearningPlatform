@@ -27,6 +27,12 @@ public class commentController {
         return ResultUtil.success();
     }
 
+    //发布子评论
+    @PostMapping("/addSubComment")
+    public ResultUtil<String> addSubComment(@RequestBody comment comment) {
+        commentService.addSubComment(comment);
+        return ResultUtil.success();
+    }
     //展开回复
     @PostMapping("/expandComment")
     public ResultUtil<ArrayList<comment>> expandComment(@RequestBody comment comment) {

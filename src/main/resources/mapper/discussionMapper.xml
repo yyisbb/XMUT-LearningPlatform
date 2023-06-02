@@ -4,15 +4,34 @@
 
 <mapper namespace="cn.edu.xmut.learningplatform.mapper.discussionMapper">
     <insert id="addDiscussion" parameterType="discussion">
-    INSERT INTO discuss (id,authorId, courseId, title,content, date) VALUES (#{id},#{authorId}, #{courseId}, #{title},#{content},#{date});
+    INSERT INTO discuss (id,authorId, courseId, title,content, classifyId) VALUES (#{id},#{authorId}, #{courseId}, #{title},#{content},#{classifyId});
     </insert>
     <update id="updateDiscussionById" parameterType="discussion">
-        update discuss set title=#{title},content=#{content} where id=#{id}
+        update discuss
+        <set>
+            <if test="title!= null">
+                title=#{title},
+            </if>
+            <if test="content!= null">
+                content=#{content},
+            </if>
+            <if test="classifyId!= null">
+                classifyId=#{classifyId},
+            </if>
+        </set>
+        where id=#{id}
     </update>
     <delete id="deleteDiscussionById" >
         Delete from discuss where Id=#{id}
     </delete>
     <select id="selectDiscussionById" resultType="discussion">
-        SELECT * from discuss where courseId=#{courseId}
+        SELECT * from discuss where classifyId=#{id}
     </select>
+    <select id="getDiscussion" resultType="discussion">
+        SELECT * from discuss
+    </select>
+    <select id="selectCommentById" resultType="comment">
+        SELECT * from comment where discussionId=#{id}
+    </select>
+
 </mapper>

@@ -4,6 +4,7 @@ import cn.edu.xmut.learningplatform.constant.ErrorCode;
 import cn.edu.xmut.learningplatform.exception.GlobalException;
 import cn.edu.xmut.learningplatform.mapper.commentMapper;
 import cn.edu.xmut.learningplatform.mapper.discussionMapper;
+import cn.edu.xmut.learningplatform.model.classify;
 import cn.edu.xmut.learningplatform.model.comment;
 import cn.edu.xmut.learningplatform.model.course;
 import cn.edu.xmut.learningplatform.model.discussion;
@@ -14,6 +15,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class discussionServiceImpl implements discussionService{
@@ -30,20 +32,21 @@ public class discussionServiceImpl implements discussionService{
         }
         discussionMapper.addDiscussion(discussion);
     }
-    //查询该课程的所有讨论
+    //根据分类查询讨论
     @Override
-    public PageInfo<discussion> selectDiscussionById(course course) {
-        if (ObjectUtils.isEmpty(course)) {
+    public PageInfo<discussion> selectDiscussionById(classify classify) {
+        if (ObjectUtils.isEmpty(classify)) {
             throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
         }
         //校验参数
-        if (course.getId() == null || course.getId() == 0) {
+        if (classify.getId() == null) {
             throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
         }
-        List<discussion> discussions = discussionMapper.selectDiscussionById(course.getId());
-        if (ObjectUtils.isEmpty(discussions)) {
-            throw new GlobalException(ErrorCode.Discussion_EMPTY_ERROR);
+        if (classify.getId() ==0){
+            List<discussion> discussions = discussionMapper.getDiscussion();
+            return new PageInfo<>(discussions);
         }
+        List<discussion> discussions = discussionMapper.selectDiscussionById(classify.getId());
         return new PageInfo<>(discussions);
     }
     //删除讨论
@@ -65,7 +68,7 @@ public class discussionServiceImpl implements discussionService{
         }
         discussionMapper.updateDiscussionById(discussion);
     }
-    //查询某个课程下的某条讨论的所有评论
+    //查询的某条讨论的所有评论
     @Override
     public ArrayList<comment> selectCommentById(discussion discussion) {
         if (ObjectUtils.isEmpty(discussion)) {
@@ -74,7 +77,7 @@ public class discussionServiceImpl implements discussionService{
         if (discussion.getId() == null || discussion.getId() == 0) {
             throw new GlobalException(ErrorCode.PARAMETER_EMPTY_ERROR);
         }
-        return  commentMapper.selectCommentById(discussion.getId());
+        return discussionMapper.selectCommentById(discussion.getId());
     }
 
 
